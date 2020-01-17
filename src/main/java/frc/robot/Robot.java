@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
  */
 public class Robot extends RobotBase {
   public void robotInit() {
+    
   }
 
   public void disabled() {
