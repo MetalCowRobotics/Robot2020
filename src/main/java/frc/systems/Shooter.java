@@ -11,4 +11,16 @@ public class Shooter {
     public static Shooter getInstance() {
         return instance;
     }
+
+    public void runShooter() {
+
+    }
+
+    public void stopShooter() {
+
+    }
+
+    public void checkSpeed() {
+        
+    }
 }

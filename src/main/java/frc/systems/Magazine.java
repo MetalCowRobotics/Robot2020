@@ -1,14 +1,26 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.systems;
 
-/**
- * Add your docs here.
- */
 public class Magazine {
+
+    private static final Magazine instance = new Magazine();
+
+    private Magazine() {
+
+    }
+
+    public static Magazine getInstance() {
+        return instance;
+    }
+
+    public void runMagazine() {
+
+    }
+
+    public void stopMagazine() {
+
+    }
+
+    public void checkIfLoaded() {
+
+    }
 }

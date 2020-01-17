@@ -11,4 +11,24 @@ public class Intake {
     public static Intake getInstance() {
         return instance;
     }
+
+    public void startIntake() {
+
+    }
+
+    public void reverseIntake() {
+        
+    }
+
+    public void stopIntake() {
+
+    }
+
+    public void lowerIntake() {
+
+    }
+
+    public void retractIntake() {
+
+    }
 }
