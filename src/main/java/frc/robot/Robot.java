@@ -11,6 +11,8 @@ import edu.wpi.first.hal.HAL;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import frc.lib14.XboxControllerMetalCow;
+import frc.systems.Climber;
 
 /**
  * The VM is configured to automatically run this class. If you change the name
@@ -18,8 +20,11 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
  * update the build.gradle file in the project.
  */
 public class Robot extends RobotBase {
+  Climber climber = Climber.getInstance();
+  XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
+
   public void robotInit() {
-    
+
   }
 
   public void disabled() {
@@ -29,6 +34,14 @@ public class Robot extends RobotBase {
   }
 
   public void teleop() {
+    if (controller.getAButton()) {
+      climber.lowerClimber();
+    } else if (controller.getBButton()) {
+      climber.raiseClimber();
+    } else {
+      climber.stopClimber();
+    }
+
   }
 
   public void test() {

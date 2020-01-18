@@ -38,21 +38,6 @@ public class RobotDashboard {
 		// SmartDashboard.putNumber("EkD", RobotMap.Elevator.kD);
 	}
 
-	public double getElevatorKP() {
-		return RobotMap.Elevator.kP;
-		// return SmartDashboard.getNumber("EkP", RobotMap.Elevator.kP);
-	}
-
-	public double getElevatorKI() {
-		return RobotMap.Elevator.kI;
-		// return SmartDashboard.getNumber("EkI", RobotMap.Elevator.kI);
-	}
-
-	public double getElevatorKD() {
-		return RobotMap.Elevator.kD;
-		// return SmartDashboard.getNumber("EkD", RobotMap.Elevator.kD);
-	}
-
 	// public double getElevatorTolerance() {
 	// 	return SmartDashboard.getNumber("Etolerance", RobotMap.Elevator.tolerance);
 	// }
@@ -136,18 +121,6 @@ public class RobotDashboard {
 		// SmartDashboard.putNumber("TkP", RobotMap.TurnDegrees.kP);
 		// SmartDashboard.putNumber("TkI", RobotMap.TurnDegrees.kI);
 		// SmartDashboard.putNumber("TkD", RobotMap.TurnDegrees.kD);
-	}
-	public double getTurnKP() {
-		return RobotMap.Elevator.kP;
-		// return SmartDashboard.getNumber("TkP", RobotMap.Elevator.kP);
-	}
-	public double getTurnKI() {
-		return RobotMap.Elevator.kI;
-		// return SmartDashboard.getNumber("TkI", RobotMap.Elevator.kI);
-	}
-	public double getTurnKD() {
-		return RobotMap.Elevator.kD;
-		// return SmartDashboard.getNumber("TkD", RobotMap.Elevator.kD);
 	}
 
 	public void pushEdgeSensor(Boolean sensor) {
