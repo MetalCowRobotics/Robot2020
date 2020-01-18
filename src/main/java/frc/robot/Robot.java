@@ -7,10 +7,15 @@
 
 package frc.robot;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.lib14.XboxControllerMetalCow;
 
 /**
  * The VM is configured to automatically run this class. If you change the name
@@ -18,8 +23,18 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
  * update the build.gradle file in the project.
  */
 public class Robot extends RobotBase {
+
+  private CANSparkMax leftMotor;
+  //private CANSparkMax rightMotor;
+  // private DifferentialDrive m_myRobot;
+  private static final int leftDeviceID = 1;
+  //private static final int rightDeviceID = 2;
+  private static final XboxControllerMetalCow driver = new XboxControllerMetalCow(0);
+
   public void robotInit() {
-    
+    leftMotor = new CANSparkMax(leftDeviceID, MotorType.kBrushless);
+    //rightMotor = new CANSparkMax(rightDeviceID, MotorType.kBrushless);
+   
   }
 
   public void disabled() {
@@ -29,9 +44,18 @@ public class Robot extends RobotBase {
   }
 
   public void teleop() {
+    SmartDashboard.putString("Here", "Here");
+    double speed = driver.getLT();
+      leftMotor.set(speed);
+      //rightMotor.set(speed);
+    if (driver.getAButton()){
+      leftMotor.stopMotor();
+      //rightMotor.stopMotor();
+    }
   }
 
   public void test() {
+
   }
 
   private volatile boolean m_exit;
