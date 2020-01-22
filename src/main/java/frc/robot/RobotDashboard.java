@@ -6,6 +6,7 @@ import frc.lib14.PIDController;
 import frc.systems.DriveTrain;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class RobotDashboard {
@@ -13,6 +14,9 @@ public class RobotDashboard {
 	private static final frc.robot.RobotDashboard ourInstance = new RobotDashboard();
 	private DriverStation driverStation;
 	private PowerDistributionPanel pdp;
+
+	double yaw = 0;
+
 
 	public static frc.robot.RobotDashboard getInstance() {
 		return ourInstance;

@@ -13,8 +13,8 @@ public class Climber {
     private static MCR_SRX leftClimber = new MCR_SRX(RobotMap.Climber.RIGHT_CLIMB_MOTOR);
     private static MCR_SRX rightClimber = new MCR_SRX(RobotMap.Climber.LEFT_CLIMB_MOTOR);
     private static final SpeedControllerGroup climber = new SpeedControllerGroup(leftClimber, rightClimber);
-    private final DigitalInput camIn = new DigitalInput(RobotMap.Climber.CAM_IN_LIMITSWITCH);
-    private final Servo camServo = new Servo(RobotMap.Climber.SERVO);
+    private static final DigitalInput camIn = new DigitalInput(4);//= new DigitalInput(RobotMap.Climber.CAM_IN_LIMITSWITCH);
+    private static final Servo camServo = new Servo(RobotMap.Climber.SERVO);
     private static final Climber instance = new Climber();
     private static final double RAISE_SPEED = 0.5;
     private static final double LOWER_SPEED = -0.5;
@@ -47,6 +47,7 @@ public class Climber {
 
     // deploy hook
     public void lowerClimber() {
+        SmartDashboard.putBoolean("limitSwitch", camIn.get());
         if (isCamDeployed()) {
             climber.set(LOWER_SPEED);
         } else {
@@ -63,7 +64,7 @@ public class Climber {
     }
 
     private boolean isCamDeployed() {
-        SmartDashboard.putBoolean("camLimit", camIn.get());
-        return camIn.get();
+        SmartDashboard.putBoolean("camLimit", !camIn.get());
+        return !camIn.get();
     }
 }
