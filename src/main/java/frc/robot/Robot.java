@@ -7,84 +7,64 @@
 
 package frc.robot;
 
-import edu.wpi.first.hal.HAL;
-import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import frc.lib14.Violations;
+import edu.wpi.first.wpilibj.TimedRobot;
+import frc.lib14.XboxControllerMetalCow;
+import frc.systems.Climber;
 
 /**
  * The VM is configured to automatically run this class. If you change the name
  * of this class or the package after creating this project, you must also
  * update the build.gradle file in the project.
  */
-public class Robot extends RobotBase {
+
+ 
+public class Robot extends TimedRobot {
+  Climber climber = Climber.getInstance();
+  XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
+  RobotDashboard dashboard = RobotDashboard.getInstance();
+  
+  /**
+   * This function is run when the robot is first started up and should be used
+   * for any initialization code.
+   */
+  @Override
   public void robotInit() {
-    
   }
 
-  public void disabled() {
+  @Override
+  public void autonomousInit() {
   }
 
-  public void autonomous() {
+  @Override
+  public void autonomousPeriodic() {
   }
 
-  public void teleop() {
-    
+  @Override
+  public void teleopInit() {
+  }
+
+  @Override
+  public void teleopPeriodic() {
+  }
+
+  @Override
+  public void testInit() {
+  }
+
+  @Override
+  public void testPeriodic() {
+     if (controller.getAButton()) {
+       climber.lowerClimber();
+     } else if (controller.getBButton()) {
+       climber.raiseClimber();
+     } else {
+       climber.stopClimber();
+     }
   }
 
   public void test() {
   }
 
-  private volatile boolean m_exit;
-
-  @SuppressWarnings("PMD.CyclomaticComplexity")
-  @Override
-  public void startCompetition() {
-    robotInit();
-
-    // Tell the DS that the robot is ready to be enabled
-    HAL.observeUserProgramStarting();
-
-    while (!Thread.currentThread().isInterrupted() && !m_exit) {
-      if (isDisabled()) {
-        m_ds.InDisabled(true);
-        disabled();
-        m_ds.InDisabled(false);
-        while (isDisabled()) {
-          m_ds.waitForData();
-        }
-      } else if (isAutonomous()) {
-        m_ds.InAutonomous(true);
-        autonomous();
-        m_ds.InAutonomous(false);
-        while (isAutonomous() && !isDisabled()) {
-          m_ds.waitForData();
-        }
-      } else if (isTest()) {
-        LiveWindow.setEnabled(true);
-        Shuffleboard.enableActuatorWidgets();
-        m_ds.InTest(true);
-        test();
-        m_ds.InTest(false);
-        while (isTest() && isEnabled()) {
-          m_ds.waitForData();
-        }
-        LiveWindow.setEnabled(false);
-        Shuffleboard.disableActuatorWidgets();
-      } else {
-        m_ds.InOperatorControl(true);
-        teleop();
-        m_ds.InOperatorControl(false);
-        while (isOperatorControl() && !isDisabled()) {
-          m_ds.waitForData();
-        }
-      }
-    }
-  }
-
-  @Override
-  public void endCompetition() {
-    m_exit = true;
-  }
+  
 }
+

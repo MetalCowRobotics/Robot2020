@@ -89,8 +89,10 @@ public class RobotMap {
 	}
 
 	public final class Climber {
-		public static final int LEFT_CLIMB_MOTOR = 0;//assign channel
-		public static final int RIGHT_CLIMB_MOTOR = 0;//assign channel
+		public static final int LEFT_CLIMB_MOTOR = 1;//assign channel
+		public static final int RIGHT_CLIMB_MOTOR = 2;//assign channel
+		public static final int CAM_IN_LIMITSWITCH = 4;
+		public static final int SERVO = 9;
 	}
 
 	
