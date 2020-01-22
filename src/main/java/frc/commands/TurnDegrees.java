@@ -31,13 +31,13 @@ public class TurnDegrees implements MCRCommand {
 			driveTrain.resetGyro();
 			setPoint = driveTrain.getAngle() + degrees; 
 //System.out.println(("TurnDegrees SetPoint:" + setPoint));
-			driveController = new PDController(setPoint, dashboard.getTurnKP(), dashboard.getTurnKI()); 
+			// driveController = new PDController(setPoint, dashboard.getTurnKP(), dashboard.getTurnKI()); 
 			driveTrain.arcadeDrive(RobotMap.TurnDegrees.TOP_SPEED, driveController.calculateAdjustment(setPoint));
 			currentState = ACTIVE;
 			break;
 		case ACTIVE:
-			driveController.set_kP(dashboard.getTurnKP());
-			driveController.set_kD(dashboard.getTurnKD()); 
+			// driveController.set_kP(dashboard.getTurnKP());
+			// driveController.set_kD(dashboard.getTurnKD()); 
 			double currentAngle = driveTrain.getAngle();
 			if (Math.abs(setPoint-currentAngle) < RobotMap.TurnDegrees.VARIANCE) { 
 	//logger.info("======== turn on target !!! ========="); 
@@ -53,8 +53,8 @@ public class TurnDegrees implements MCRCommand {
 					driveTrain.arcadeDrive(RobotMap.TurnDegrees.TOP_SPEED, limitCorrection(correction, RobotMap.TurnDegrees.MAX_ADJUSTMENT));
 	//	logger.info("Turn Degrees Fast");
 				}
-	//logger.info("Angle:" + driveTrain.getAngle());	
-	//	logger.info("correction:" + correction);
+	// logger.info("Angle:" + driveTrain.getAngle());	
+	// 	logger.info("correction:" + correction);
 			}
 			break;
 		case DONE:

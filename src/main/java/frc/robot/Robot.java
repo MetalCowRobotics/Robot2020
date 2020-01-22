@@ -11,6 +11,7 @@ import edu.wpi.first.hal.HAL;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import frc.lib14.Violations;
 
 /**
  * The VM is configured to automatically run this class. If you change the name
@@ -29,6 +30,7 @@ public class Robot extends RobotBase {
   }
 
   public void teleop() {
+    
   }
 
   public void test() {

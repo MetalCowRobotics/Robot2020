@@ -1,5 +1,7 @@
 package frc.lib14;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class Violations {
     private final int rightEncoder = 0;
 
@@ -31,6 +33,8 @@ public class Violations {
     }
 
     private void doNothing() {
+        String hi = "Here is some CODE... YAY";
+        // SmartDashboard.putString("doNothing", hi);
         //TODO need to put some code here
     }
 }

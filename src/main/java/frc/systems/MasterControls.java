@@ -42,7 +42,6 @@ public class MasterControls {
 		return driver.getYButtonPressed();
 	}
 
-
 	public double forwardSpeed() {
 		return driver.getRT();
 	}

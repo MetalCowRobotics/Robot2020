@@ -5,7 +5,7 @@ import java.util.logging.Level;
 public class RobotMap {
 
 	public final class DriverController {
-		public static final int 	USB_PORT = 0;
+		public static final int USB_PORT = 0;
 	}
 
 	public final class OperatorController {
@@ -13,9 +13,9 @@ public class RobotMap {
 	}
 
 	public static final class Drivetrain {
-		public static final int LEFT_MOTOR = 15;
+		public static final int LEFT_MOTOR = 15;//CAN
 		public static final int LEFT_MOTOR_NO_ENCODER = 4;
-		public static final int RIGHT_MOTOR = 2;
+		public static final int RIGHT_MOTOR = 2;//CAN
 		public static final int RIGHT_MOTOR_NO_ENCODER = 5;
 		public static final int WHEEL_DIAMETER = 6;
 		public static final double RAMP_SPEED = .6;
@@ -60,6 +60,8 @@ public class RobotMap {
 	public final class Shooter {
 		public static final int TOP_MOTOR = 0;//assign channel
 		public static final int BOTTOM_MOTOR = 0;//assign channel
+		public static final int TOP_MOTOR_ID = 0;
+		public static final int BOTTOM_MOTOR_ID = 1;
 	}
 	
 	public final class Hood {
@@ -72,13 +74,18 @@ public class RobotMap {
 
 	public final class Magazine {
 		public static final int MAGAZINE_MOTOR = 0;//assign channel
+		public static final int IS_THERE_A_BALL_TOP = 1;//DIO
+		public static final int IS_THERE_A_BALL_BOTTOM = 2;//DIO
 	}
 
 	public final class Intake {
 		public static final double INTAKE_SPEED = 1;
 		public static final double EJECT_SPEED = -1;
-		public static final int INTAKE_MOTOR = 3;// CAN
 		public static final double RAMP_SPEED = .8;
+		public static final int LIFT_MOTOR = 0; //CAN
+		public static final int INTAKE_MOTOR = 1; //CAN
+		public static final int TOP_LIMIT_SWITCH = 1;//DIO
+		public static final int BOTTOM_LIMIT_SWITCH = 2;//DIO
 	}
 
 	public final class Climber {
@@ -98,7 +105,5 @@ public class RobotMap {
 		public static final Level missionClass = Level.WARNING;
 		public static final Level autoDriveClass = Level.WARNING;
 		public static final Level componentBuilderClass = Level.WARNING;
-		public static final Level cargoHandlerClass = Level.WARNING;
-		public static final Level hatchHandlerClass = Level.WARNING;
 	}
 }

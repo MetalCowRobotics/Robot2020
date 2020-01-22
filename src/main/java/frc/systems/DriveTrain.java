@@ -32,6 +32,7 @@ public class DriveTrain {
 	public static final double SPRINT_SPEED = 1;
 	public static final double NORMAL_SPEED = 0.7;
 	public static final double CRAWL_SPEED = .5;
+
 	
 	private int inverted = 1;
 
