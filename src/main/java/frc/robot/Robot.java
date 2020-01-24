@@ -33,8 +33,9 @@ public class Robot extends TimedRobot {
   public void disabled() {
   }
 
-  public void autonomous() {
-  }
+  // public void autonomous() {/
+    
+  
 
   @Override
   public void teleopPeriodic() {
