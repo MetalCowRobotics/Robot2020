@@ -23,22 +23,36 @@ public class Robot extends TimedRobot {
   XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
   RobotDashboard dashboard = RobotDashboard.getInstance();
   
+  /**
+   * This function is run when the robot is first started up and should be used
+   * for any initialization code.
+   */
+  @Override
   public void robotInit() {
-
   }
+
+  @Override
+  public void autonomousInit() {
+  }
+
+  @Override
+  public void autonomousPeriodic() {
+  }
+
   @Override
   public void teleopInit() {
-    System.out.println("Default teleopInit() method... Override me!");
   }
-  public void disabled() {
-  }
-
-  // public void autonomous() {/
-    
-  
 
   @Override
   public void teleopPeriodic() {
+  }
+
+  @Override
+  public void testInit() {
+  }
+
+  @Override
+  public void testPeriodic() {
      if (controller.getAButton()) {
        climber.lowerClimber();
      } else if (controller.getBButton()) {
