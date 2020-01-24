@@ -12,9 +12,9 @@ public class Intake {
     private static DigitalInput bottomLimit = new DigitalInput(RobotMap.Intake.BOTTOM_LIMIT_SWITCH);
     private static final Intake instance = new Intake();
 
-    private final double TopSpeed = .5;
-    double LowerSpeed = .5;
-    double RaiseSpeed = -.5;
+    private final double TopSpeed = .3;
+    double LowerSpeed = .3;
+    double RaiseSpeed = -.3;
 
     private Intake() {
 

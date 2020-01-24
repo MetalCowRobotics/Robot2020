@@ -9,7 +9,9 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.lib14.XboxControllerMetalCow;
+// import frc.robot.RobotMap.Magazine;
 import frc.systems.Climber;
+import frc.systems.Magazine;
 
 /**
  * The VM is configured to automatically run this class. If you change the name
@@ -20,6 +22,7 @@ import frc.systems.Climber;
  
 public class Robot extends TimedRobot {
   Climber climber = Climber.getInstance();
+  Magazine magazine = Magazine.getInstance();
   XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
   RobotDashboard dashboard = RobotDashboard.getInstance();
   
@@ -29,6 +32,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+
+    
   }
 
   @Override
@@ -45,6 +50,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+    if (controller.getRB() == true){
+        magazine.runMagazine();
+        magazine.checkIfLoaded();
+    }else{
+      magazine.stopMagazine();
+      magazine.checkIfLoaded();
+    }
   }
 
   @Override

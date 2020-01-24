@@ -36,10 +36,10 @@ public class Magazine {
 
     public void checkIfLoaded() {
         if(isThereABallTop.get()){
-            return; //What do you want this to do?
+            SmartDashboard.putBoolean("Ball at top", isThereABallTop.get());
         }
         if(!isThereABallTop.get()){
-            return;// What do you want this to do?
+            SmartDashboard.putBoolean("Ball at bottom", isThereABallBottom.get());
         }
 
     }
