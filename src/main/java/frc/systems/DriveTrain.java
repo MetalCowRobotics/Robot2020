@@ -94,9 +94,6 @@ public class DriveTrain {
 
 	public double getAngle() {
 		dashboard.pushGyro(GYRO.getAngle());
-		SmartDashboard.putNumber("InstantX", GYRO.getGyroInstantX());
-		// SmartDashboard.putNumber("InstantY", GYRO.getGyroInstantY());
-		// SmartDashboard.putNumber("InstantZ", GYRO.getGyroInstantZ());
 		return GYRO.getAngle();
 	}
 
