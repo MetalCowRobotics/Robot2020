@@ -26,8 +26,6 @@ public class Magazine {
         }else{
             stopMagazine();
         }
-
-
     }
 
     public void stopMagazine() {

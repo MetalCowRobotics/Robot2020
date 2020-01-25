@@ -73,7 +73,7 @@ public class RobotMap {
 	}
 
 	public final class Magazine {
-		public static final int MAGAZINE_MOTOR = 0;//assign channel
+		public static final int MAGAZINE_MOTOR = 1;//assign channel
 		public static final int IS_THERE_A_BALL_TOP = 0;//DIO
 		public static final int IS_THERE_A_BALL_BOTTOM = 1;//DIO
 	}

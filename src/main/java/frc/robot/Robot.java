@@ -65,13 +65,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testPeriodic() {
-     if (controller.getAButton()) {
-       climber.lowerClimber();
-     } else if (controller.getBButton()) {
-       climber.raiseClimber();
-     } else {
-       climber.stopClimber();
-     }
+    //  if (controller.getAButton()) {
+    //    climber.lowerClimber();
+    //  } else if (controller.getBButton()) {
+    //    climber.raiseClimber();
+    //  } else {
+    //    climber.stopClimber();
+    //  }
   }
 
   public void test() {
