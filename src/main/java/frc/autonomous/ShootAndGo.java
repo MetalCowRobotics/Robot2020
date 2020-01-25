@@ -11,6 +11,7 @@ import java.util.Set;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.commands.DriveBackwardsStraight;
 import frc.commands.DriveStraightInches;
 import frc.commands.ShootBall;
 import frc.lib14.MCRCommand;
@@ -25,7 +26,7 @@ public class ShootAndGo implements MCRCommand {
 
     public ShootAndGo() {
         MCRCommand commandSet = new SequentialCommands(new ShootBall(), new ShootBall(), new ShootBall());
-        mission = new SequentialCommands(new TimedCommandSet(commandSet, 10), new DriveStraightInches(20));
+        mission = new SequentialCommands(new TimedCommandSet(commandSet, 9), new DriveBackwardsStraight(48, 6));
 
     }
 
