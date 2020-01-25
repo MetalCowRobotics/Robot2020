@@ -17,7 +17,6 @@ public class RobotDashboard {
 
 	double yaw = 0;
 
-
 	public static frc.robot.RobotDashboard getInstance() {
 		return ourInstance;
 	}
@@ -30,8 +29,8 @@ public class RobotDashboard {
 		// driverStation = edu.wpi.first.wpilibj.DriverStation.getInstance();
 		// // boolean isFMSAttached = driverStation.isFMSAttached();
 		// if (!isFMSAttached) {
-		// 	pdp = new PowerDistributionPanel();
-		// 	pdp.resetTotalEnergy();
+		// pdp = new PowerDistributionPanel();
+		// pdp.resetTotalEnergy();
 		// }
 		// pushElevatorPID();
 	}
@@ -43,40 +42,41 @@ public class RobotDashboard {
 	}
 
 	// public double getElevatorTolerance() {
-	// 	return SmartDashboard.getNumber("Etolerance", RobotMap.Elevator.tolerance);
+	// return SmartDashboard.getNumber("Etolerance", RobotMap.Elevator.tolerance);
 	// }
 
 	// public double getElevatorOutputMin() {
-	// 	return SmartDashboard.getNumber("Emin output", RobotMap.Elevator.outputMin);
+	// return SmartDashboard.getNumber("Emin output", RobotMap.Elevator.outputMin);
 	// }
 
 	// public double getElevatorOutputMax() {
-	// 	return SmartDashboard.getNumber("Emax output", RobotMap.Elevator.outputMax);
+	// return SmartDashboard.getNumber("Emax output", RobotMap.Elevator.outputMax);
 	// }
 
 	public void pushElevatorPID(PIDController pid) {
 		// if (null == pid)
-		// 	return;
+		// return;
 		// SmartDashboard.putNumber("PIDsetPoint", pid.getSetPoint());
 		// SmartDashboard.putNumber("PIDerror", pid.getError());
-		//SmartDashboard.putNumber("Elevator Encoder Tics: ", Elevator.getInstance().getEncoderTics());
+		// SmartDashboard.putNumber("Elevator Encoder Tics: ",
+		// Elevator.getInstance().getEncoderTics());
 	}
-	
+
 	public void pushGyro(double angle) {
 		SmartDashboard.putNumber("Gyro Reading", angle);
 	}
 
-	public void pushElevatorLimits(boolean upper, boolean lower){
+	public void pushElevatorLimits(boolean upper, boolean lower) {
 		SmartDashboard.putBoolean("elevatorUpperLimit", upper);
 		SmartDashboard.putBoolean("elevatorLowerLimit", lower);
 	}
 
-	public void pushElevatorEncoder(double elevatorEncoderTics){
+	public void pushElevatorEncoder(double elevatorEncoderTics) {
 		SmartDashboard.putNumber("elevatorEncoderValue", elevatorEncoderTics);
 	}
 
 	// public void pushEncoder(double encoderTics){
-	// 	SmartDashboard.putNumber("encoderValue", encoderTics);
+	// SmartDashboard.putNumber("encoderValue", encoderTics);
 
 	// }
 
@@ -97,30 +97,30 @@ public class RobotDashboard {
 		// return SmartDashboard.getNumber("IntakeEjectSpeed", 0);
 		return 0;
 	}
-	
+
 	public void pushElevatorBottom(double bottomTics) {
-		SmartDashboard.putNumber("elevatorBottomTics", bottomTics) ;
+		SmartDashboard.putNumber("elevatorBottomTics", bottomTics);
 	}
 
-	public void pushElevatorTop (double topTics) {
+	public void pushElevatorTop(double topTics) {
 		SmartDashboard.putNumber("elevatorTopTics", topTics);
 	}
 
-	public void pushLeftEncoder(double leftTics){
+	public void pushLeftEncoder(double leftTics) {
 		SmartDashboard.putNumber("driveLeftTics", leftTics);
 	}
 
-	public void pushRightEncoder(double rightTics){
+	public void pushRightEncoder(double rightTics) {
 		SmartDashboard.putNumber("driveRight", rightTics);
 	}
 
-	public void pushSpeed(){
+	public void pushSpeed() {
 		// SmartDashboard.putNumber("crawlSpeed", RobotMap.Drivetrain.CRAWL_SPEED);
 		// SmartDashboard.putNumber("sprintSpeed", RobotMap.Drivetrain.SPRINT_SPEED);
 		// SmartDashboard.putNumber("normalSpeed", RobotMap.Drivetrain.NORMAL_SPEED);
 	}
 
-	//Turn commands
+	// Turn commands
 	public void pushTurnPID() {
 		// SmartDashboard.putNumber("TkP", RobotMap.TurnDegrees.kP);
 		// SmartDashboard.putNumber("TkI", RobotMap.TurnDegrees.kI);

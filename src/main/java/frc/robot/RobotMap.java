@@ -79,6 +79,8 @@ public class RobotMap {
 		public static final double EJECT_SPEED = -1;
 		public static final int INTAKE_MOTOR = 3;// CAN
 		public static final double RAMP_SPEED = .8;
+		public static final int RAISE_LOWER_INTAKE_MOTOR = 1;
+		
 	}
 
 	public final class Climber {
