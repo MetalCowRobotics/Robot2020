@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib14.XboxControllerMetalCow;
 import frc.systems.Climber;
 import frc.systems.DriveTrain;
+import frc.systems.Intake;
 
 /**
  * The VM is configured to automatically run this class. If you change the name
@@ -23,6 +24,7 @@ import frc.systems.DriveTrain;
 public class Robot extends TimedRobot {
   Climber climber = Climber.getInstance();
   DriveTrain drive = DriveTrain.getInstance();
+  Intake intake = Intake.getInstance(); 
   XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
   RobotDashboard dashboard = RobotDashboard.getInstance();
   
@@ -49,6 +51,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
 SmartDashboard.putNumber("Gyro", drive.getAngle());
+intake.lowerIntake();
+// intake.retractIntake();
   }
 
   @Override

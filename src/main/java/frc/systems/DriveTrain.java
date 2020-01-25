@@ -109,7 +109,7 @@ public class DriveTrain {
 		if (controller.isCrawlToggle()) {
 			return CRAWL_SPEED;
 		} else if (controller.isSprintToggle()) {
-			return SPRINT_SPEED;
+			return SPRINT_SPEED; 
 		} else {
 			return NORMAL_SPEED;
 		}
