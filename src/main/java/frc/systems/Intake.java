@@ -1,6 +1,9 @@
 package frc.systems;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
+
 import frc.lib14.MCR_SRX;
 import frc.robot.RobotMap;
 
@@ -11,13 +14,13 @@ public class Intake {
     private static DigitalInput topLimit = new DigitalInput(RobotMap.Intake.TOP_LIMIT_SWITCH);
     private static DigitalInput bottomLimit = new DigitalInput(RobotMap.Intake.BOTTOM_LIMIT_SWITCH);
     private static final Intake instance = new Intake();
+    private static MCR_SRX raiseLowerIntake = new MCR_SRX(RobotMap.Intake.RAISE_LOWER_INTAKE_MOTOR);
 
     private final double TopSpeed = .3;
     double LowerSpeed = .3;
     double RaiseSpeed = -.3;
 
     private Intake() {
-
 
     }
 
@@ -27,7 +30,6 @@ public class Intake {
 
     public void startIntake() {
         intake.set(TopSpeed);
-
     }
 
     public void reverseIntake() {
@@ -36,24 +38,13 @@ public class Intake {
 
     public void stopIntake() {
         intake.stopMotor();
-
     }
 
     public void lowerIntake() {
-        if(!bottomLimit.get()){
-            lift.set(LowerSpeed);
-        } else {
-            lift.stopMotor();
-        }
+        raiseLowerIntake.set(.5);
     }
 
     public void retractIntake() {
-        if (!topLimit.get()){
-            stopIntake();
-            lift.set(RaiseSpeed);
-        }else {
-            lift.stopMotor();
-        }
-
+        raiseLowerIntake.set(-.5);
     }
 }

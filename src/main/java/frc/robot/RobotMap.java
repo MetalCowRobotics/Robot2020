@@ -88,6 +88,8 @@ public class RobotMap {
 		public static final int INTAKE_MOTOR = 1; //CAN
 		public static final int TOP_LIMIT_SWITCH = 1;//DIO
 		public static final int BOTTOM_LIMIT_SWITCH = 2;//DIO
+		public static final int RAISE_LOWER_INTAKE_MOTOR = 1;
+		
 	}
 
 	public final class Climber {
