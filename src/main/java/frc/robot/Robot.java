@@ -8,8 +8,19 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import frc.autonomous.ShootAndGo;
+import frc.commands.DriveStraightInches;
+import frc.commands.ShootBall;
+import frc.commands.TurnDegrees;
+import frc.lib14.MCRCommand;
+import frc.lib14.ParallelCommands;
+import frc.lib14.SequentialCommands;
+import frc.lib14.TimedCommandSet;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib14.XboxControllerMetalCow;
 import frc.systems.Climber;
+import frc.systems.DriveTrain;
+import frc.systems.Intake;
 
 /**
  * The VM is configured to automatically run this class. If you change the name
@@ -20,8 +31,11 @@ import frc.systems.Climber;
  
 public class Robot extends TimedRobot {
   Climber climber = Climber.getInstance();
+  DriveTrain drive = DriveTrain.getInstance();
+  Intake intake = Intake.getInstance(); 
   XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
   RobotDashboard dashboard = RobotDashboard.getInstance();
+  MCRCommand mission;
   
   /**
    * This function is run when the robot is first started up and should be used
@@ -33,10 +47,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    mission = new ShootAndGo();
+    
   }
 
   @Override
   public void autonomousPeriodic() {
+    mission.run();
   }
 
   @Override
@@ -45,6 +62,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+SmartDashboard.putNumber("Gyro", drive.getAngle());
+intake.lowerIntake();
+// intake.retractIntake();
   }
 
   @Override
