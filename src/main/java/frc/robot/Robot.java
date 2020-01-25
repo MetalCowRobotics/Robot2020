@@ -25,7 +25,7 @@ import frc.lib14.MCR_SRX;
 
  
 public class Robot extends TimedRobot {
-  private static MCR_SRX testMotor = new MCR_SRX(RobotMap.Test.BAG_MOTOR);
+  // private static MCR_SRX testMotor = new MCR_SRX(RobotMap.Test.BAG_MOTOR);
   Climber climber = Climber.getInstance();
   Magazine magazine = Magazine.getInstance();
   Turret turret = Turret.getInstance();
@@ -55,15 +55,15 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    testMotor.setSelectedSensorPosition(0);
+    turret.resetTurretEncoder();
     // Magazine.getInstance();
   }
 
   @Override
   public void teleopPeriodic() {
-    turret.rotateTurret(360);
-    SmartDashboard.putNumber("Encoder Tics", testMotor.getSelectedSensorPosition());
-    
+    turret.rotateTurret(30);
+    // SmartDashboard.putNumber("Encoder Tics", testMotor.getSelectedSensorPosition());
+
     // if (testMotor.getSelectedSensorPosition() < 3600){
     //   testMotor.set(.1);
     // }
