@@ -69,13 +69,15 @@ public class RobotMap {
 	}
 
 	public final class Turret {
-		public static final int TURRET_MOTOR = 0;//assign channel
+		public static final int TURRET_MOTOR = 2;//assign channel
 	}
-
+	public final class Test {
+		public static final int BAG_MOTOR = 2;
+	}
 	public final class Magazine {
 		public static final int MAGAZINE_MOTOR = 1;//assign channel
-		public static final int IS_THERE_A_BALL_TOP = 0;//DIO
-		public static final int IS_THERE_A_BALL_BOTTOM = 1;//DIO
+		public static final int IS_THERE_A_BALL_TOP = 9;//DIO
+		public static final int IS_THERE_A_BALL_BOTTOM = 8;//DIO
 	}
 
 	public final class Intake {

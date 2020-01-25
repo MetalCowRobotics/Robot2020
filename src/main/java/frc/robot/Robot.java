@@ -8,10 +8,14 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib14.XboxControllerMetalCow;
 // import frc.robot.RobotMap.Magazine;
 import frc.systems.Climber;
 import frc.systems.Magazine;
+import frc.systems.Turret;
+import frc.lib14.MCR_SRX;
+
 
 /**
  * The VM is configured to automatically run this class. If you change the name
@@ -21,15 +25,20 @@ import frc.systems.Magazine;
 
  
 public class Robot extends TimedRobot {
+  private static MCR_SRX testMotor = new MCR_SRX(RobotMap.Test.BAG_MOTOR);
   Climber climber = Climber.getInstance();
   Magazine magazine = Magazine.getInstance();
+  Turret turret = Turret.getInstance();
   XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
   RobotDashboard dashboard = RobotDashboard.getInstance();
+
   
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
    */
+
+   
   @Override
   public void robotInit() {
 
@@ -46,17 +55,34 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    testMotor.setSelectedSensorPosition(0);
+    // Magazine.getInstance();
   }
 
   @Override
   public void teleopPeriodic() {
-    if (controller.getRB() == true){
-        magazine.runMagazine();
-        magazine.checkIfLoaded();
-    }else{
-      magazine.stopMagazine();
-      magazine.checkIfLoaded();
-    }
+    turret.rotateTurret(360);
+    SmartDashboard.putNumber("Encoder Tics", testMotor.getSelectedSensorPosition());
+    
+    // if (testMotor.getSelectedSensorPosition() < 3600){
+    //   testMotor.set(.1);
+    // }
+    // if(testMotor.getSelectedSensorPosition() > 3600){
+    //   testMotor.set(-.1);
+    // }
+    // if (testMotor.getSelectedSensorPosition() == 3600){
+    //   testMotor.stopMotor();
+    // }
+
+    //4050tics = 360 degrees      11.25tics = 1 degree
+
+  //   magazine.checkIfLoaded();
+  //   if (controller.getBButton()){
+  //     magazine.feedOneBall();
+  //   }else if (controller.getBButtonReleased()){
+  //     magazine.stopMagazine();
+  //   }
+  //     magazine.runMagazine();
   }
 
   @Override
@@ -65,6 +91,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testPeriodic() {
+    // testMotor.set(.3);
+    
     //  if (controller.getAButton()) {
     //    climber.lowerClimber();
     //  } else if (controller.getBButton()) {
