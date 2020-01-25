@@ -37,7 +37,7 @@ public class Turret {
         // error = UtilityMethods.copySign(error, UtilityMethods.absMin(error, .2));
         double error = UtilityMethods.copySign(totalTicsDiff, UtilityMethods.absMax(totalTicsDiff, .05));
         error = UtilityMethods.copySign(totalTicsDiff, UtilityMethods.absMin(error, .4));
-        System.out.println("Target" + targetTics + "; current " + turret.getSelectedSensorPosition() + ";\n\t\t error" + error
+        System.out.println("Target" + targetTics + "; current " + turret.getSelectedSensorPosition() + "; error" + error
                 + ": TotalTics" + totalTicsDiff);
         if (Math.abs(targetTics - turret.getSelectedSensorPosition()) < deadZone) {
             turret.stopMotor();
