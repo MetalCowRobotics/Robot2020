@@ -8,8 +8,10 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib14.XboxControllerMetalCow;
 import frc.systems.Climber;
+import frc.systems.DriveTrain;
 
 /**
  * The VM is configured to automatically run this class. If you change the name
@@ -20,6 +22,7 @@ import frc.systems.Climber;
  
 public class Robot extends TimedRobot {
   Climber climber = Climber.getInstance();
+  DriveTrain drive = DriveTrain.getInstance();
   XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
   RobotDashboard dashboard = RobotDashboard.getInstance();
   
@@ -45,6 +48,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+SmartDashboard.putNumber("Gyro", drive.getAngle());
   }
 
   @Override
