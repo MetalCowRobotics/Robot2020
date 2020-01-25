@@ -7,6 +7,7 @@ import frc.systems.DriveTrain;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Sendable;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class RobotDashboard {
@@ -33,6 +34,7 @@ public class RobotDashboard {
 		// pdp.resetTotalEnergy();
 		// }
 		// pushElevatorPID();
+		
 	}
 
 	public void pushElevatorPIDValues() {
@@ -142,5 +144,14 @@ public class RobotDashboard {
 
 	public boolean getAuto() {
 		return SmartDashboard.getBoolean("Exit Level 2", false);
+	}
+
+	public void pushStartingPosition(Sendable startingPosition) {
+		SmartDashboard.putData(startingPosition);
+		
+	}
+	public void pushAutonomousAction(Sendable autonomousAction) {
+		SmartDashboard.putData(autonomousAction);
+		
 	}
 }

@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.autonomous.ShootAndGo;
 import frc.lib14.MCRCommand;
@@ -30,14 +31,35 @@ public class Robot extends TimedRobot {
   Climber climber = Climber.getInstance();
   XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
   RobotDashboard dashboard = RobotDashboard.getInstance();
+<<<<<<< Updated upstream
   MCRCommand mission;
 
+=======
+  String shootAndGo = "shoot and go";
+  String shootAndGather = "shoot and gather";
+  String centerPosition = "center position";
+  String leftPosition = "left position";
+  String rightPosition = "right position";
+  
+  
+>>>>>>> Stashed changes
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
    */
   @Override
   public void robotInit() {
+   SendableChooser<String> autonomousAction = new SendableChooser<>();
+   SendableChooser<String> startingPosition = new SendableChooser<>();
+   autonomousAction.setDefaultOption("shoot and go", shootAndGo);
+   autonomousAction.addOption("shoot and gather", shootAndGather);
+   startingPosition.setDefaultOption("center position", centerPosition);
+   startingPosition.addOption("left position", leftPosition);
+   startingPosition.addOption("right position", rightPosition);
+   dashboard.pushStartingPosition(startingPosition);
+   dashboard.pushAutonomousAction(autonomousAction);
+   
+  
   }
 
   @Override
