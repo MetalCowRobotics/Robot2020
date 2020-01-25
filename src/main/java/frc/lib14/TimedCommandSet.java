@@ -35,6 +35,7 @@ public class TimedCommandSet implements MCRCommand {
     @Override
     public boolean isFinished() {
         if (timerUp()) {
+            endTimer();
             return true;
         }
         return commandSet.isFinished();
