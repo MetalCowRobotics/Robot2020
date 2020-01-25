@@ -2,22 +2,20 @@ package frc.systems;
 
 import java.util.logging.Logger;
 
+import com.analog.adis16470.frc.ADIS16470_IMU;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib14.MCR_SRX;
-import frc.lib14.UtilityMethods;
 import frc.robot.RobotDashboard;
 import frc.robot.RobotMap;
 import frc.robot.RobotMap.Drivetrain;
 
 public class DriveTrain {
 	private static final Logger logger = Logger.getLogger(DriveTrain.class.getName());
-	private static final ADXRS450_Gyro GYRO = new ADXRS450_Gyro();
+	public static final ADIS16470_IMU GYRO = new ADIS16470_IMU();
 	private static MCR_SRX rightFrontMotor = new MCR_SRX(RobotMap.Drivetrain.RIGHT_MOTOR);
 	private static MCR_SRX rightBackMotor = new MCR_SRX(Drivetrain.RIGHT_MOTOR_NO_ENCODER); 
 	private static MCR_SRX leftFrontMotor = new MCR_SRX(RobotMap.Drivetrain.LEFT_MOTOR);
@@ -29,12 +27,15 @@ public class DriveTrain {
 	private static final MasterControls controller = MasterControls.getInstance();
 	private static final DriveTrain instance = new DriveTrain();
 
-	public static final double SPRINT_SPEED = 1;
+	public static final double SPRINT_SPEED = 1.0;
 	public static final double NORMAL_SPEED = 0.7;
 	public static final double CRAWL_SPEED = .5;
 
 	
 	private int inverted = 1;
+	
+		
+	
 
 	// Singleton
 	protected DriveTrain() {
@@ -94,6 +95,8 @@ public class DriveTrain {
 		return GYRO.getAngle();
 	}
 
+	
+
 	/**
 	 * Determine the top speed threshold: CRAWL - Lowest speed threshold Normal -
 	 * Normal driving conditions SPRINT - Highest speed threshold
@@ -104,7 +107,7 @@ public class DriveTrain {
 		if (controller.isCrawlToggle()) {
 			return CRAWL_SPEED;
 		} else if (controller.isSprintToggle()) {
-			return SPRINT_SPEED;
+			return SPRINT_SPEED; 
 		} else {
 			return NORMAL_SPEED;
 		}

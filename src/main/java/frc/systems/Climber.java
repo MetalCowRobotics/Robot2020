@@ -36,7 +36,7 @@ public class Climber {
         }
     }
 
-    // life the robot off the ground
+    // lift the robot off the ground
     public void raiseClimber() {
         if (!isCamDeployed()) {
             deployCam();
@@ -49,9 +49,9 @@ public class Climber {
     public void lowerClimber() {
         SmartDashboard.putBoolean("limitSwitch", camIn.get());
         if (isCamDeployed()) {
-            climber.set(LOWER_SPEED);
-        } else {
             releaseCam();
+        } else {
+            climber.set(LOWER_SPEED);
         }
     }
 
