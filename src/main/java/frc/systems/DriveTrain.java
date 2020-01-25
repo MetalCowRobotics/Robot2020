@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib14.MCR_SRX;
 import frc.robot.RobotDashboard;
 import frc.robot.RobotMap;
@@ -16,8 +17,8 @@ import frc.robot.RobotMap.Drivetrain;
 public class DriveTrain {
 	private static final Logger logger = Logger.getLogger(DriveTrain.class.getName());
 	public static final ADIS16470_IMU GYRO = new ADIS16470_IMU();
-	private static MCR_SRX rightFrontMotor = new MCR_SRX(RobotMap.Drivetrain.RIGHT_MOTOR);
-	private static MCR_SRX rightBackMotor = new MCR_SRX(Drivetrain.RIGHT_MOTOR_NO_ENCODER); 
+	private static MCR_SRX rightFrontMotor ;//= new MCR_SRX(RobotMap.Drivetrain.RIGHT_MOTOR);
+	private static MCR_SRX rightBackMotor ;//= new MCR_SRX(Drivetrain.RIGHT_MOTOR_NO_ENCODER); 
 	private static MCR_SRX leftFrontMotor = new MCR_SRX(RobotMap.Drivetrain.LEFT_MOTOR);
 	private static MCR_SRX leftBackMotor = new MCR_SRX(Drivetrain.LEFT_MOTOR_NO_ENCODER); 
 	private static final SpeedControllerGroup RIGHT_DRIVE_MOTORS = new SpeedControllerGroup(rightFrontMotor, rightBackMotor); 
@@ -126,21 +127,22 @@ public class DriveTrain {
 	}
 
 	public void printRightEncoder() {
-		//System.out.println(getRightEncoderTics() + " RightEncoder");
+		System.out.println(getRightEncoderTics() + " RightEncoder");
+		SmartDashboard.putNumber("encoder", getRightEncoderTics());
 	}
-
 	public void printLeftEncoder() {
-		//System.out.println(getLeftEncoderTics() + " LeftEncoder");
-
+		System.out.println(getLeftEncoderTics() + " LeftEncoder");
+		SmartDashboard.putNumber("left encoder", getLeftEncoderTics());
 	}
-
+	
 	public double encoderDifference() {
 		return (getRightEncoderTics() - getLeftEncoderTics());
 	}
 
 	public double getEncoderTics() {
 		// return (getRightEncoderTics() + getLeftEncoderTics()) / 2;
-		return getRightEncoderTics();
+		// return getRightEncoderTics();
+		return getLeftEncoderTics();
 	}
 
 }

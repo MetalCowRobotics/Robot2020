@@ -13,10 +13,10 @@ public class RobotMap {
 	}
 
 	public static final class Drivetrain {
-		public static final int LEFT_MOTOR = 15;
-		public static final int LEFT_MOTOR_NO_ENCODER = 4;
-		public static final int RIGHT_MOTOR = 2;
-		public static final int RIGHT_MOTOR_NO_ENCODER = 5;
+		public static final int LEFT_MOTOR = 3;
+		public static final int LEFT_MOTOR_NO_ENCODER = 5;
+		public static final int RIGHT_MOTOR = 4;
+		public static final int RIGHT_MOTOR_NO_ENCODER = 6;
 		public static final int WHEEL_DIAMETER = 6;
 		public static final double RAMP_SPEED = .6;
 	}

@@ -25,9 +25,9 @@ import frc.systems.Shooter;
 
 public class Robot extends TimedRobot {
   DriveTrain drive = DriveTrain.getInstance();
-  Intake intake = Intake.getInstance();
-  Shooter shooter = Shooter.getInstance();
-  Climber climber = Climber.getInstance();
+  Intake intake;// = Intake.getInstance();
+  // Shooter shooter = Shooter.getInstance();
+  Climber climber;// = Climber.getInstance();
   XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
   RobotDashboard dashboard = RobotDashboard.getInstance();
   MCRCommand mission;
@@ -42,7 +42,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    mission = new ShootAndGo();
+    // mission = new ShootAndGo();
 
   }
 
@@ -58,7 +58,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     SmartDashboard.putNumber("Gyro", drive.getAngle());
-    intake.lowerIntake();
+    // intake.lowerIntake();
+   SmartDashboard.putNumber("DriveEncoder", drive.getEncoderTics());
     // intake.retractIntake();
   }
 

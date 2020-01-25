@@ -31,13 +31,13 @@ public class DriveStraightInches extends TimedCommand implements MCRCommand {
         setTargetTime(timeoutSeconds);
     }
 
-	private void initialize(DRIVE_DIRECTION direction, double targetInches) {
+    private void initialize(DRIVE_DIRECTION direction, double targetInches) {
         logger.setLevel(RobotMap.LogLevels.autoDriveClass);
-		switch(direction) {
-            case forward:
-                dir = 1;
-                break;
-            case backward:
+        switch (direction) {
+        case forward:
+            dir = 1;
+            break;
+        case backward:
             dir = -1;
             break;
         }
@@ -62,12 +62,13 @@ public class DriveStraightInches extends TimedCommand implements MCRCommand {
             driveController = new PDController(driveTrain.getAngle());
             startTics = driveTrain.getEncoderTics();
         }
+
         if (ticsTravelled() < targetTics) {
             driveTrain.arcadeDrive(calculateSpeed(), getCorrection() * dir);
         } else {
             end();
         }
-    } 
+    }
 
     private void end() {
         driveTrain.stop();
