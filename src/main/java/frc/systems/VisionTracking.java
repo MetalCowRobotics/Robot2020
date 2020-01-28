@@ -11,4 +11,5 @@ public class VisionTracking {
     public static VisionTracking getInstance() {
         return instance;
     }
+    
 }

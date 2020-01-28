@@ -2,10 +2,6 @@ package frc.systems;
 
 import java.util.logging.Logger;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.lib14.UtilityMethods;
 import frc.lib14.XboxControllerMetalCow;
 import frc.robot.RobotDashboard;
 import frc.robot.RobotMap;
@@ -19,11 +15,13 @@ public class MasterControls {
 	private static final XboxControllerMetalCow operator = new XboxControllerMetalCow(
 			RobotMap.OperatorController.USB_PORT);
 	private boolean fieldMode = true;
+	private static boolean xLast = false;
 
 	private MasterControls() {
 		// Intentionally Blank for Singleton
 		logger.setLevel(RobotMap.LogLevels.masterControlsClass);
 	}
+
 	private static final RobotDashboard dash = RobotDashboard.getInstance();
 
 	public static MasterControls getInstance() {
@@ -42,7 +40,6 @@ public class MasterControls {
 		return driver.getYButtonPressed();
 	}
 
-
 	public double forwardSpeed() {
 		return driver.getRT();
 	}
@@ -53,5 +50,19 @@ public class MasterControls {
 
 	public double direction() {
 		return driver.getLX();
+	}
+
+	public static boolean isHoodUp() {
+		if (operator.getXButton()) {
+			xLast = true;
+		}
+		return xLast;
+	}
+
+	public static boolean isHoodDown() {
+		if (operator.getAButton()) {
+			xLast = false;
+		}
+		return xLast;
 	}
 }

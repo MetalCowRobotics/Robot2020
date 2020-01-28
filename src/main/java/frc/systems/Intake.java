@@ -16,22 +16,17 @@ public class Intake {
     }
 
     public void startIntake() {
-
     }
 
     public void reverseIntake() {
-        
     }
 
     public void stopIntake() {
-
     }
 
     public void lowerIntake() {
-
     }
 
     public void retractIntake() {
-
     }
 }
