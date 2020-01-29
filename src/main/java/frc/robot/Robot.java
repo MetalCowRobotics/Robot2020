@@ -38,21 +38,25 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+  drive.calibrateGyro();
   }
 
   @Override
   public void autonomousInit() {
-    // mission = new ShootAndGo();
+    mission = new ShootAndGo();
 
   }
 
   @Override
   public void autonomousPeriodic() {
     mission.run();
+    SmartDashboard.putNumber("DriveEncoder", drive.getEncoderTics());
+
   }
 
   @Override
   public void teleopInit() {
+
   }
 
   @Override
@@ -61,6 +65,7 @@ public class Robot extends TimedRobot {
     // intake.lowerIntake();
    SmartDashboard.putNumber("DriveEncoder", drive.getEncoderTics());
     // intake.retractIntake();
+    drive.arcadeDrive(controller.getRY(), controller.getRX());
   }
 
   @Override

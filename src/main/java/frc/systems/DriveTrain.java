@@ -17,8 +17,8 @@ import frc.robot.RobotMap.Drivetrain;
 public class DriveTrain {
 	private static final Logger logger = Logger.getLogger(DriveTrain.class.getName());
 	public static final ADIS16470_IMU GYRO = new ADIS16470_IMU();
-	private static MCR_SRX rightFrontMotor ;//= new MCR_SRX(RobotMap.Drivetrain.RIGHT_MOTOR);
-	private static MCR_SRX rightBackMotor ;//= new MCR_SRX(Drivetrain.RIGHT_MOTOR_NO_ENCODER); 
+	private static MCR_SRX rightFrontMotor = new MCR_SRX(RobotMap.Drivetrain.RIGHT_MOTOR);
+	private static MCR_SRX rightBackMotor = new MCR_SRX(Drivetrain.RIGHT_MOTOR_NO_ENCODER); 
 	private static MCR_SRX leftFrontMotor = new MCR_SRX(RobotMap.Drivetrain.LEFT_MOTOR);
 	private static MCR_SRX leftBackMotor = new MCR_SRX(Drivetrain.LEFT_MOTOR_NO_ENCODER); 
 	private static final SpeedControllerGroup RIGHT_DRIVE_MOTORS = new SpeedControllerGroup(rightFrontMotor, rightBackMotor); 
@@ -26,28 +26,24 @@ public class DriveTrain {
 	private static final DifferentialDrive drive = new DifferentialDrive(LEFT_DRIVE_MOTORS, RIGHT_DRIVE_MOTORS);
 	private static final RobotDashboard dashboard = RobotDashboard.getInstance();
 	private static final MasterControls controller = MasterControls.getInstance();
-	private static final DriveTrain instance = new DriveTrain();
+
 
 	public static final double SPRINT_SPEED = 1.0;
 	public static final double NORMAL_SPEED = 0.7;
 	public static final double CRAWL_SPEED = .5;
 	
 	private int inverted = 1;
-	
+	private static final DriveTrain instance = new DriveTrain();
 		
 	
 
 	// Singleton
 	protected DriveTrain() {
-		rightFrontMotor.configOpenloopRamp(Drivetrain.RAMP_SPEED);
-		leftFrontMotor.configOpenloopRamp(Drivetrain.RAMP_SPEED);
-		//rightBackMotor.configOpenloopRamp(Drivetrain.RAMP;
-		//leftBackMotor.configOpenloopRamp(Drivetrain.RAMP);
-		rightFrontMotor.setNeutralMode(NeutralMode.Brake);
-		leftFrontMotor.setNeutralMode(NeutralMode.Brake);
-		//rightBackMotor.setNeutralMode(NeutalMode.Break);
-		//rightBackMotor.setNeutralMode(NeutralMode.Brake);
-		logger.setLevel(RobotMap.LogLevels.driveTrainClass);
+		// rightFrontMotor.configOpenloopRamp(Drivetrain.RAMP_SPEED);
+		// leftFrontMotor.configOpenloopRamp(Drivetrain.RAMP_SPEED);
+		// rightFrontMotor.setNeutralMode(NeutralMode.Brake);
+		// leftFrontMotor.setNeutralMode(NeutralMode.Brake);
+		// logger.setLevel(RobotMap.LogLevels.driveTrainClass);
 	}
 
 	public static DriveTrain getInstance() {
@@ -142,7 +138,7 @@ public class DriveTrain {
 	public double getEncoderTics() {
 		// return (getRightEncoderTics() + getLeftEncoderTics()) / 2;
 		// return getRightEncoderTics();
-		return getLeftEncoderTics();
+		return -getLeftEncoderTics();
 	}
 
 }
