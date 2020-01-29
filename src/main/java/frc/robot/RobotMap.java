@@ -46,7 +46,7 @@ public class RobotMap {
 		public static final double TOP_SPEED = 0;
 		public static final double VARIANCE = .25;
 		public static final double MAX_ADJUSTMENT = 8;
-		public static final double SLOW_VARIANCE = 10;
+		public static final double SLOW_VARIANCE = 20; //10
 		public static final double SLOW_ADJUSTMENT = .3;
 	}
 

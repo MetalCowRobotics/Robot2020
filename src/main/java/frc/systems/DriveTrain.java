@@ -81,14 +81,14 @@ public class DriveTrain {
 	}
 
 	public void resetGyro() {
-		DriverStation.reportWarning("Gyro Before Reset: " + GYRO.getAngle(), false);
+		DriverStation.reportWarning("Gyro Before Reset: " + getAngle(), false);
 		GYRO.reset();
-		DriverStation.reportWarning("Gryo After Reset: " + GYRO.getAngle(), false);
+		DriverStation.reportWarning("Gryo After Reset: " + getAngle(), false);
 	}
 
 	public double getAngle() {
-		dashboard.pushGyro(GYRO.getAngle());
-		return GYRO.getAngle();
+		dashboard.pushGyro(-GYRO.getAngle());
+		return -GYRO.getAngle();
 	}
 
 	

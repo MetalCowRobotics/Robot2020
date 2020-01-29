@@ -68,6 +68,7 @@ public class DriveStraightInches extends TimedCommand implements MCRCommand {
         } else {
             end();
         }
+        System.out.println("gyro:"+driveTrain.getAngle()+"  |  tics:" + driveTrain.getEncoderTics() + "  |  startTics:" + startTics+ "  |  correction:" + getCorrection());
     }
 
     private void end() {

@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 
 public class TurnDegrees implements MCRCommand {
 	private double degrees;
-	private double setPoint;
+	private double setPoint = 0;
 	private DriveTrain driveTrain = DriveTrain.getInstance();
 	private RobotDashboard dashboard = RobotDashboard.getInstance();
 	private PDController driveController;
@@ -30,9 +30,11 @@ public class TurnDegrees implements MCRCommand {
 		case IDLE:
 			driveTrain.resetGyro();
 			setPoint = driveTrain.getAngle() + degrees; 
-//System.out.println(("TurnDegrees SetPoint:" + setPoint));
-			// driveController = new PDController(setPoint, dashboard.getTurnKP(), dashboard.getTurnKI()); 
+			System.out.println(("TurnDegrees SetPoint:" + setPoint));
+			driveController = new PDController(setPoint, RobotMap.TurnDegrees.kP, RobotMap.TurnDegrees.kI); 
+			System.out.println("Before line 35  " + driveController.calculateAdjustment(setPoint));
 			driveTrain.arcadeDrive(RobotMap.TurnDegrees.TOP_SPEED, driveController.calculateAdjustment(setPoint));
+			System.out.println("After line 35");
 			currentState = ACTIVE;
 			break;
 		case ACTIVE:
@@ -40,7 +42,8 @@ public class TurnDegrees implements MCRCommand {
 			// driveController.set_kD(dashboard.getTurnKD()); 
 			double currentAngle = driveTrain.getAngle();
 			if (Math.abs(setPoint-currentAngle) < RobotMap.TurnDegrees.VARIANCE) { 
-	//logger.info("======== turn on target !!! ========="); 
+	//logger.info("======== turn on target !!! =========");
+				System.out.println("angle:" + driveTrain.getAngle()); 
 				driveTrain.stop();
 				currentState = DONE;
 			} else {
