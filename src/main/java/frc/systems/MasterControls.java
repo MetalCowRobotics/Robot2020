@@ -51,18 +51,4 @@ public class MasterControls {
 	public double direction() {
 		return driver.getLX();
 	}
-
-	public static boolean isHoodUp() {
-		if (operator.getXButton()) {
-			xLast = true;
-		}
-		return xLast;
-	}
-
-	public static boolean isHoodDown() {
-		if (operator.getAButton()) {
-			xLast = false;
-		}
-		return xLast;
-	}
 }

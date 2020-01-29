@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib14.XboxControllerMetalCow;
 import frc.systems.Climber;
 import frc.systems.DriveTrain;
+import frc.systems.Hood;
 
 /**
  * The VM is configured to automatically run this class. If you change the name
@@ -19,13 +20,13 @@ import frc.systems.DriveTrain;
  * update the build.gradle file in the project.
  */
 
- 
 public class Robot extends TimedRobot {
   Climber climber = Climber.getInstance();
   DriveTrain drive = DriveTrain.getInstance();
+  Hood hood = Hood.getInstance();
   XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
   RobotDashboard dashboard = RobotDashboard.getInstance();
-  
+
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
@@ -48,7 +49,16 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-SmartDashboard.putNumber("Gyro", drive.getAngle());
+    SmartDashboard.putNumber("Gyro", drive.getAngle());
+    drive.arcadeDrive(-controller.getRY(), -controller.getX());
+
+    if (controller.getAButton()) {
+      hood.lowerHood();
+    }
+    if (controller.getBButton()) {
+      hood.raiseHood();
+    }
+    hood.run();
   }
 
   @Override
@@ -57,18 +67,16 @@ SmartDashboard.putNumber("Gyro", drive.getAngle());
 
   @Override
   public void testPeriodic() {
-     if (controller.getAButton()) {
-       climber.lowerClimber();
-     } else if (controller.getBButton()) {
-       climber.raiseClimber();
-     } else {
-       climber.stopClimber();
-     }
+    if (controller.getAButton()) {
+      climber.lowerClimber();
+    } else if (controller.getBButton()) {
+      climber.raiseClimber();
+    } else {
+      climber.stopClimber();
+    }
   }
 
   public void test() {
   }
 
-  
 }
-
