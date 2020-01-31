@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -26,15 +28,13 @@ import frc.systems.Shooter;
 
 public class Robot extends TimedRobot {
   DriveTrain drive = DriveTrain.getInstance();
-  Intake intake = Intake.getInstance();
+  Intake intake;// = Intake.getInstance();
   Shooter shooter = Shooter.getInstance();
   Climber climber = Climber.getInstance();
   XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
   RobotDashboard dashboard = RobotDashboard.getInstance();
-<<<<<<< Updated upstream
   MCRCommand mission;
 
-=======
   String shootAndGo = "shoot and go";
   String shootAndGather = "shoot and gather";
   String centerPosition = "center position";
@@ -42,7 +42,6 @@ public class Robot extends TimedRobot {
   String rightPosition = "right position";
   
   
->>>>>>> Stashed changes
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
@@ -58,6 +57,8 @@ public class Robot extends TimedRobot {
    startingPosition.addOption("right position", rightPosition);
    dashboard.pushStartingPosition(startingPosition);
    dashboard.pushAutonomousAction(autonomousAction);
+   UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
+   dashboard.pushAuto();
    
   
   }
