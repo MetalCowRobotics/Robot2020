@@ -6,9 +6,14 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.lib14.MCR_SRX;
 import frc.lib14.XboxControllerMetalCow;
 
 public class Shooter {
+    
+    // private static MCR_SRX topShooter = new MCR_SRX(RobotMap.Shooter.TOP_MOTOR);
+    // private static MCR_SRX bottomShooter = new MCR_SRX(RobotMap.Shooter.BOTTOM_MOTOR);
+    // private static final SpeedControllerGroup shooter = new SpeedControllerGroup(topShooter, bottomShooter); 
     private static final XboxControllerMetalCow operator = new XboxControllerMetalCow(1);
     private CANSparkMax neo1;
     private CANSparkMax neo2;
@@ -53,6 +58,10 @@ public class Shooter {
     public void checkSpeed() {
         SmartDashboard.putNumber("Shooter Speed", neo1.getEncoder().getVelocity());// RPM
 
+
+    }
+    public boolean isAtShootSpeed(){
+        return 600 == neo1.getEncoder().getVelocity();
     }
     public void unload(){
         // unload the magazine
