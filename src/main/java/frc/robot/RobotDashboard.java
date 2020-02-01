@@ -122,9 +122,9 @@ public class RobotDashboard {
 
 	// Turn commands
 	public void pushTurnPID() {
-		// SmartDashboard.putNumber("TkP", RobotMap.TurnDegrees.kP);
-		// SmartDashboard.putNumber("TkI", RobotMap.TurnDegrees.kI);
-		// SmartDashboard.putNumber("TkD", RobotMap.TurnDegrees.kD);
+		SmartDashboard.putNumber("TkP", RobotMap.TurnDegrees.kP);
+		SmartDashboard.putNumber("TkI", RobotMap.TurnDegrees.kI);
+		SmartDashboard.putNumber("TkD", RobotMap.TurnDegrees.kD);
 	}
 
 	public void pushEdgeSensor(Boolean sensor) {
@@ -142,5 +142,19 @@ public class RobotDashboard {
 
 	public boolean getAuto() {
 		return SmartDashboard.getBoolean("Exit Level 2", false);
+	}
+
+	public double getTurnKP() {
+		return SmartDashboard.getNumber("TkP", RobotMap.TurnDegrees.kP);
+	}
+
+	public double getTurnKI() {
+		return SmartDashboard.getNumber("TkI", RobotMap.TurnDegrees.kI);
+
+	}
+
+	public double getTurnKD() {
+		return SmartDashboard.getNumber("TkD", RobotMap.TurnDegrees.kD);
+
 	}
 }

@@ -50,8 +50,9 @@ public class Robot extends TimedRobot {
    
   @Override
   public void robotInit() {
-
-    
+    dashboard.pushTurnPID();
+  drive.calibrateGyro();
+  SmartDashboard.putNumber("Target Angle", 90);
   }
 
   @Override
@@ -63,6 +64,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     mission.run();
+    SmartDashboard.putNumber("DriveEncoder", drive.getEncoderTics());
+
   }
 
   @Override
@@ -103,8 +106,10 @@ public class Robot extends TimedRobot {
       magazine.checkIfLoaded();
     }
     SmartDashboard.putNumber("Gyro", drive.getAngle());
-    intake.lowerIntake();
+    // intake.lowerIntake();
+   SmartDashboard.putNumber("DriveEncoder", drive.getEncoderTics());
     // intake.retractIntake();
+    drive.arcadeDrive(controller.getRY(), controller.getRX());
   }
 
   @Override
