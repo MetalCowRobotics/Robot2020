@@ -8,6 +8,7 @@
 package frc.commands;
 
 import frc.lib14.MCRCommand;
+import frc.systems.Magazine;
 import frc.systems.Shooter;
 
 /**
@@ -15,18 +16,24 @@ import frc.systems.Shooter;
  */
 public class ShootBall implements MCRCommand{ 
     Shooter shooter = Shooter.getInstance();
+    Magazine magazine = Magazine.getInstance();
+    boolean firstTime = true;
+    boolean done = false;
 
     @Override
     public void run() {
-        shooter.runShooter();
-        
-        // TODO Auto-generated method stub
-        
+        if(firstTime){
+            firstTime = false;
+            shooter.runShooter();
+        }
+        if(shooter.isAtShootSpeed()){
+            magazine.feedOneBall();
+            done = true;
+        }
     }
 
     @Override
     public boolean isFinished() {
-        // TODO Auto-generated method stub
-        return true;
+        return done;
     }
 }

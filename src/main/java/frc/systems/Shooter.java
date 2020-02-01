@@ -58,6 +58,10 @@ public class Shooter {
     public void checkSpeed() {
         SmartDashboard.putNumber("Shooter Speed", neo1.getEncoder().getVelocity());// RPM
 
+
+    }
+    public boolean isAtShootSpeed(){
+        return 600 == neo1.getEncoder().getVelocity();
     }
     public void unload(){
         // unload the magazine
