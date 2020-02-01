@@ -26,7 +26,7 @@ public class ShootBall implements MCRCommand{
             firstTime = false;
             shooter.runShooter();
         }
-        if(shooter.isAtShootSpeed()){
+        if(shooter.atSpeed()){
             magazine.feedOneBall();
             done = true;
         }

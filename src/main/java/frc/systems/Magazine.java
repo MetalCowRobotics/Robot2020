@@ -90,8 +90,6 @@ public class Magazine {
         }
     }
 
-    }
-
     public void stopMagazine() {
         magazineMotor.stopMotor();
         feedMode = false;
@@ -113,8 +111,6 @@ public class Magazine {
         // feedMode = false;
         // counted++;
         // stopMagazine();
-    }
-
     }
 
     private boolean ballAtBottom() {
