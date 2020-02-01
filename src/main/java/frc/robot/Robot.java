@@ -7,7 +7,10 @@
 
 package frc.robot;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.autonomous.ShootAndGo;
 import frc.lib14.MCRCommand;
@@ -42,6 +45,13 @@ public class Robot extends TimedRobot {
   Turret turret = Turret.getInstance();
   MCRCommand mission;
 
+  String shootAndGo = "shoot and go";
+  String shootAndGather = "shoot and gather";
+  String centerPosition = "center position";
+  String leftPosition = "left position";
+  String rightPosition = "right position";
+  
+  
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
@@ -50,9 +60,19 @@ public class Robot extends TimedRobot {
    
   @Override
   public void robotInit() {
-    dashboard.pushTurnPID();
-  drive.calibrateGyro();
-  SmartDashboard.putNumber("Target Angle", 90);
+   SendableChooser<String> autonomousAction = new SendableChooser<>();
+   SendableChooser<String> startingPosition = new SendableChooser<>();
+   autonomousAction.setDefaultOption("shoot and go", shootAndGo);
+   autonomousAction.addOption("shoot and gather", shootAndGather);
+   startingPosition.setDefaultOption("center position", centerPosition);
+   startingPosition.addOption("left position", leftPosition);
+   startingPosition.addOption("right position", rightPosition);
+   dashboard.pushStartingPosition(startingPosition);
+   dashboard.pushAutonomousAction(autonomousAction);
+   UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
+   dashboard.pushAuto();
+   
+  
   }
 
   @Override
