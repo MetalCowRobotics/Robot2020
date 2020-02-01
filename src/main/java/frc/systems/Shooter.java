@@ -52,7 +52,7 @@ public class Shooter {
     }
 
     public void run() {
-        magazine.runMagazine();
+        magazine.run();
         if (maintainSpeed) {
             // speed PID loop
         }
