@@ -21,7 +21,10 @@ public class Intake {
     double RaiseSpeed = -.3;
 
     private Intake() {
-
+        raiseLowerIntake.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
+                LimitSwitchNormal.NormallyClosed);
+        raiseLowerIntake.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
+                LimitSwitchNormal.NormallyOpen);
     }
 
     public static Intake getInstance() {
@@ -46,5 +49,10 @@ public class Intake {
 
     public void retractIntake() {
         raiseLowerIntake.set(-.5);
+    }
+
+    public boolean intakeDeployed() {
+        // 1=closed
+        return 1 == raiseLowerIntake.isFwdLimitSwitchClosed();
     }
 }

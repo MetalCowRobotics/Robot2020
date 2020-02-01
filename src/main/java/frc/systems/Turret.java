@@ -19,7 +19,6 @@ public class Turret {
     int startPos = 0;
 
     private Turret() {
-
     }
 
     public static Turret getInstance() {

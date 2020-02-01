@@ -72,7 +72,9 @@ public class DriveTrain {
 		// if only used in autonomous may not need the throttle
 		drive.arcadeDrive(speed, angle);
 	}
-
+	public void tankDrive(double leftSpeed, double rightSpeed) {
+		drive.tankDrive(leftSpeed, rightSpeed);
+	}
 	public void stop() {
 		drive.stopMotor();
 	}

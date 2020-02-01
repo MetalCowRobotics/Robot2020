@@ -65,7 +65,11 @@ public class RobotMap {
 	}
 	
 	public final class Hood {
-		public static final int HOOD_MOTOR = 0;//assign channel
+		public static final int HOOD_MOTOR = 2;
+		public static final int HOOD_UP = 0;
+		public static final int HOOD_DOWN = 1;
+		public static final double HOOD_SPEED = .6;
+
 	}
 
 	public final class Turret {
@@ -75,7 +79,11 @@ public class RobotMap {
 		public static final int BAG_MOTOR = 2;
 	}
 	public final class Magazine {
-		public static final int MAGAZINE_MOTOR = 1;//assign channel
+		public static final int MAGAZINE_MOTOR = 0;//assign channel
+		public static final int LIMIT_SWITCH_TOP = 0;
+		public static final int LIMIT_SWITCH_BOTTOM = 1;
+		public static final int RIGHT_MAGAZINE_MOTOR = 0;
+		public static final int LEFT_MAGAZINE_MOTOR = 1;
 		public static final int IS_THERE_A_BALL_TOP = 9;//DIO
 		public static final int IS_THERE_A_BALL_BOTTOM = 8;//DIO
 	}
