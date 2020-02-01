@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.autonomous.ShootAndGo;
 import frc.lib14.MCRCommand;
+import frc.lib14.MCR_SRX;
 import frc.lib14.XboxControllerMetalCow;
 import frc.systems.Climber;
 import frc.systems.DriveTrain;
@@ -24,13 +25,16 @@ import frc.systems.Shooter;
  */
 
 public class Robot extends TimedRobot {
-  DriveTrain drive = DriveTrain.getInstance();
-  Intake intake = Intake.getInstance();
-  Shooter shooter = Shooter.getInstance();
-  Climber climber = Climber.getInstance();
+  public static MCR_SRX testMotor = new MCR_SRX(1);
+  // DriveTrain drive = DriveTrain.getInstance();
+  Intake intake ; //= Intake.getInstance();
+  // Shooter shooter = Shooter.getInstance();
+  // Climber climber = Climber.getInstance();
   XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
   RobotDashboard dashboard = RobotDashboard.getInstance();
   MCRCommand mission;
+
+  
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -42,13 +46,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    mission = new ShootAndGo();
+    // mission = new ShootAndGo();
+    // drive.curveDrive(60, 90, 5);
 
   }
 
   @Override
   public void autonomousPeriodic() {
-    mission.run();
+    // mission.run();
   }
 
   @Override
@@ -57,8 +62,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    SmartDashboard.putNumber("Gyro", drive.getAngle());
-    intake.lowerIntake();
+    // SmartDashboard.putNumber("Gyro", drive.getAngle());
+    // intake.lowerIntake();
     // intake.retractIntake();
   }
 
@@ -68,13 +73,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testPeriodic() {
-    if (controller.getAButton()) {
-      climber.lowerClimber();
-    } else if (controller.getBButton()) {
-      climber.raiseClimber();
-    } else {
-      climber.stopClimber();
-    }
+    testMotor.set(controller.getRY());
+    // if (controller.getAButton()) {
+    //   climber.lowerClimber();
+    // } else if (controller.getBButton()) {
+    //   climber.raiseClimber();
+    // } else {
+    //   climber.stopClimber();
+    // }
   }
 
   public void test() {

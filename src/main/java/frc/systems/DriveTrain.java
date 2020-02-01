@@ -9,9 +9,12 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.lib14.MCR_SRX;
+import frc.lib14.UtilityMethods;
 import frc.robot.RobotDashboard;
 import frc.robot.RobotMap;
 import frc.robot.RobotMap.Drivetrain;
+import java.lang.Math;
+// import sun.security.provider.DSAKeyPairGenerator.Current;
 
 public class DriveTrain {
 	private static final Logger logger = Logger.getLogger(DriveTrain.class.getName());
@@ -74,7 +77,31 @@ public class DriveTrain {
 		// if only used in autonomous may not need the throttle
 		drive.arcadeDrive(speed, angle);
 	}
-
+	public boolean curveFirst = true;
+	double CURRENT_ANGLE;
+	public void curveDrive(double radius, double degrees, double time) {
+		// drive.curvatureDrive(speed, angle, false);
+		if (curveFirst) {
+			calibrateGyro();	
+			CURRENT_ANGLE = GYRO.getAngle();
+			double leftSpeed = curveCalcLeft(radius, degrees, time);
+			double rightSpeed = curveCalcRight(radius, degrees, time);
+			drive.tankDrive(leftSpeed, rightSpeed);
+		}
+		if (UtilityMethods.between(GYRO.getAngle(), CURRENT_ANGLE + 85, CURRENT_ANGLE + 95)) {
+			drive.stopMotor();
+		}
+	}
+	private double curveCalcRight(double radius, double degrees, double time) {
+		double arcLength = Math.toRadians(degrees) * radius;
+		double rightWheel = arcLength / time; 
+		return rightWheel;
+	}
+	private double curveCalcLeft(double radius, double degrees, double time) {
+		double arcLength = Math.toRadians(degrees) * (radius + 24);
+		double leftWheel = arcLength / time; 
+		return leftWheel;
+	}
 	public void stop() {
 		drive.stopMotor();
 	}
