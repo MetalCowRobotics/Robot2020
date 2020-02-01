@@ -83,7 +83,7 @@ public class DriveStraightInches extends TimedCommand implements MCRCommand {
     }
 
     private double calculateSpeed() {
-        if (targetTics - RobotMap.DriveWithEncoder.SLOW_DOWN_DISTANCE < ticsTravelled())
+        if (targetTics * RobotMap.DriveWithEncoder.SLOW_DOWN_DISTANCE < ticsTravelled())
             return RobotMap.DriveWithEncoder.BOTTOM_SPEED * dir;
         return RobotMap.DriveWithEncoder.TOP_SPEED * dir;
     }

@@ -38,9 +38,16 @@ import edu.wpi.first.wpilibj.I2C.Port;
  */
 
 public class Robot extends TimedRobot {
+<<<<<<< Updated upstream
   // private static MCR_SRX testMotor = new MCR_SRX(RobotMap.Test.BAG_MOTOR);
   DriveTrain drive = DriveTrain.getInstance();
   Hood hood = Hood.getInstance();
+=======
+  DriveTrain driveTrain = DriveTrain.getInstance();
+  Intake intake;// = Intake.getInstance();
+  // Shooter shooter = Shooter.getInstance();
+  Climber climber;// = Climber.getInstance();
+>>>>>>> Stashed changes
   XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
   RobotDashboard dashboard = RobotDashboard.getInstance();
   Intake intake = Intake.getInstance();
@@ -65,6 +72,7 @@ public class Robot extends TimedRobot {
    
   @Override
   public void robotInit() {
+<<<<<<< Updated upstream
    SendableChooser<String> autonomousAction = new SendableChooser<>();
    SendableChooser<String> startingPosition = new SendableChooser<>();
    autonomousAction.setDefaultOption("shoot and go", shootAndGo);
@@ -78,18 +86,23 @@ public class Robot extends TimedRobot {
    dashboard.pushAuto();
    
   
+=======
+    dashboard.pushTurnPID();
+  driveTrain.calibrateGyro();
+  SmartDashboard.putNumber("Target Angle", 90);
+>>>>>>> Stashed changes
   }
 
   @Override
   public void autonomousInit() {
-    mission = new ShootAndGo();
+    mission = new ShootAndGo("left");
 
   }
 
   @Override
   public void autonomousPeriodic() {
     mission.run();
-    SmartDashboard.putNumber("DriveEncoder", drive.getEncoderTics());
+    SmartDashboard.putNumber("DriveEncoder", driveTrain.getEncoderTics());
 
   }
   I2C.Port port = I2C.Port.kOnboard;
@@ -114,6 +127,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+<<<<<<< Updated upstream
     SmartDashboard.putNumber("red", sensor.getRed());
     SmartDashboard.putNumber("green", sensor.getGreen());
     SmartDashboard.putNumber("blue", sensor.getBlue()); 
@@ -177,6 +191,14 @@ public class Robot extends TimedRobot {
    SmartDashboard.putNumber("DriveEncoder", drive.getEncoderTics());
     // intake.retractIntake();
     drive.arcadeDrive(controller.getRY(), controller.getRX());
+=======
+    driveTrain.drive();
+  //   SmartDashboard.putNumber("Gyro", drive.getAngle());
+  //   // intake.lowerIntake();
+  //  SmartDashboard.putNumber("DriveEncoder", drive.getEncoderTics());
+  //   // intake.retractIntake();
+  //   drive.arcadeDrive(controller.getRY(), controller.getRX());
+>>>>>>> Stashed changes
   }
   
   @Override
