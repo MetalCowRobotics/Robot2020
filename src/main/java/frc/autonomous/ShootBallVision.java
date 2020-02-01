@@ -15,13 +15,13 @@ import frc.commands.TurnDegrees;
 /**
  * Add your docs here.
  */
-public class ShootBall implements MCRCommand{
+public class ShootBallVision implements MCRCommand{
     TurnDegrees turn;
     boolean tapeFound = true;
     boolean facingField = true;
     boolean FirstTime = true;
     MCRCommand mission;
-    public ShootBall() {
+    public ShootBallVision() {
         mission = new SequentialCommands(new DriveBackwardsStraight(12), new TurnDegrees(25));
     }
     //init gyro

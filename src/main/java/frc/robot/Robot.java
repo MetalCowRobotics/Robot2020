@@ -7,9 +7,12 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.I2C;
+import com.revrobotics.ColorMatch;
+import com.revrobotics.ColorMatchResult;
+import com.revrobotics.ColorSensorV3;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -17,20 +20,15 @@ import edu.wpi.first.wpilibj.util.Color;
 import frc.autonomous.ShootAndGo;
 import frc.lib14.MCRCommand;
 import frc.lib14.XboxControllerMetalCow;
-// import frc.robot.RobotMap.Magazine;
 import frc.systems.Climber;
-import frc.systems.Magazine;
-import frc.systems.Turret;
-import frc.lib14.MCR_SRX;
-
 import frc.systems.DriveTrain;
 import frc.systems.Hood;
 import frc.systems.Intake;
+import frc.systems.Magazine;
+import frc.systems.MasterControls;
 import frc.systems.Shooter;
-import com.revrobotics.ColorMatch;
-import com.revrobotics.ColorMatchResult;
-import com.revrobotics.ColorSensorV3;
-import edu.wpi.first.wpilibj.I2C.Port;
+import frc.systems.Turret;
+
 /**
  * The VM is configured to automatically run this class. If you change the name
  * of this class or the package after creating this project, you must also
@@ -38,73 +36,63 @@ import edu.wpi.first.wpilibj.I2C.Port;
  */
 
 public class Robot extends TimedRobot {
-<<<<<<< Updated upstream
-  // private static MCR_SRX testMotor = new MCR_SRX(RobotMap.Test.BAG_MOTOR);
-  DriveTrain drive = DriveTrain.getInstance();
-  Hood hood = Hood.getInstance();
-=======
+  // systems
   DriveTrain driveTrain = DriveTrain.getInstance();
-  Intake intake;// = Intake.getInstance();
-  // Shooter shooter = Shooter.getInstance();
-  Climber climber;// = Climber.getInstance();
->>>>>>> Stashed changes
-  XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
-  RobotDashboard dashboard = RobotDashboard.getInstance();
   Intake intake = Intake.getInstance();
   Shooter shooter = Shooter.getInstance();
   Climber climber = Climber.getInstance();
+  MasterControls controls = MasterControls.getInstance();
+  RobotDashboard dashboard = RobotDashboard.getInstance();
+
+  // class variables
+  MCRCommand mission;
+
+  // testing only
   Magazine magazine = Magazine.getInstance();
   Turret turret = Turret.getInstance();
-  MCRCommand mission;
+  Hood hood = Hood.getInstance();
+  XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
 
   String shootAndGo = "shoot and go";
   String shootAndGather = "shoot and gather";
   String centerPosition = "center position";
   String leftPosition = "left position";
   String rightPosition = "right position";
-  
-  
+
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
    */
 
-   
   @Override
   public void robotInit() {
-<<<<<<< Updated upstream
-   SendableChooser<String> autonomousAction = new SendableChooser<>();
-   SendableChooser<String> startingPosition = new SendableChooser<>();
-   autonomousAction.setDefaultOption("shoot and go", shootAndGo);
-   autonomousAction.addOption("shoot and gather", shootAndGather);
-   startingPosition.setDefaultOption("center position", centerPosition);
-   startingPosition.addOption("left position", leftPosition);
-   startingPosition.addOption("right position", rightPosition);
-   dashboard.pushStartingPosition(startingPosition);
-   dashboard.pushAutonomousAction(autonomousAction);
-   UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
-   dashboard.pushAuto();
-   
-  
-=======
+    UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
+    dashboard.pushAuto();
     dashboard.pushTurnPID();
-  driveTrain.calibrateGyro();
-  SmartDashboard.putNumber("Target Angle", 90);
->>>>>>> Stashed changes
+    driveTrain.calibrateGyro();
+    // autonomous setup
+    SendableChooser<String> autonomousAction = new SendableChooser<>();
+    SendableChooser<String> startingPosition = new SendableChooser<>();
+    autonomousAction.setDefaultOption("shoot and go", shootAndGo);
+    autonomousAction.addOption("shoot and gather", shootAndGather);
+    startingPosition.setDefaultOption("center position", centerPosition);
+    startingPosition.addOption("left position", leftPosition);
+    startingPosition.addOption("right position", rightPosition);
+    dashboard.pushStartingPosition(startingPosition);
+    dashboard.pushAutonomousAction(autonomousAction);
+    dashboard.pushAuto();
   }
 
   @Override
   public void autonomousInit() {
     mission = new ShootAndGo("left");
-
   }
 
   @Override
   public void autonomousPeriodic() {
     mission.run();
-    SmartDashboard.putNumber("DriveEncoder", driveTrain.getEncoderTics());
-
   }
+
   I2C.Port port = I2C.Port.kOnboard;
   ColorSensorV3 sensor = new ColorSensorV3(port);
   ColorMatch color = new ColorMatch();
@@ -116,7 +104,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-
+    // testing
     color.addColorMatch(kBlueTarget);
     color.addColorMatch(kGreenTarget);
     color.addColorMatch(kRedTarget);
@@ -125,98 +113,94 @@ public class Robot extends TimedRobot {
     // Magazine.getInstance();
   }
 
+  private void applyInputs() {
+    if (controls.lowerIntake()) {
+      intake.lowerIntake();
+    } else if (controls.raiseIntake()) {
+      intake.retractIntake();
+    }
+    if (controls.spinUpAndShoot()) {
+      shooter.shootBallWhenReady();
+    }
+
+  }
+
   @Override
   public void teleopPeriodic() {
-<<<<<<< Updated upstream
+    controls.changeMode();
+    applyInputs();
+    driveTrain.drive();
+    intake.run();
+    shooter.run();
+    climber.run();
+    //
+    // color sensor testing
+    //
     SmartDashboard.putNumber("red", sensor.getRed());
     SmartDashboard.putNumber("green", sensor.getGreen());
-    SmartDashboard.putNumber("blue", sensor.getBlue()); 
-    SmartDashboard.putNumber("proximity", sensor.getProximity()); 
+    SmartDashboard.putNumber("blue", sensor.getBlue());
+    SmartDashboard.putNumber("proximity", sensor.getProximity());
     ColorMatchResult result = color.matchClosestColor(sensor.getColor());
-    SmartDashboard.putNumber("confidence", result.confidence); 
-    
+    SmartDashboard.putNumber("confidence", result.confidence);
     if (result.color == kRedTarget) {
       SmartDashboard.putString("color", "red");
-    }
-    else if (result.color == kGreenTarget) {
+    } else if (result.color == kGreenTarget) {
       SmartDashboard.putString("color", "green");
-    }
-    else if (result.color == kBlueTarget) {
+    } else if (result.color == kBlueTarget) {
       SmartDashboard.putString("color", "blue");
-    }
-    else if (result.color == kYellowTarget) {
+    } else if (result.color == kYellowTarget) {
       SmartDashboard.putString("color", "yellow");
     }
-    SmartDashboard.putNumber("Gyro", drive.getAngle());
-    drive.arcadeDrive(-controller.getRY(), -controller.getX());
-
-    if (controller.getAButton()) {
-      hood.lowerHood();
-    }
-    if (controller.getBButton()) {
-      hood.raiseHood();
-    }
-    hood.run();
-    turret.rotateTurret(30);
-    // SmartDashboard.putNumber("Encoder Tics", testMotor.getSelectedSensorPosition());
-
-    // if (testMotor.getSelectedSensorPosition() < 3600){
-    //   testMotor.set(.1);
+    // drive train testing
+    // driveTrain.arcadeDrive(-controller.getRY(), -controller.getX());
+    //
+    // hood testing
+    //
+    // if (controller.getAButton()) {
+    // hood.lowerHood();
     // }
-    // if(testMotor.getSelectedSensorPosition() > 3600){
-    //   testMotor.set(-.1);
+    // if (controller.getBButton()) {
+    // hood.raiseHood();
     // }
-    // if (testMotor.getSelectedSensorPosition() == 3600){
-    //   testMotor.stopMotor();
+    // hood.run();
+    //
+    // turet testing
+    //
+    // turret.rotateTurret(30);
+
+    // 4050tics = 360 degrees 11.25tics = 1 degree
+    //
+    // magazine testing
+    //
+    // magazine.checkIfLoaded();
+    // if (controller.getBButton()){
+    // magazine.feedOneBall();
+    // }else if (controller.getBButtonReleased()){
+    // magazine.stopMagazine();
     // }
-
-    //4050tics = 360 degrees      11.25tics = 1 degree
-
-  //   magazine.checkIfLoaded();
-  //   if (controller.getBButton()){
-  //     magazine.feedOneBall();
-  //   }else if (controller.getBButtonReleased()){
-  //     magazine.stopMagazine();
-  //   }
-  //     magazine.runMagazine();
-    if (controller.getRB() == true){
-        magazine.runMagazine();
-        magazine.checkIfLoaded();
-    }else{
-      magazine.stopMagazine();
-      magazine.checkIfLoaded();
-    }
-    SmartDashboard.putNumber("Gyro", drive.getAngle());
-    // intake.lowerIntake();
-   SmartDashboard.putNumber("DriveEncoder", drive.getEncoderTics());
-    // intake.retractIntake();
-    drive.arcadeDrive(controller.getRY(), controller.getRX());
-=======
-    driveTrain.drive();
   //   SmartDashboard.putNumber("Gyro", drive.getAngle());
   //   // intake.lowerIntake();
   //  SmartDashboard.putNumber("DriveEncoder", drive.getEncoderTics());
   //   // intake.retractIntake();
   //   drive.arcadeDrive(controller.getRY(), controller.getRX());
->>>>>>> Stashed changes
+    // magazine.runMagazine();
+    // if (controller.getRB() == true) {
+    // magazine.runMagazine();
+    // magazine.checkIfLoaded();
+    // } else {
+    // magazine.stopMagazine();
+    // magazine.checkIfLoaded();
+    // }
+    // feedback
+    SmartDashboard.putNumber("Gyro", driveTrain.getAngle());
+    SmartDashboard.putNumber("Drive Encoder", driveTrain.getEncoderTics());
   }
-  
+
   @Override
   public void testInit() {
   }
 
   @Override
   public void testPeriodic() {
-    if (controller.getAButton()) {
-      climber.lowerClimber();
-    } else if (controller.getBButton()) {
-      climber.raiseClimber();
-    } else {
-      climber.stopClimber();
-    }
   }
-
-  public void test() {
-  }
-
 }
