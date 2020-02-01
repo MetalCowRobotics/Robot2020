@@ -26,22 +26,15 @@ import frc.systems.Shooter;
  */
 
 public class Robot extends TimedRobot {
-<<<<<<< Updated upstream
-  DriveTrain drive = DriveTrain.getInstance();
-  Intake intake = Intake.getInstance();
-  Shooter shooter = Shooter.getInstance();
-  Climber climber = Climber.getInstance();
-=======
-  // DriveTrain drive = DriveTrain.getInstance();
+  DriveTrain driveTrain = DriveTrain.getInstance();
   // Intake intake;// = Intake.getInstance();
   // Shooter shooter = Shooter.getInstance();
   // Climber climber;// = Climber.getInstance();
->>>>>>> Stashed changes
   XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
   // RobotDashboard dashboard = RobotDashboard.getInstance();
   // MCRCommand mission;
-  FC_JE_0149Encoder turretMotor = new FC_JE_0149Encoder();
-  private static MCR_SRX TurretMotor = new MCR_SRX(7);
+  // FC_JE_0149Encoder turretMotor = new FC_JE_0149Encoder();
+  // private static MCR_SRX TurretMotor = new MCR_SRX(7);
   double speed = .6;
   int target = 88;
   double tSpeed = .1;
@@ -51,12 +44,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-<<<<<<< Updated upstream
-=======
     SmartDashboard.putNumber("TargetTics", 88);
     SmartDashboard.putNumber("Speed", .1);
   // drive.calibrateGyro();
->>>>>>> Stashed changes
   }
 
   @Override
@@ -67,52 +57,39 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
-<<<<<<< Updated upstream
-    mission.run();
-=======
     // mission.run();
-    // SmartDashboard.putNumber("DriveEncoder", drive.getEncoderTics());
 
->>>>>>> Stashed changes
   }
 
   @Override
   public void teleopInit() {
-<<<<<<< Updated upstream
-=======
     target = (int) SmartDashboard.getNumber("TargetTics", 88);
     tSpeed = SmartDashboard.getNumber("Speed", .1);
-    turretMotor.reset();
-
->>>>>>> Stashed changes
+    // turretMotor.reset();
   }
 
   @Override
   public void teleopPeriodic() {
-<<<<<<< Updated upstream
-    SmartDashboard.putNumber("Gyro", drive.getAngle());
-    intake.lowerIntake();
-    // intake.retractIntake();
-=======
+    driveTrain.drive();
     // TurretMotor.set(controller.getRY());
-    SmartDashboard.putNumber("Encoder tics", turretMotor.getTics());
-    SmartDashboard.putNumber("Encoder rate", turretMotor.getRate());
+    // SmartDashboard.putNumber("Encoder tics", turretMotor.getTics());
+    // SmartDashboard.putNumber("Encoder rate", turretMotor.getRate());
 
-    if (turretMotor.getTics() < target){
-        TurretMotor.set(tSpeed);
-    }
-    if (turretMotor.getTics() > target){
-      TurretMotor.set(-tSpeed);
-    }
-    if (turretMotor.getTics() == target){
-      TurretMotor.stopMotor();
-    }
+    // if (turretMotor.getTics() < target){
+    //     TurretMotor.set(tSpeed);
+    // }
+    // if (turretMotor.getTics() > target){
+    //   TurretMotor.set(-tSpeed);
+    // }
+    // if (turretMotor.getTics() == target){
+    //   TurretMotor.stopMotor();
+    // }
+
     // SmartDashboard.putNumber("Gyro", drive.getAngle());
     // intake.lowerIntake();
   //  SmartDashboard.putNumber("DriveEncoder", drive.getEncoderTics());
     // intake.retractIntake();
     // drive.arcadeDrive(controller.getRY(), controller.getRX());
->>>>>>> Stashed changes
   }
 
   @Override
