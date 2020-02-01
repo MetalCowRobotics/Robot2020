@@ -19,6 +19,7 @@ import frc.systems.Turret;
 import frc.lib14.MCR_SRX;
 
 import frc.systems.DriveTrain;
+import frc.systems.Hood;
 import frc.systems.Intake;
 import frc.systems.Shooter;
 
@@ -31,15 +32,14 @@ import frc.systems.Shooter;
 public class Robot extends TimedRobot {
   // private static MCR_SRX testMotor = new MCR_SRX(RobotMap.Test.BAG_MOTOR);
   DriveTrain drive = DriveTrain.getInstance();
+  Hood hood = Hood.getInstance();
+  XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
+  RobotDashboard dashboard = RobotDashboard.getInstance();
   Intake intake = Intake.getInstance();
   Shooter shooter = Shooter.getInstance();
   Climber climber = Climber.getInstance();
   Magazine magazine = Magazine.getInstance();
   Turret turret = Turret.getInstance();
-  XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
-  RobotDashboard dashboard = RobotDashboard.getInstance();
-
-  
   MCRCommand mission;
 
   /**
@@ -76,6 +76,16 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+    SmartDashboard.putNumber("Gyro", drive.getAngle());
+    drive.arcadeDrive(-controller.getRY(), -controller.getX());
+
+    if (controller.getAButton()) {
+      hood.lowerHood();
+    }
+    if (controller.getBButton()) {
+      hood.raiseHood();
+    }
+    hood.run();
     turret.rotateTurret(30);
     // SmartDashboard.putNumber("Encoder Tics", testMotor.getSelectedSensorPosition());
 
@@ -118,15 +128,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testPeriodic() {
-    // testMotor.set(.3);
-    
-    //  if (controller.getAButton()) {
-    //    climber.lowerClimber();
-    //  } else if (controller.getBButton()) {
-    //    climber.raiseClimber();
-    //  } else {
-    //    climber.stopClimber();
-    //  }
     if (controller.getAButton()) {
       climber.lowerClimber();
     } else if (controller.getBButton()) {
