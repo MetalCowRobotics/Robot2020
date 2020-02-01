@@ -13,10 +13,10 @@ public class RobotMap {
 	}
 
 	public static final class Drivetrain {
-		public static final int LEFT_MOTOR = 15;
-		public static final int LEFT_MOTOR_NO_ENCODER = 4;
-		public static final int RIGHT_MOTOR = 2;
-		public static final int RIGHT_MOTOR_NO_ENCODER = 5;
+		public static final int LEFT_MOTOR = 3;
+		public static final int LEFT_MOTOR_NO_ENCODER = 5;
+		public static final int RIGHT_MOTOR = 4;
+		public static final int RIGHT_MOTOR_NO_ENCODER = 6;
 		public static final int WHEEL_DIAMETER = 6;
 		public static final double RAMP_SPEED = .6;
 	}
@@ -31,7 +31,7 @@ public class RobotMap {
 	public final class DriveWithEncoder {
 		public static final double TOP_SPEED = .5;
 		public static final double BOTTOM_SPEED = .4;
-		public static final double MAX_ADJUSTMENT = .4;
+		public static final double MAX_ADJUSTMENT = .6;
 		public static final int TICS_PER_ROTATION = 4096; 
 		public static final double INCHES_PER_ROTATION = Math.PI * RobotMap.Drivetrain.WHEEL_DIAMETER;
 		public static final double SLOW_DOWN_DISTANCE = (12 / INCHES_PER_ROTATION) * TICS_PER_ROTATION;
@@ -40,14 +40,14 @@ public class RobotMap {
 	}
 
 	public final class TurnDegrees {
-		public static final double kP = .6; 
-		public static final double kI = 0; 
-		public static final double kD = .05; 
+		public static final double kP = .04; 
+		public static final double kI = .001; 
+		public static final double kD = .0; 
 		public static final double TOP_SPEED = 0;
-		public static final double VARIANCE = .25;
-		public static final double MAX_ADJUSTMENT = 8;
-		public static final double SLOW_VARIANCE = 10;
-		public static final double SLOW_ADJUSTMENT = .3;
+		public static final double VARIANCE = 1; //.25
+		public static final double MAX_ADJUSTMENT = .6;
+		public static final double SLOW_VARIANCE = 20; //10
+		public static final double SLOW_ADJUSTMENT = .4;
 	}
 
 	public final class DriveStraightTime {

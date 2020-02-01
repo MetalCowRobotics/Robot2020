@@ -27,12 +27,12 @@ import frc.systems.Shooter;
 
 public class Robot extends TimedRobot {
   DriveTrain driveTrain = DriveTrain.getInstance();
-  // Intake intake;// = Intake.getInstance();
+  Intake intake;// = Intake.getInstance();
   // Shooter shooter = Shooter.getInstance();
-  // Climber climber;// = Climber.getInstance();
+  Climber climber;// = Climber.getInstance();
   XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
   // RobotDashboard dashboard = RobotDashboard.getInstance();
-  // MCRCommand mission;
+  MCRCommand mission;
   // FC_JE_0149Encoder turretMotor = new FC_JE_0149Encoder();
   // private static MCR_SRX TurretMotor = new MCR_SRX(7);
   double speed = .6;
@@ -47,17 +47,21 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("TargetTics", 88);
     SmartDashboard.putNumber("Speed", .1);
   // drive.calibrateGyro();
+    // dashboard.pushTurnPID();
+  driveTrain.calibrateGyro();
+  SmartDashboard.putNumber("Target Angle", 90);
   }
 
   @Override
   public void autonomousInit() {
-    // mission = new ShootAndGo();
+    mission = new ShootAndGo();
 
   }
 
   @Override
   public void autonomousPeriodic() {
-    // mission.run();
+    mission.run();
+    SmartDashboard.putNumber("DriveEncoder", driveTrain.getEncoderTics());
 
   }
 
@@ -90,6 +94,11 @@ public class Robot extends TimedRobot {
   //  SmartDashboard.putNumber("DriveEncoder", drive.getEncoderTics());
     // intake.retractIntake();
     // drive.arcadeDrive(controller.getRY(), controller.getRX());
+    SmartDashboard.putNumber("Gyro", driveTrain.getAngle());
+    // intake.lowerIntake();
+   SmartDashboard.putNumber("DriveEncoder", driveTrain.getEncoderTics());
+    // intake.retractIntake();
+    driveTrain.arcadeDrive(controller.getRY(), controller.getRX());
   }
 
   @Override
