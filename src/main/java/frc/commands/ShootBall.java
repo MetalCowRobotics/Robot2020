@@ -8,14 +8,18 @@
 package frc.commands;
 
 import frc.lib14.MCRCommand;
+import frc.systems.Shooter;
 
 /**
  * Add your docs here.
  */
-public class ShootBall implements MCRCommand{
+public class ShootBall implements MCRCommand{ 
+    Shooter shooter = Shooter.getInstance();
 
     @Override
     public void run() {
+        shooter.runShooter();
+        
         // TODO Auto-generated method stub
         
     }

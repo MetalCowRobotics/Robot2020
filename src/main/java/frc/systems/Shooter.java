@@ -8,7 +8,7 @@ public class Shooter {
     
     private static MCR_SRX topShooter = new MCR_SRX(RobotMap.Shooter.TOP_MOTOR);
     private static MCR_SRX bottomShooter = new MCR_SRX(RobotMap.Shooter.BOTTOM_MOTOR);
-    private static final SpeedControllerGroup SHOOTER = new SpeedControllerGroup(topShooter, bottomShooter); 
+    private static final SpeedControllerGroup shooter = new SpeedControllerGroup(topShooter, bottomShooter); 
     private static final Shooter instance = new Shooter();
 
     private Shooter() {
