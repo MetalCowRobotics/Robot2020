@@ -2,70 +2,120 @@ package frc.commands;
 
 import frc.lib14.MCRCommand;
 import frc.lib14.PDController;
+import frc.lib14.PIDController;
 import frc.lib14.UtilityMethods;
 import frc.robot.RobotDashboard;
 import frc.robot.RobotMap;
 import frc.systems.DriveTrain;
+
+import java.lang.annotation.Target;
+import java.sql.DriverPropertyInfo;
 import java.util.logging.Logger;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TurnDegrees implements MCRCommand {
 	private double degrees;
-	private double setPoint;
+	private double setPoint = 0;
 	private DriveTrain driveTrain = DriveTrain.getInstance();
 	private RobotDashboard dashboard = RobotDashboard.getInstance();
-	private PDController driveController;
+	private PIDController driveController;
 	private int currentState = 0;
 	private final int IDLE = 0;
-    private final int ACTIVE = 1;
-    private final int DONE = 2;
+	private final int ACTIVE = 1;
+	private final int DONE = 2;
+	private int numMatches = 0;
+
 	public TurnDegrees(double degrees) {
 		super();
 		this.degrees = degrees;
+
 	}
+
 	public void run() {
 		switch (currentState) {
-		
+
 		case IDLE:
 			driveTrain.resetGyro();
-			setPoint = driveTrain.getAngle() + degrees; 
-//System.out.println(("TurnDegrees SetPoint:" + setPoint));
-			// driveController = new PDController(setPoint, dashboard.getTurnKP(), dashboard.getTurnKI()); 
-			driveTrain.arcadeDrive(RobotMap.TurnDegrees.TOP_SPEED, driveController.calculateAdjustment(setPoint));
+			setPoint = driveTrain.getAngle() + degrees;
+			System.out.println(("TurnDegrees SetPoint:" + setPoint));
+			driveController = new PIDController(setPoint, RobotMap.TurnDegrees.kP, RobotMap.TurnDegrees.kI,
+					RobotMap.TurnDegrees.kD);
+			System.out.println("Before line 35  " + driveController.calculateAdjustment(setPoint));
+			// driveTrain.arcadeDrive(RobotMap.TurnDegrees.TOP_SPEED,
+			// driveController.calculateAdjustment(setPoint));
+			System.out.println("After line 35");
 			currentState = ACTIVE;
 			break;
 		case ACTIVE:
-			// driveController.set_kP(dashboard.getTurnKP());
-			// driveController.set_kD(dashboard.getTurnKD()); 
+			driveController.set_kP(dashboard.getTurnKP());
+
+			driveController.set_kD(dashboard.getTurnKD());
+
 			double currentAngle = driveTrain.getAngle();
-			if (Math.abs(setPoint-currentAngle) < RobotMap.TurnDegrees.VARIANCE) { 
-	//logger.info("======== turn on target !!! ========="); 
+			// if (Math.abs(currentAngle) >= Math.abs(.95 * degrees)) {
+			if (Math.abs(currentAngle) >= Math.abs(degrees)) {
+
+				driveController.set_kI(dashboard.getTurnKI());
+			} else {
+				driveController.set_kI(0);
+			}
+
+			if (Math.abs(setPoint - currentAngle) < RobotMap.TurnDegrees.VARIANCE) {
+				numMatches++;
+			} else {
+				numMatches = 0;
+			}
+			// }
+			// // logger.info("======== turn on target !!! =========");
+			// System.out.println("angle:" + driveTrain.getAngle());
+			// driveTrain.stop();
+			// if (numMatches > 20)
+			// currentState = DONE;
+			// } else {
+			// numMatches = 0;
+			double correction = driveController.calculateAdjustment(currentAngle);
+			// driveTrain.arcadeDrive(RobotMap.TurnDegrees.TOP_SPEED,
+			// limitCorrection(correction, RobotMap.TurnDegrees.MAX_ADJUSTMENT));
+			// if (UtilityMethods.between(currentAngle, setPoint -
+			// RobotMap.TurnDegrees.SLOW_VARIANCE,
+			// setPoint + RobotMap.TurnDegrees.SLOW_VARIANCE)) {
+			// driveTrain.arcadeDrive(RobotMap.TurnDegrees.TOP_SPEED,
+			// limitCorrection(correction, RobotMap.TurnDegrees.SLOW_ADJUSTMENT));
+			// // logger.info("Turn Degrees Slow");
+			// } else {
+			if (numMatches > 2) {
 				driveTrain.stop();
 				currentState = DONE;
 			} else {
-				double correction = driveController.calculateAdjustment(driveTrain.getAngle());
-	//driveTrain.arcadeDrive(RobotMap.TurnDegrees.TOP_SPEED, limitCorrection(correction, RobotMap.TurnDegrees.MAX_ADJUSTMENT));
-				if (UtilityMethods.between(currentAngle, setPoint - RobotMap.TurnDegrees.SLOW_VARIANCE, setPoint + RobotMap.TurnDegrees.SLOW_VARIANCE)) {
-					driveTrain.arcadeDrive(RobotMap.TurnDegrees.TOP_SPEED, limitCorrection(correction, RobotMap.TurnDegrees.SLOW_ADJUSTMENT));
-	//	logger.info("Turn Degrees Slow");
+				if (UtilityMethods.between(currentAngle, setPoint - RobotMap.TurnDegrees.SLOW_VARIANCE,
+						setPoint + RobotMap.TurnDegrees.SLOW_VARIANCE)) {
+					driveTrain.arcadeDrive(RobotMap.TurnDegrees.TOP_SPEED,
+							limitCorrection(correction, RobotMap.TurnDegrees.SLOW_ADJUSTMENT));
 				} else {
-					driveTrain.arcadeDrive(RobotMap.TurnDegrees.TOP_SPEED, limitCorrection(correction, RobotMap.TurnDegrees.MAX_ADJUSTMENT));
-	//	logger.info("Turn Degrees Fast");
+					driveTrain.arcadeDrive(RobotMap.TurnDegrees.TOP_SPEED,
+							limitCorrection(correction, RobotMap.TurnDegrees.MAX_ADJUSTMENT));
 				}
-	//logger.info("Angle:" + driveTrain.getAngle());	
-	//	logger.info("correction:" + correction);
 			}
+			System.out.println("correction:" + correction);
+			// logger.info("Turn Degrees Fast");
+			// }
+			// logger.info("Angle:" + driveTrain.getAngle());
+			// logger.info("correction:" + correction);
+			// }
 			break;
 		case DONE:
 			break;
 		}
 	}
+
 	protected double limitCorrection(double correction, double maxAdjustment) {
 		if (Math.abs(correction) > Math.abs(maxAdjustment))
 			return UtilityMethods.copySign(correction, maxAdjustment);
 		return correction;
 	}
+
 	@Override
 	public boolean isFinished() {
 		return DONE == currentState;
