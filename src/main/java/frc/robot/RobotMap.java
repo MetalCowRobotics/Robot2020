@@ -5,7 +5,7 @@ import java.util.logging.Level;
 public class RobotMap {
 
 	public final class DriverController {
-		public static final int 	USB_PORT = 0;
+		public static final int USB_PORT = 0;
 	}
 
 	public final class OperatorController {
@@ -13,10 +13,10 @@ public class RobotMap {
 	}
 
 	public static final class Drivetrain {
-		public static final int LEFT_MOTOR = 15;
-		public static final int LEFT_MOTOR_NO_ENCODER = 4;
-		public static final int RIGHT_MOTOR = 2;
-		public static final int RIGHT_MOTOR_NO_ENCODER = 5;
+		public static final int LEFT_MOTOR = 3;
+		public static final int LEFT_MOTOR_NO_ENCODER = 5;
+		public static final int RIGHT_MOTOR = 4;
+		public static final int RIGHT_MOTOR_NO_ENCODER = 6;
 		public static final int WHEEL_DIAMETER = 6;
 		public static final double RAMP_SPEED = .6;
 	}
@@ -31,7 +31,7 @@ public class RobotMap {
 	public final class DriveWithEncoder {
 		public static final double TOP_SPEED = .5;
 		public static final double BOTTOM_SPEED = .4;
-		public static final double MAX_ADJUSTMENT = .4;
+		public static final double MAX_ADJUSTMENT = .6;
 		public static final int TICS_PER_ROTATION = 4096; 
 		public static final double INCHES_PER_ROTATION = Math.PI * RobotMap.Drivetrain.WHEEL_DIAMETER;
 		public static final double SLOW_DOWN_DISTANCE = (12 / INCHES_PER_ROTATION) * TICS_PER_ROTATION;
@@ -40,14 +40,14 @@ public class RobotMap {
 	}
 
 	public final class TurnDegrees {
-		public static final double kP = .6; 
-		public static final double kI = 0; 
-		public static final double kD = .05; 
+		public static final double kP = .04; 
+		public static final double kI = .001; 
+		public static final double kD = .0; 
 		public static final double TOP_SPEED = 0;
-		public static final double VARIANCE = .25;
-		public static final double MAX_ADJUSTMENT = 8;
-		public static final double SLOW_VARIANCE = 10;
-		public static final double SLOW_ADJUSTMENT = .3;
+		public static final double VARIANCE = 1; //.25
+		public static final double MAX_ADJUSTMENT = .6;
+		public static final double SLOW_VARIANCE = 20; //10
+		public static final double SLOW_ADJUSTMENT = .4;
 	}
 
 	public final class DriveStraightTime {
@@ -60,25 +60,42 @@ public class RobotMap {
 	public final class Shooter {
 		public static final int TOP_MOTOR = 0;//assign channel
 		public static final int BOTTOM_MOTOR = 0;//assign channel
+		public static final int TOP_MOTOR_ID = 0;
+		public static final int BOTTOM_MOTOR_ID = 1;
 	}
 	
 	public final class Hood {
-		public static final int HOOD_MOTOR = 0;//assign channel
+		public static final int HOOD_MOTOR = 2;
+		public static final int HOOD_UP = 0;
+		public static final int HOOD_DOWN = 1;
+		public static final double HOOD_SPEED = .6;
+
 	}
 
 	public final class Turret {
-		public static final int TURRET_MOTOR = 0;//assign channel
+		public static final int TURRET_MOTOR = 2;//assign channel
 	}
-
+	public final class Test {
+		public static final int BAG_MOTOR = 2;
+	}
 	public final class Magazine {
 		public static final int MAGAZINE_MOTOR = 0;//assign channel
+		public static final int LIMIT_SWITCH_TOP = 0;
+		public static final int LIMIT_SWITCH_BOTTOM = 1;
+		public static final int RIGHT_MAGAZINE_MOTOR = 0;
+		public static final int LEFT_MAGAZINE_MOTOR = 1;
+		public static final int IS_THERE_A_BALL_TOP = 9;//DIO
+		public static final int IS_THERE_A_BALL_BOTTOM = 8;//DIO
 	}
 
 	public final class Intake {
 		public static final double INTAKE_SPEED = 1;
 		public static final double EJECT_SPEED = -1;
-		public static final int INTAKE_MOTOR = 3;// CAN
 		public static final double RAMP_SPEED = .8;
+		public static final int LIFT_MOTOR = 0; //CAN
+		public static final int INTAKE_MOTOR = 1; //CAN
+		public static final int TOP_LIMIT_SWITCH = 1;//DIO
+		public static final int BOTTOM_LIMIT_SWITCH = 2;//DIO
 		public static final int RAISE_LOWER_INTAKE_MOTOR = 1;
 		
 	}
@@ -102,7 +119,5 @@ public class RobotMap {
 		public static final Level missionClass = Level.WARNING;
 		public static final Level autoDriveClass = Level.WARNING;
 		public static final Level componentBuilderClass = Level.WARNING;
-		public static final Level cargoHandlerClass = Level.WARNING;
-		public static final Level hatchHandlerClass = Level.WARNING;
 	}
 }

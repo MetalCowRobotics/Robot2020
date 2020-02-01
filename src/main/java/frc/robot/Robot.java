@@ -8,14 +8,23 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.autonomous.ShootAndGo;
 import frc.lib14.MCRCommand;
 import frc.lib14.XboxControllerMetalCow;
+// import frc.robot.RobotMap.Magazine;
 import frc.systems.Climber;
+import frc.systems.Magazine;
+import frc.systems.Turret;
+import frc.lib14.MCR_SRX;
+
 import frc.systems.DriveTrain;
+import frc.systems.Hood;
 import frc.systems.Intake;
 import frc.systems.Shooter;
 import com.revrobotics.ColorMatch;
@@ -29,20 +38,46 @@ import edu.wpi.first.wpilibj.I2C.Port;
  */
 
 public class Robot extends TimedRobot {
-  DriveTrain drive;// = DriveTrain.getInstance();
-  Intake intake;// = Intake.getInstance();
-  Shooter shooter;// = Shooter.getInstance();
-  Climber climber;// = Climber.getInstance();
-  XboxControllerMetalCow controller;// = new XboxControllerMetalCow(0);
-  RobotDashboard dashboard;// = RobotDashboard.getInstance();
+  // private static MCR_SRX testMotor = new MCR_SRX(RobotMap.Test.BAG_MOTOR);
+  DriveTrain drive = DriveTrain.getInstance();
+  Hood hood = Hood.getInstance();
+  XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
+  RobotDashboard dashboard = RobotDashboard.getInstance();
+  Intake intake = Intake.getInstance();
+  Shooter shooter = Shooter.getInstance();
+  Climber climber = Climber.getInstance();
+  Magazine magazine = Magazine.getInstance();
+  Turret turret = Turret.getInstance();
   MCRCommand mission;
 
+  String shootAndGo = "shoot and go";
+  String shootAndGather = "shoot and gather";
+  String centerPosition = "center position";
+  String leftPosition = "left position";
+  String rightPosition = "right position";
+  
+  
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
    */
+
+   
   @Override
   public void robotInit() {
+   SendableChooser<String> autonomousAction = new SendableChooser<>();
+   SendableChooser<String> startingPosition = new SendableChooser<>();
+   autonomousAction.setDefaultOption("shoot and go", shootAndGo);
+   autonomousAction.addOption("shoot and gather", shootAndGather);
+   startingPosition.setDefaultOption("center position", centerPosition);
+   startingPosition.addOption("left position", leftPosition);
+   startingPosition.addOption("right position", rightPosition);
+   dashboard.pushStartingPosition(startingPosition);
+   dashboard.pushAutonomousAction(autonomousAction);
+   UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
+   dashboard.pushAuto();
+   
+  
   }
 
   @Override
@@ -54,6 +89,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     mission.run();
+    SmartDashboard.putNumber("DriveEncoder", drive.getEncoderTics());
+
   }
   I2C.Port port = I2C.Port.kOnboard;
   ColorSensorV3 sensor = new ColorSensorV3(port);
@@ -71,6 +108,8 @@ public class Robot extends TimedRobot {
     color.addColorMatch(kGreenTarget);
     color.addColorMatch(kRedTarget);
     color.addColorMatch(kYellowTarget);
+    turret.resetTurretEncoder();
+    // Magazine.getInstance();
   }
 
   @Override
@@ -94,7 +133,50 @@ public class Robot extends TimedRobot {
     else if (result.color == kYellowTarget) {
       SmartDashboard.putString("color", "yellow");
     }
+    SmartDashboard.putNumber("Gyro", drive.getAngle());
+    drive.arcadeDrive(-controller.getRY(), -controller.getX());
+
+    if (controller.getAButton()) {
+      hood.lowerHood();
+    }
+    if (controller.getBButton()) {
+      hood.raiseHood();
+    }
+    hood.run();
+    turret.rotateTurret(30);
+    // SmartDashboard.putNumber("Encoder Tics", testMotor.getSelectedSensorPosition());
+
+    // if (testMotor.getSelectedSensorPosition() < 3600){
+    //   testMotor.set(.1);
+    // }
+    // if(testMotor.getSelectedSensorPosition() > 3600){
+    //   testMotor.set(-.1);
+    // }
+    // if (testMotor.getSelectedSensorPosition() == 3600){
+    //   testMotor.stopMotor();
+    // }
+
+    //4050tics = 360 degrees      11.25tics = 1 degree
+
+  //   magazine.checkIfLoaded();
+  //   if (controller.getBButton()){
+  //     magazine.feedOneBall();
+  //   }else if (controller.getBButtonReleased()){
+  //     magazine.stopMagazine();
+  //   }
+  //     magazine.runMagazine();
+    if (controller.getRB() == true){
+        magazine.runMagazine();
+        magazine.checkIfLoaded();
+    }else{
+      magazine.stopMagazine();
+      magazine.checkIfLoaded();
+    }
+    SmartDashboard.putNumber("Gyro", drive.getAngle());
+    // intake.lowerIntake();
+   SmartDashboard.putNumber("DriveEncoder", drive.getEncoderTics());
     // intake.retractIntake();
+    drive.arcadeDrive(controller.getRY(), controller.getRX());
   }
   
   @Override

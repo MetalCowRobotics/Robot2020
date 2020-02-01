@@ -28,9 +28,13 @@ public class PIDController {
 	public double calculateAdjustment(double curPosition) {
 		double error = calaculateError(setPoint, curPosition);
 		double motorAdjustment = determineAdjustment(error);
+		System.out.println("error: "+error+"  prev: "+previousError+"  accum: "+accumulatedError);
 		previousError = error;
-		accumulatedError = accumulatedError + error;
+		if(Math.abs(kI) > 0){
+			accumulatedError = accumulatedError + error;
+		}
 		return motorAdjustment;
+		
 	}
 
 	private double calaculateError(double setPoint, double curPosition) {
