@@ -19,6 +19,7 @@ public class ShootBall implements MCRCommand{
     Magazine magazine = Magazine.getInstance();
     boolean firstTime = true;
     boolean done = false;
+    
 
     @Override
     public void run() {
