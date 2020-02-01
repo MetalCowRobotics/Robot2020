@@ -75,8 +75,8 @@ public class Magazine {
             SmartDashboard.putBoolean("feeding", false);
             feedMode = false;
             counted++;
-            loadBallInShootingPosition();
             stopMagazine();
+            loadBallInShootingPosition();
         }
     }
 
@@ -141,7 +141,7 @@ public class Magazine {
     }
 
     public int getCounted() {
-        return 0;
+        return counted;
     }
 
 	public void stopLoadToTop() {
