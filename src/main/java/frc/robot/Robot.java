@@ -67,6 +67,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
+    dashboard.pushAuto();
+    dashboard.pushTurnPID();
     driveTrain.calibrateGyro();
     // autonomous setup
     SendableChooser<String> autonomousAction = new SendableChooser<>();
@@ -83,7 +85,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    mission = new ShootAndGo();
+    mission = new ShootAndGo("left");
   }
 
   @Override
@@ -176,6 +178,11 @@ public class Robot extends TimedRobot {
     // }else if (controller.getBButtonReleased()){
     // magazine.stopMagazine();
     // }
+  //   SmartDashboard.putNumber("Gyro", drive.getAngle());
+  //   // intake.lowerIntake();
+  //  SmartDashboard.putNumber("DriveEncoder", drive.getEncoderTics());
+  //   // intake.retractIntake();
+  //   drive.arcadeDrive(controller.getRY(), controller.getRX());
     // magazine.runMagazine();
     // if (controller.getRB() == true) {
     // magazine.runMagazine();

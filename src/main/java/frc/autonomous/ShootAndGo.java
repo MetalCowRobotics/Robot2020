@@ -13,6 +13,7 @@ import frc.commands.DriveBackwardsStraight;
 import frc.commands.DriveStraightInches;
 import frc.commands.ShootBall;
 import frc.commands.TurnDegrees;
+import frc.lib14.CommandPause;
 import frc.lib14.MCRCommand;
 import frc.lib14.SequentialCommands;
 import frc.lib14.TimedCommandSet;
@@ -31,6 +32,11 @@ public class ShootAndGo implements MCRCommand {
 
     }
 
+    public ShootAndGo(String position) {
+        MCRCommand commandSet = new SequentialCommands(new ShootBall(), new ShootBall(), new ShootBall());
+        MCRCommand driveset = new SequentialCommands( new TimedCommandSet(new TurnDegrees(180), 4),new CommandPause(.2), new DriveStraightInches(70, 4));
+        mission = new SequentialCommands(new TimedCommandSet(commandSet, 5), new TimedCommandSet(driveset, 10));
+    }
     @Override
     public void run() {
         mission.run();
