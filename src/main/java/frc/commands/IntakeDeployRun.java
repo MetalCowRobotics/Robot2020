@@ -8,21 +8,31 @@
 package frc.commands;
 
 import frc.lib14.MCRCommand;
+import frc.systems.Intake;
 
 /**
  * Add your docs here.
  */
-public class ShootBall implements MCRCommand{
+public class IntakeDeployRun implements MCRCommand {
+    private Intake intake = Intake.getInstance();
+    private boolean done = false;
+
+    public IntakeDeployRun() {
+    }
 
     @Override
     public void run() {
-        // TODO Auto-generated method stub
-        
+        if (intake.intakeDeployed()) {
+            intake.startIntake();
+            done = true;
+        } else {
+            intake.lowerIntake();
+        }
     }
 
     @Override
     public boolean isFinished() {
-        // TODO Auto-generated method stub
-        return true;
+        return done;
     }
+
 }
