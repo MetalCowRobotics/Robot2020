@@ -31,6 +31,7 @@ public class DriveTrain {
 	public static final double SPRINT_SPEED = 1.0;
 	public static final double NORMAL_SPEED = 0.7;
 	public static final double CRAWL_SPEED = .5;
+
 	
 	private int inverted = 1;
 	private static final DriveTrain instance = new DriveTrain();
@@ -71,7 +72,9 @@ public class DriveTrain {
 		// if only used in autonomous may not need the throttle
 		drive.arcadeDrive(speed, angle);
 	}
-
+	public void tankDrive(double leftSpeed, double rightSpeed) {
+		drive.tankDrive(leftSpeed, rightSpeed);
+	}
 	public void stop() {
 		drive.stopMotor();
 	}
