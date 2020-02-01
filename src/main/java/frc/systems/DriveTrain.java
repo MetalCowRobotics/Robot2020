@@ -60,7 +60,6 @@ public class DriveTrain {
 		dashboard.pushRightEncoder(getRightEncoderTics());
 	}
 	
-
 	/**
 	 * Used in Autonomous
 	 * 
