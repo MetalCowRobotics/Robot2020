@@ -11,9 +11,11 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.autonomous.ShootAndGo;
 import frc.lib14.MCRCommand;
+import frc.lib14.MCR_SRX;
 import frc.lib14.XboxControllerMetalCow;
 import frc.systems.Climber;
 import frc.systems.DriveTrain;
+import frc.systems.FC_JE_0149Encoder;
 import frc.systems.Intake;
 import frc.systems.Shooter;
 
@@ -24,42 +26,93 @@ import frc.systems.Shooter;
  */
 
 public class Robot extends TimedRobot {
+<<<<<<< Updated upstream
   DriveTrain drive = DriveTrain.getInstance();
   Intake intake = Intake.getInstance();
   Shooter shooter = Shooter.getInstance();
   Climber climber = Climber.getInstance();
+=======
+  // DriveTrain drive = DriveTrain.getInstance();
+  // Intake intake;// = Intake.getInstance();
+  // Shooter shooter = Shooter.getInstance();
+  // Climber climber;// = Climber.getInstance();
+>>>>>>> Stashed changes
   XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
-  RobotDashboard dashboard = RobotDashboard.getInstance();
-  MCRCommand mission;
-
+  // RobotDashboard dashboard = RobotDashboard.getInstance();
+  // MCRCommand mission;
+  FC_JE_0149Encoder turretMotor = new FC_JE_0149Encoder();
+  private static MCR_SRX TurretMotor = new MCR_SRX(7);
+  double speed = .6;
+  int target = 88;
+  double tSpeed = .1;
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
    */
   @Override
   public void robotInit() {
+<<<<<<< Updated upstream
+=======
+    SmartDashboard.putNumber("TargetTics", 88);
+    SmartDashboard.putNumber("Speed", .1);
+  // drive.calibrateGyro();
+>>>>>>> Stashed changes
   }
 
   @Override
   public void autonomousInit() {
-    mission = new ShootAndGo();
+    // mission = new ShootAndGo();
 
   }
 
   @Override
   public void autonomousPeriodic() {
+<<<<<<< Updated upstream
     mission.run();
+=======
+    // mission.run();
+    // SmartDashboard.putNumber("DriveEncoder", drive.getEncoderTics());
+
+>>>>>>> Stashed changes
   }
 
   @Override
   public void teleopInit() {
+<<<<<<< Updated upstream
+=======
+    target = (int) SmartDashboard.getNumber("TargetTics", 88);
+    tSpeed = SmartDashboard.getNumber("Speed", .1);
+    turretMotor.reset();
+
+>>>>>>> Stashed changes
   }
 
   @Override
   public void teleopPeriodic() {
+<<<<<<< Updated upstream
     SmartDashboard.putNumber("Gyro", drive.getAngle());
     intake.lowerIntake();
     // intake.retractIntake();
+=======
+    // TurretMotor.set(controller.getRY());
+    SmartDashboard.putNumber("Encoder tics", turretMotor.getTics());
+    SmartDashboard.putNumber("Encoder rate", turretMotor.getRate());
+
+    if (turretMotor.getTics() < target){
+        TurretMotor.set(tSpeed);
+    }
+    if (turretMotor.getTics() > target){
+      TurretMotor.set(-tSpeed);
+    }
+    if (turretMotor.getTics() == target){
+      TurretMotor.stopMotor();
+    }
+    // SmartDashboard.putNumber("Gyro", drive.getAngle());
+    // intake.lowerIntake();
+  //  SmartDashboard.putNumber("DriveEncoder", drive.getEncoderTics());
+    // intake.retractIntake();
+    // drive.arcadeDrive(controller.getRY(), controller.getRX());
+>>>>>>> Stashed changes
   }
 
   @Override
@@ -68,13 +121,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testPeriodic() {
-    if (controller.getAButton()) {
-      climber.lowerClimber();
-    } else if (controller.getBButton()) {
-      climber.raiseClimber();
-    } else {
-      climber.stopClimber();
-    }
+    // if (controller.getAButton()) {
+    //   climber.lowerClimber();
+    // } else if (controller.getBButton()) {
+    //   climber.raiseClimber();
+    // } else {
+    //   climber.stopClimber();
+    // }
   }
 
   public void test() {
