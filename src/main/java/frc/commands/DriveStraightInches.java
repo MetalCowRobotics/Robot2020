@@ -63,7 +63,7 @@ public class DriveStraightInches extends TimedCommand implements MCRCommand {
             startTics = driveTrain.getEncoderTics();
         }
 
-        if (ticsTravelled() < targetTics) {
+        if (Math.abs(ticsTravelled()) < Math.abs(targetTics)) {
             driveTrain.arcadeDrive(calculateSpeed(), getCorrection() * dir);
         } else {
             end();

@@ -1,7 +1,5 @@
 package frc.commands;
-
 import java.util.logging.Logger;
-
 import frc.lib14.MCRCommand;
 import frc.lib14.PDController;
 import frc.lib14.UtilityMethods;
@@ -50,7 +48,6 @@ public class DriveBackwardsStraight extends TimedCommand implements MCRCommand {
         // ticsTravelled() + " <<|>> correction: " + getCorrection());
         logger.warning("angle: " + driveTrain.getAngle() + " <<|>> correction: " + getCorrection());
     } 
-
     private void end() {
         driveTrain.stop();
         endTimer();
