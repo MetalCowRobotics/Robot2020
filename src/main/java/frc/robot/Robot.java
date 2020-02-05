@@ -91,6 +91,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     mission.run();
+    runSystemsState();
   }
 
   I2C.Port port = I2C.Port.kOnboard;
@@ -130,9 +131,7 @@ public class Robot extends TimedRobot {
     controls.changeMode();
     applyInputs();
     driveTrain.drive();
-    intake.run();
-    shooter.run();
-    climber.run();
+    runSystemsState();
     //
     // color sensor testing
     //
@@ -194,6 +193,12 @@ public class Robot extends TimedRobot {
     // feedback
     SmartDashboard.putNumber("Gyro", driveTrain.getAngle());
     SmartDashboard.putNumber("Drive Encoder", driveTrain.getEncoderTics());
+  }
+
+  private void runSystemsState() {
+    intake.run();
+    shooter.run();
+    climber.run();
   }
 
   @Override

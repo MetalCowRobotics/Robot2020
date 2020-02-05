@@ -19,6 +19,8 @@ public class Intake {
     private final double TopSpeed = .3;
     double LowerSpeed = .3;
     double RaiseSpeed = -.3;
+    boolean stowing = false;
+    boolean deploying = false;
 
     private Intake() {
         raiseLowerIntake.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
@@ -48,11 +50,13 @@ public class Intake {
     // lower the intake mechanism
     public void lowerIntake() {
         raiseLowerIntake.set(.5);
+        deploying = true;
     }
 
     // raise the intake mechanism
     public void retractIntake() {
         raiseLowerIntake.set(-.5);
+        stowing = true;
     }
 
     public boolean intakeDeployed() {
@@ -61,5 +65,19 @@ public class Intake {
     }
 
     public void run() {
+        if (deploying && intakeDeployed()) {
+            raiseLowerIntake.stopMotor();
+            deploying = false;
+        }
+        if (stowing && intakeStowed()) {
+            raiseLowerIntake.stopMotor();
+            stowing = false;
+        }
     }
+
+    public boolean intakeStowed() {
+        // 1==closed
+        return 1 == raiseLowerIntake.isRevLimitSwitchClosed();
+    }
+
 }
