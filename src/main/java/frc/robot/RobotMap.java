@@ -120,4 +120,9 @@ public class RobotMap {
 		public static final Level autoDriveClass = Level.WARNING;
 		public static final Level componentBuilderClass = Level.WARNING;
 	}
+
+
+	public static final class ColorWheel{
+		public static final int Motor = 0;
+	} 
 }
