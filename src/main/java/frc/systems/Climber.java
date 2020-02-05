@@ -67,4 +67,7 @@ public class Climber {
         SmartDashboard.putBoolean("camLimit", !camIn.get());
         return !camIn.get();
     }
+
+	public void run() {
+	}
 }
