@@ -38,9 +38,9 @@ import frc.systems.Turret;
 public class Robot extends TimedRobot {
   // systems
   DriveTrain driveTrain = DriveTrain.getInstance();
-  Intake intake = Intake.getInstance();
-  Shooter shooter = Shooter.getInstance();
-  Climber climber = Climber.getInstance();
+  Intake intake ;//= Intake.getInstance();
+  Shooter shooter ;//= Shooter.getInstance();
+  Climber climber ;//= Climber.getInstance();
   MasterControls controls = MasterControls.getInstance();
   RobotDashboard dashboard = RobotDashboard.getInstance();
 
@@ -49,8 +49,8 @@ public class Robot extends TimedRobot {
 
   // testing only
   Magazine magazine = Magazine.getInstance();
-  Turret turret = Turret.getInstance();
-  Hood hood = Hood.getInstance();
+  Turret turret ;//= Turret.getInstance();
+  Hood hood ;//= Hood.getInstance();
   XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
 
   String shootAndGo = "shoot and go";
@@ -131,9 +131,9 @@ public class Robot extends TimedRobot {
     controls.changeMode();
     applyInputs();
     driveTrain.drive();
-    intake.run();
-    shooter.run();
-    climber.run();
+    // intake.run();
+    // shooter.run();
+    // climber.run();
     //
     // color sensor testing
     //
