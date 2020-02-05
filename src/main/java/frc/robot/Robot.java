@@ -7,9 +7,13 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.I2C;
+import com.revrobotics.ColorMatch;
+import com.revrobotics.ColorMatchResult;
+import com.revrobotics.ColorSensorV3;
+
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,18 +23,12 @@ import frc.lib14.MCRCommand;
 import frc.lib14.XboxControllerMetalCow;
 // import frc.robot.RobotMap.Magazine;
 import frc.systems.Climber;
-import frc.systems.Magazine;
-import frc.systems.Turret;
-import frc.lib14.MCR_SRX;
-
 import frc.systems.DriveTrain;
 import frc.systems.Hood;
 import frc.systems.Intake;
+import frc.systems.Magazine;
 import frc.systems.Shooter;
-import com.revrobotics.ColorMatch;
-import com.revrobotics.ColorMatchResult;
-import com.revrobotics.ColorSensorV3;
-import edu.wpi.first.wpilibj.I2C.Port;
+import frc.systems.Turret;
 /**
  * The VM is configured to automatically run this class. If you change the name
  * of this class or the package after creating this project, you must also
@@ -38,21 +36,16 @@ import edu.wpi.first.wpilibj.I2C.Port;
  */
 
 public class Robot extends TimedRobot {
-<<<<<<< Updated upstream
   // private static MCR_SRX testMotor = new MCR_SRX(RobotMap.Test.BAG_MOTOR);
   DriveTrain drive = DriveTrain.getInstance();
   Hood hood = Hood.getInstance();
-=======
   DriveTrain driveTrain = DriveTrain.getInstance();
   Intake intake;// = Intake.getInstance();
   // Shooter shooter = Shooter.getInstance();
   Climber climber;// = Climber.getInstance();
->>>>>>> Stashed changes
   XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
   RobotDashboard dashboard = RobotDashboard.getInstance();
-  Intake intake = Intake.getInstance();
   Shooter shooter = Shooter.getInstance();
-  Climber climber = Climber.getInstance();
   Magazine magazine = Magazine.getInstance();
   Turret turret = Turret.getInstance();
   MCRCommand mission;
@@ -72,7 +65,6 @@ public class Robot extends TimedRobot {
    
   @Override
   public void robotInit() {
-<<<<<<< Updated upstream
    SendableChooser<String> autonomousAction = new SendableChooser<>();
    SendableChooser<String> startingPosition = new SendableChooser<>();
    autonomousAction.setDefaultOption("shoot and go", shootAndGo);
@@ -86,11 +78,9 @@ public class Robot extends TimedRobot {
    dashboard.pushAuto();
    
   
-=======
     dashboard.pushTurnPID();
   driveTrain.calibrateGyro();
   SmartDashboard.putNumber("Target Angle", 90);
->>>>>>> Stashed changes
   }
 
   @Override
@@ -114,6 +104,7 @@ public class Robot extends TimedRobot {
   final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
   final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
 
+
   @Override
   public void teleopInit() {
 
@@ -127,7 +118,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-<<<<<<< Updated upstream
     SmartDashboard.putNumber("red", sensor.getRed());
     SmartDashboard.putNumber("green", sensor.getGreen());
     SmartDashboard.putNumber("blue", sensor.getBlue()); 
@@ -191,14 +181,12 @@ public class Robot extends TimedRobot {
    SmartDashboard.putNumber("DriveEncoder", drive.getEncoderTics());
     // intake.retractIntake();
     drive.arcadeDrive(controller.getRY(), controller.getRX());
-=======
     driveTrain.drive();
   //   SmartDashboard.putNumber("Gyro", drive.getAngle());
   //   // intake.lowerIntake();
   //  SmartDashboard.putNumber("DriveEncoder", drive.getEncoderTics());
   //   // intake.retractIntake();
   //   drive.arcadeDrive(controller.getRY(), controller.getRX());
->>>>>>> Stashed changes
   }
   
   @Override
