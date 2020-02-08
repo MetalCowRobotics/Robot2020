@@ -7,9 +7,12 @@
 
 package frc.robot;
 
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.I2C;
@@ -37,28 +40,30 @@ import frc.systems.Turret;
  */
 
 public class Robot extends TimedRobot {
+  XboxControllerMetalCow controller = new XboxControllerMetalCow(1);
   // systems
-  DriveTrain driveTrain = DriveTrain.getInstance();
-  Intake intake = Intake.getInstance();
-  Shooter shooter = Shooter.getInstance();
-  Climber climber = Climber.getInstance();
-  MasterControls controls = MasterControls.getInstance();
-  RobotDashboard dashboard = RobotDashboard.getInstance();
+  // DriveTrain driveTrain = DriveTrain.getInstance();
+  // Intake intake = Intake.getInstance();
+  // Shooter shooter = Shooter.getInstance();
+  // Climber climber = Climber.getInstance();
+  // MasterControls controls = MasterControls.getInstance();
+  // RobotDashboard dashboard = RobotDashboard.getInstance();
+  ColorWheel colorWheel = ColorWheel.getInstance();
 
   // class variables
   MCRCommand mission;
 
   // testing only
-  Magazine magazine = Magazine.getInstance();
-  Turret turret = Turret.getInstance();
-  Hood hood = Hood.getInstance();
-  XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
+  // Magazine magazine = Magazine.getInstance();
+  // Turret turret = Turret.getInstance();
+  // Hood hood = Hood.getInstance();
+  // XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
 
-  String shootAndGo = "shoot and go";
-  String shootAndGather = "shoot and gather";
-  String centerPosition = "center position";
-  String leftPosition = "left position";
-  String rightPosition = "right position";
+  // String shootAndGo = "shoot and go";
+  // String shootAndGather = "shoot and gather";
+  // String centerPosition = "center position";
+  // String leftPosition = "left position";
+  // String rightPosition = "right position";
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -67,21 +72,21 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
-    dashboard.pushAuto();
-    dashboard.pushTurnPID();
-    driveTrain.calibrateGyro();
-    // autonomous setup
-    SendableChooser<String> autonomousAction = new SendableChooser<>();
-    SendableChooser<String> startingPosition = new SendableChooser<>();
-    autonomousAction.setDefaultOption("shoot and go", shootAndGo);
-    autonomousAction.addOption("shoot and gather", shootAndGather);
-    startingPosition.setDefaultOption("center position", centerPosition);
-    startingPosition.addOption("left position", leftPosition);
-    startingPosition.addOption("right position", rightPosition);
-    dashboard.pushStartingPosition(startingPosition);
-    dashboard.pushAutonomousAction(autonomousAction);
-    dashboard.pushAuto();
+    // UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
+    // dashboard.pushAuto();
+    // dashboard.pushTurnPID();
+    // driveTrain.calibrateGyro();
+    // // autonomous setup
+    // SendableChooser<String> autonomousAction = new SendableChooser<>();
+    // SendableChooser<String> startingPosition = new SendableChooser<>();
+    // autonomousAction.setDefaultOption("shoot and go", shootAndGo);
+    // autonomousAction.addOption("shoot and gather", shootAndGather);
+    // startingPosition.setDefaultOption("center position", centerPosition);
+    // startingPosition.addOption("left position", leftPosition);
+    // startingPosition.addOption("right position", rightPosition);
+    // dashboard.pushStartingPosition(startingPosition);
+    // dashboard.pushAutonomousAction(autonomousAction);
+    // dashboard.pushAuto();
   }
 
   @Override
@@ -94,41 +99,63 @@ public class Robot extends TimedRobot {
     mission.run();
   }
 
-  I2C.Port port = I2C.Port.kOnboard;
-  ColorSensorV3 sensor = new ColorSensorV3(port);
-  ColorMatch color = new ColorMatch();
+  // I2C.Port port = I2C.Port.kOnboard;
+  // ColorSensorV3 sensor = new ColorSensorV3(port);
+  // ColorMatch color = new ColorMatch();
 
-  final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
-  final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
-  final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
-  final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
+  // final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
+  // final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
+  // final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
+  // final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
 
   @Override
   public void teleopInit() {
-    turret.resetTurretEncoder();
+    // turret.resetTurretEncoder();
     // Magazine.getInstance();
   }
 
   private void applyInputs() {
-    if (controls.lowerIntake()) {
-      intake.lowerIntake();
-    } else if (controls.raiseIntake()) {
-      intake.retractIntake();
-    }
-    if (controls.spinUpAndShoot()) {
-      shooter.shootBallWhenReady();
-    }
+    // if (controls.lowerIntake()) {
+    //   intake.lowerIntake();
+    // } else if (controls.raiseIntake()) {
+    //   intake.retractIntake();
+    // }
+    // if (controls.spinUpAndShoot()) {
+    //   shooter.shootBallWhenReady();
+    // }
 
   }
-
   @Override
   public void teleopPeriodic() {
-    controls.changeMode();
-    applyInputs();
-    driveTrain.drive();
-    intake.run();
-    shooter.run();
-    climber.run();
+    boolean lbValue = controller.getLB();
+    SmartDashboard.putBoolean("Left bumper", lbValue);
+    colorWheel.run(lbValue);
+    if (controller.getRB()) {
+      colorWheel.resetVariables();
+    }
+    /*SmartDashboard.putBoolean("lb Pressed", lbValue);
+    colorWheel.run(lbValue);
+    boolean rbValue = controller.getRB();
+    SmartDashboard.putBoolean("RB Value", rbValue);
+    if (rbValue) {
+      colorWheel.resetVariables();
+    }*/
+
+    // colorWheel.run(pressed);
+    // colorWheel.run(true);
+    // colorWheel.readCurrentColor();
+    // String input = SmartDashboard.getString("Go to Color", "false");
+    //if (input.equals("true")) {
+
+   // } else {
+      //colorWheel.run(false);
+    //}
+    // controls.changeMode();
+    // applyInputs();
+    // driveTrain.drive();
+    // intake.run();
+    // shooter.run();
+    // climber.run();
     //colorwheel.run();
     // drive train testing
     // driveTrain.arcadeDrive(-controller.getRY(), -controller.getX());
@@ -171,8 +198,8 @@ public class Robot extends TimedRobot {
     // magazine.checkIfLoaded();
     // }
     // feedback
-    SmartDashboard.putNumber("Gyro", driveTrain.getAngle());
-    SmartDashboard.putNumber("Drive Encoder", driveTrain.getEncoderTics());
+    // SmartDashboard.putNumber("Gyro", driveTrain.getAngle());
+    // SmartDashboard.putNumber("Drive Encoder", driveTrain.getEncoderTics());
   }
 
   @Override

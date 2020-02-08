@@ -7,9 +7,11 @@
 
 package frc.systems;
 
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
@@ -17,6 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.lib14.MCR_SRX;
 import frc.robot.RobotMap;
+import frc.lib14.XboxControllerMetalCow;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -27,6 +30,9 @@ import java.util.HashMap;
 public class ColorWheel {
     private static final ColorWheel instance = new ColorWheel();
     private static MCR_SRX wheelMotor = new MCR_SRX(RobotMap.ColorWheel.Motor);//TODO: needs to be mapped
+    private CANSparkMax neo4 = new CANSparkMax(4, MotorType.kBrushless);
+
+
 
     HashMap<Color, ColorMatchResult> colorWheelMap = new HashMap<>();
 
@@ -42,6 +48,12 @@ public class ColorWheel {
     private boolean onColor = false;
     private int matches = 0;
 
+    Color startColor;
+    Color previousColor;
+    int changes = 0;
+    boolean firstTimeChange = true;
+    boolean changed = false;
+
     private ColorWheel() {
         colorMatcher.addColorMatch(kBlueTarget);
         colorMatcher.addColorMatch(kGreenTarget);
@@ -56,6 +68,14 @@ public class ColorWheel {
         colorWheelMap.put(kGreenTarget, new ColorMatchResult(kYellowTarget, 100));
         colorWheelMap.put(kBlueTarget, new ColorMatchResult(kRedTarget, 100));
         colorWheelMap.put(kYellowTarget, new ColorMatchResult(kGreenTarget, 100));
+    }
+    public void resetVariables() {
+        rotate = false;
+        onColor = false;
+        matches = 0;
+        changes = 0;
+        firstTimeChange = true;
+        changed = false;
     }
     private ColorMatchResult getGoalColor() throws IOException {
         String fmsColor = DriverStation.getInstance().getGameSpecificMessage();
@@ -95,18 +115,24 @@ public class ColorWheel {
         }
         return result;
     }
-    public void run(){
-
+    public void run(boolean goToColor){
 //if the controller is pressed for go to field color then
-        try {
-            goToColor(getGoalColor());
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+        if (goToColor) {
+            SmartDashboard.putString("Color sensor value", "specific color");
+            // try {
+                goToColor(new ColorMatchResult(kBlueTarget, 100));
+            // } catch (IOException e) {
+                // System.out.println(e.getMessage());
+            // }
+        } else {
+        // goToColor(new ColorMatchResult(kBlueTarget, 100));
+            rotate3Times();
+            SmartDashboard.putString("Color sensor value", "rotate 3 times");
         }
 //elseif the controller is presse for rotating three times
-        rotate3Times();
+        // rotate3Times();
 //finally --- stop and do nothing
-        wheelMotor.stopMotor();
+        // wheelMotor.stopMotor();
 
 
 
@@ -119,19 +145,69 @@ public class ColorWheel {
     }
 
     public void goToColor(ColorMatchResult targetColor) {
-            ColorMatchResult offsetColor = getGoalColorWithOffset(targetColor);        
-            if(offsetColor != readCurrentColor()){
-                wheelMotor.set(0.4);
+            ColorMatchResult offsetColor = getGoalColorWithOffset(targetColor);     
+            if (offsetColor.color == kRedTarget) {
+                SmartDashboard.putString("Color With Offset", "red");
+            } else if (offsetColor.color == kGreenTarget) {
+                SmartDashboard.putString("Color With Offset", "green");
+            } else if (offsetColor.color == kBlueTarget) {
+                SmartDashboard.putString("Color With Offset", "blue");
+            } else if (offsetColor.color == kYellowTarget) {
+                SmartDashboard.putString("Color With Offset", "yellow");
+            } else {
+                SmartDashboard.putString("Color With Offset", "unknown");
+            }
+            if(offsetColor.color != readCurrentColor().color){
+                // wheelMotor.set(0.4);
+                    //motor needs mapping
+                    neo4.set(0.2);
+                    SmartDashboard.putNumber("Motor Speed", neo4.getEncoder().getVelocity());
+                SmartDashboard.putString("Color Sensor Motor", "Moving");
             } else { 
-                wheelMotor.stopMotor();
+                // wheelMotor.stopMotor();
+                   //motor needs mapping
+                   neo4.stopMotor();
+                SmartDashboard.putString("Color Sensor Motor", "Stopped");
             }
         }
-    
     public void rotate3Times(){
         // rotate = true;
         // targetColor =  colorMatcher.matchClosestColor(sensor.getColor());
         // wheelMotor.set(.4);
         // onColor = true; 
         // matches = 1;
+        if (firstTimeChange) {
+            startColor = readCurrentColor().color;
+            previousColor = readCurrentColor().color;
+            firstTimeChange = false;
+        }
+        if (startColor == kRedTarget) {
+            SmartDashboard.putString("Start Color", "red");
+        } else if (startColor == kGreenTarget) {
+            SmartDashboard.putString("Start Color", "green");
+        } else if (startColor == kBlueTarget) {
+            SmartDashboard.putString("Start Color", "blue");
+        } else if (startColor == kYellowTarget) {
+            SmartDashboard.putString("Start Color", "yellow");
+        } else {
+            SmartDashboard.putString("Start Color", "unknown");
+        }
+        if (readCurrentColor().color != previousColor) {
+            previousColor = readCurrentColor().color;
+            changed = true;
+        }
+        SmartDashboard.putBoolean("Changed Boolean", changed); 
+        if (readCurrentColor().color == startColor && changed) {
+            //move motor
+            neo4.set(0.2);
+            SmartDashboard.putString("Color Sensor Motor", "Moving");
+            changes = changes + 1;
+        }
+        SmartDashboard.putNumber("Changes", changes);
+        if (changes >= 8) {
+            neo4.stopMotor();
+            SmartDashboard.putString("Color Sensor Motor", "Stopped");
+        }
+        changed = false;
     }
 }
