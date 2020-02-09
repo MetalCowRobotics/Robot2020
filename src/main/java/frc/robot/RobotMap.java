@@ -120,4 +120,8 @@ public class RobotMap {
 		public static final Level autoDriveClass = Level.WARNING;
 		public static final Level componentBuilderClass = Level.WARNING;
 	}
+
+	public static final class LightRing {
+		public static final int PORT = 0;
+	}
 }
