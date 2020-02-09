@@ -122,6 +122,12 @@ public class RobotMap {
 	}
 
 	public static final class LightRing {
-		public static final int PORT = 0;
+		public static final int PORT = 0; //RELAY Port
+	}
+
+	public static final class LightBar {
+		public static final int PORT = 0;  //PWM Port
+		public static final int LENGTH = 60;
+
 	}
 }
