@@ -60,7 +60,7 @@ public class RobotMap {
 	public final class Shooter {
 		public static final int TOP_MOTOR = 0;//assign channel
 		public static final int BOTTOM_MOTOR = 0;//assign channel
-		public static final int TOP_MOTOR_ID = 0;
+		public static final int TOP_MOTOR_ID = 4;
 		public static final int BOTTOM_MOTOR_ID = 1;
 	}
 	

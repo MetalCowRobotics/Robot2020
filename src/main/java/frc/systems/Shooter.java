@@ -2,13 +2,22 @@ package frc.systems;
 
 import frc.robot.RobotMap;
 
+<<<<<<< Updated upstream
+=======
+import javax.sound.sampled.Clip;
+
+>>>>>>> Stashed changes
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+<<<<<<< Updated upstream
 import frc.lib14.MCR_SRX;
 import frc.lib14.UtilityMethods;
+=======
+import frc.lib14.PDController;
+>>>>>>> Stashed changes
 import frc.lib14.XboxControllerMetalCow;
 import frc.systems.Magazine;
 
@@ -31,6 +40,14 @@ public class Shooter {
     private static SpeedControllerGroup shooter;
     // private static SpeedControllerGroup leftShooter;
     private static final Shooter instance = new Shooter();
+    private PDController PD;
+
+    double speed;
+
+    double P = 2.0;
+    double I = 1.0;
+    double D = 2.5;
+    double integral, correction, derivative, error, previous_error = 0;
 
     private Shooter() {
         neo1 = new CANSparkMax(RobotMap.Shooter.TOP_MOTOR_ID, MotorType.kBrushless);
@@ -76,9 +93,18 @@ public class Shooter {
     }
 
     public void runShooter() {
+<<<<<<< Updated upstream
         double speed = .65;
         shooter.set(speed);
         maintainSpeed = true;
+=======
+        if (operator.getRT() > 0) {
+            checkSpeed();
+            shooter.set(correction);
+        } else {
+            stopShooter();
+        }
+>>>>>>> Stashed changes
 
     }
 
@@ -89,7 +115,27 @@ public class Shooter {
     }
 
     public void checkSpeed() {
-        SmartDashboard.putNumber("Shooter Speed", neo1.getEncoder().getVelocity());// RPM
+        speed = operator.getRT();
+        if (speed > 0.9) {
+            speed = 0.9;
+        }
+        //PD = new PDController(speed);
+        if (speed == 0) {
+            integral = 0;
+        }
+        error = speed*5874.0 - neo1.getEncoder().getVelocity(); // Error = Target - Actual
+        integral += (error*.02); // Integral is increased by the error*time (which is .02 seconds using normal IterativeRobot)
+        derivative = (error - previous_error);
+        correction = (P*error + I*integral + D*derivative)/5874.0;
+        previous_error = error;
+
+        SmartDashboard.putNumber("RT", operator.getRT());
+        SmartDashboard.putNumber("error", P*error);// RPM
+        SmartDashboard.putNumber("integral", I*integral);// RPM
+        SmartDashboard.putNumber("derivative", D*derivative);// RPM
+        SmartDashboard.putNumber("correction", correction);// RPM
+        SmartDashboard.putNumber("previous error", previous_error);// RPM
+        SmartDashboard.putNumber("velocity", neo1.getEncoder().getVelocity());// RPM
 
     }
 

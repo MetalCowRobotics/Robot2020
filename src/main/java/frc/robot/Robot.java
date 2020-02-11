@@ -53,11 +53,15 @@ public class Robot extends TimedRobot {
   Hood hood = Hood.getInstance();
   XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
 
+<<<<<<< Updated upstream
   String shootAndGo = "shoot and go";
   String shootAndGather = "shoot and gather";
   String centerPosition = "center position";
   String leftPosition = "left position";
   String rightPosition = "right position";
+=======
+  MCRCommand mission;
+>>>>>>> Stashed changes
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -66,6 +70,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
+<<<<<<< Updated upstream
     UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
     dashboard.pushAuto();
     dashboard.pushTurnPID();
@@ -81,6 +86,9 @@ public class Robot extends TimedRobot {
     dashboard.pushStartingPosition(startingPosition);
     dashboard.pushAutonomousAction(autonomousAction);
     dashboard.pushAuto();
+=======
+
+>>>>>>> Stashed changes
   }
 
   @Override
@@ -127,6 +135,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+<<<<<<< Updated upstream
     controls.changeMode();
     applyInputs();
     driveTrain.drive();
@@ -194,6 +203,45 @@ public class Robot extends TimedRobot {
     // feedback
     SmartDashboard.putNumber("Gyro", driveTrain.getAngle());
     SmartDashboard.putNumber("Drive Encoder", driveTrain.getEncoderTics());
+=======
+    turret.rotateTurret(30);
+    // SmartDashboard.putNumber("Encoder Tics",
+    // testMotor.getSelectedSensorPosition());
+
+    // if (testMotor.getSelectedSensorPosition() < 3600){
+    // testMotor.set(.1);
+    // }
+    // if(testMotor.getSelectedSensorPosition() > 3600){
+    // testMotor.set(-.1);
+    // }
+    // if (testMotor.getSelectedSensorPosition() == 3600){
+    // testMotor.stopMotor();
+    // }
+
+    // 4050tics = 360 degrees 11.25tics = 1 degree
+
+    // magazine.checkIfLoaded();
+    // if (controller.getBButton()){
+    // magazine.feedOneBall();
+    // }else if (controller.getBButtonReleased()){
+    // magazine.stopMagazine();
+    // }
+    // magazine.runMagazine();
+    if (controller.getRB() == true) {
+      magazine.runMagazine();
+      magazine.checkIfLoaded();
+    } else {
+      magazine.stopMagazine();
+      magazine.checkIfLoaded();
+    }
+    SmartDashboard.putNumber("Gyro", drive.getAngle());
+    intake.lowerIntake();
+    // intake.retractIntake();
+
+    shooter.runShooter();
+    shooter.checkSpeed();
+
+>>>>>>> Stashed changes
   }
 
   @Override
@@ -202,5 +250,24 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testPeriodic() {
+<<<<<<< Updated upstream
+=======
+    // testMotor.set(.3);
+
+    // if (controller.getAButton()) {
+    // climber.lowerClimber();
+    // } else if (controller.getBButton()) {
+    // climber.raiseClimber();
+    // } else {
+    // climber.stopClimber();
+    // }
+    if (controller.getAButton()) {
+      climber.lowerClimber();
+    } else if (controller.getBButton()) {
+      climber.raiseClimber();
+    } else {
+      climber.stopClimber();
+    }
+>>>>>>> Stashed changes
   }
 }
