@@ -25,6 +25,9 @@ public class Turret {
         return instance;
     }
 
+    public void run() {
+    }
+
     // 4096tics = 360 degrees 11.25tics = 1 degree
     public void rotateTurret(int degrees) {
         int targetTics = 0;
@@ -63,4 +66,5 @@ public class Turret {
         // turret.getSensorCollection().setQuadraturePosition(0, 10);
         startPos = turret.getSelectedSensorPosition();
     }
+
 }

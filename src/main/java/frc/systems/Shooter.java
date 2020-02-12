@@ -7,37 +7,27 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.lib14.MCR_SRX;
 import frc.lib14.UtilityMethods;
 import frc.lib14.XboxControllerMetalCow;
 import frc.systems.Magazine;
 
 public class Shooter {
-
-    // private static MCR_SRX topShooter = new MCR_SRX(RobotMap.Shooter.TOP_MOTOR);
-    // private static MCR_SRX bottomShooter = new
-    // MCR_SRX(RobotMap.Shooter.BOTTOM_MOTOR);
-    // private static final SpeedControllerGroup shooter = new
-    // SpeedControllerGroup(topShooter, bottomShooter);
-    private static final XboxControllerMetalCow operator = new XboxControllerMetalCow(1);
-    private CANSparkMax neo1;
-    private CANSparkMax neo2;
+    private static final double SHOOTER_SPEED = .65;
+    // private static final XboxControllerMetalCow operator = new XboxControllerMetalCow(1);
+    private static CANSparkMax neo1 = new CANSparkMax(RobotMap.Shooter.TOP_MOTOR_ID, MotorType.kBrushless);
+    private static CANSparkMax neo2 = new CANSparkMax(RobotMap.Shooter.BOTTOM_MOTOR_ID, MotorType.kBrushless);
+    // private CANSparkMax neo3 = new CANSparkMax(2, MotorType.kBrushless);
+    // private CANSparkMax neo4 = new CANSparkMax(3, MotorType.kBrushless);
+    private static SpeedControllerGroup shooter = new SpeedControllerGroup(neo1, neo2);
+    private Magazine magazine = Magazine.getInstance();
+    private Turret turret = Turret.getInstance();
     private double targetSpeed;// RPM's
-    Magazine magazine = Magazine.getInstance();
-    boolean maintainSpeed = false;
+    private boolean maintainSpeed = false;
 
-    // private CANSparkMax neo3;
-    // private CANSparkMax neo4;
-    private static SpeedControllerGroup shooter;
-    // private static SpeedControllerGroup leftShooter;
+    // singleton instance
     private static final Shooter instance = new Shooter();
 
     private Shooter() {
-        neo1 = new CANSparkMax(RobotMap.Shooter.TOP_MOTOR_ID, MotorType.kBrushless);
-        neo2 = new CANSparkMax(RobotMap.Shooter.BOTTOM_MOTOR_ID, MotorType.kBrushless);
-        // neo3 = new CANSparkMax(2, MotorType.kBrushless);
-        // neo4 = new CANSparkMax(3, MotorType.kBrushless);
-        shooter = new SpeedControllerGroup(neo1, neo2);
         // leftShooter = new SpeedControllerGroup(neo3, neo4);
         // neoTwo.follow(neoOne);
         // newOne.getEncoder
@@ -53,17 +43,14 @@ public class Shooter {
 
     public void run() {
         magazine.run();
+        turret.run();
         if (maintainSpeed) {
             // speed PID loop
         }
     }
 
     public boolean atSpeed() {
-        if (UtilityMethods.between(neo1.getEncoder().getVelocity(), targetSpeed - 50, targetSpeed + 50)) {
-            return true;
-        } else {
-            return false;
-        }
+        return UtilityMethods.between(Math.abs(neo1.getEncoder().getVelocity()), targetSpeed - 50, targetSpeed + 50);
     }
 
     public void prepairToShoot() {
@@ -76,21 +63,18 @@ public class Shooter {
     }
 
     public void runShooter() {
-        double speed = .65;
-        shooter.set(speed);
+        shooter.set(SHOOTER_SPEED);
         maintainSpeed = true;
-
     }
 
     public void stopShooter() {
         shooter.stopMotor();
-        magazine.stopLoadToTop();
         maintainSpeed = false;
+        magazine.stopLoadToTop();
     }
 
     public void checkSpeed() {
         SmartDashboard.putNumber("Shooter Speed", neo1.getEncoder().getVelocity());// RPM
-
     }
 
     public void unload() {
@@ -98,7 +82,7 @@ public class Shooter {
     }
 
     public boolean isReady() {
-        if (magazine.isThereABallTopForShooter() && atSpeed()) {
+        if (atSpeed() && magazine.isThereABallTopForShooter()) {
             return true;
         }
         return false;
