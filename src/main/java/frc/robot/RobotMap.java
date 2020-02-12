@@ -22,7 +22,7 @@ public class RobotMap {
 	}
 
 	public final class DriveToSensor {
-		public static final double TOP_SPEED =.6;
+		public static final double TOP_SPEED =.95;
 		public static final int SLOW_DOWN_DISTANCE = 18;
 		public static final double BOTTOM_SPEED = .5;
 		public static final double MAX_ADJUSTMENT = .4;
@@ -42,7 +42,7 @@ public class RobotMap {
 	public final class TurnDegrees {
 		public static final double kP = 0.04; 
 		public static final double kI = .004; 
-		public static final double kD = .008;
+		public static final double kD = .08;
 		public static final double TOP_SPEED = 0;
 		public static final double VARIANCE = 2; //.25
 		public static final double MAX_ADJUSTMENT = .6;
