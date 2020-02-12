@@ -17,8 +17,10 @@ public class Turret {
     double turretSpeed = .4;
     int deadZone = 30;
     int startPos = 0;
+    
 
     private Turret() {
+        
     }
 
     public static Turret getInstance() {

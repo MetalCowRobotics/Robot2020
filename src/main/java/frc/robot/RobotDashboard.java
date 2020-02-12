@@ -43,6 +43,12 @@ public class RobotDashboard {
 		// SmartDashboard.putNumber("EkD", RobotMap.Elevator.kD);
 	}
 
+	public void pushShooterPIDValues(double P, double I, double D) {
+		SmartDashboard.putNumber("SkP", P);
+		SmartDashboard.putNumber("SkI", I);
+		SmartDashboard.putNumber("SkD", D);
+	}
+
 	// public double getElevatorTolerance() {
 	// return SmartDashboard.getNumber("Etolerance", RobotMap.Elevator.tolerance);
 	// }

@@ -17,12 +17,21 @@ public class PIDController {
 	private double setPoint;
 	private double previousError = 0;
 	private double accumulatedError = 0;
+	private double Iz = 10000;
 
 	public PIDController(double setPoint, double kP, double kI, double kD) {
 		this.setPoint = setPoint;
 		this.kD = kD;
 		this.kI = kI;
 		this.kP = kP;
+	}
+
+	public PIDController(double setPoint, double kP, double kI, double kD, double Iz) {
+		this.setPoint = setPoint;
+		this.kD = kD;
+		this.kI = kI;
+		this.kP = kP;
+		this.Iz = Iz;
 	}
 
 	public double calculateAdjustment(double curPosition) {
