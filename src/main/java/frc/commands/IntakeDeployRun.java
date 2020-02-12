@@ -22,8 +22,8 @@ public class IntakeDeployRun implements MCRCommand {
 
     @Override
     public void run() {
+        intake.startIntake();
         if (intake.intakeDeployed()) {
-            intake.startIntake();
             done = true;
         } else {
             intake.lowerIntake();

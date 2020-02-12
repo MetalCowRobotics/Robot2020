@@ -13,23 +13,24 @@ import frc.lib14.XboxControllerMetalCow;
 import frc.systems.Magazine;
 
 public class Shooter {
-
-    // private static MCR_SRX topShooter = new MCR_SRX(RobotMap.Shooter.TOP_MOTOR);
-    // private static MCR_SRX bottomShooter = new
-    // MCR_SRX(RobotMap.Shooter.BOTTOM_MOTOR);
-    // private static final SpeedControllerGroup shooter = new
-    // SpeedControllerGroup(topShooter, bottomShooter);
+    /**
+     *
+     */
+    private static final double MOTOR_MAX_RPM = 5874.0;
+    private static final double SHOOTER_SPEED = .65;
     private static final XboxControllerMetalCow operator = new XboxControllerMetalCow(1);
-    private CANSparkMax neo1;
-    private CANSparkMax neo2;
+    private static CANSparkMax neo1 = new CANSparkMax(RobotMap.Shooter.TOP_MOTOR_ID, MotorType.kBrushless);
+    // private static CANSparkMax neo2 = new CANSparkMax(RobotMap.Shooter.BOTTOM_MOTOR_ID, MotorType.kBrushless);
+    // private CANSparkMax neo3 = new CANSparkMax(2, MotorType.kBrushless);
+    // private CANSparkMax neo4 = new CANSparkMax(3, MotorType.kBrushless);
+    // private static SpeedControllerGroup shooter = new SpeedControllerGroup(neo1, neo2);
+    private static SpeedControllerGroup shooter = new SpeedControllerGroup(neo1);
+    private Magazine magazine = Magazine.getInstance();
+    private Turret turret = Turret.getInstance();
     private double targetSpeed;// RPM's
-    Magazine magazine = Magazine.getInstance();
-    boolean maintainSpeed = false;
+    private boolean maintainSpeed = false;
 
-    // private CANSparkMax neo3;
-    // private CANSparkMax neo4;
-    private static SpeedControllerGroup shooter;
-    // private static SpeedControllerGroup leftShooter;
+    // singleton instance
     private static final Shooter instance = new Shooter();
     private PDController PD;
 
@@ -41,11 +42,6 @@ public class Shooter {
     double integral, correction, derivative, error, previous_error = 0;
 
     private Shooter() {
-        neo1 = new CANSparkMax(RobotMap.Shooter.TOP_MOTOR_ID, MotorType.kBrushless);
-        neo2 = new CANSparkMax(RobotMap.Shooter.BOTTOM_MOTOR_ID, MotorType.kBrushless);
-        // neo3 = new CANSparkMax(2, MotorType.kBrushless);
-        // neo4 = new CANSparkMax(3, MotorType.kBrushless);
-        shooter = new SpeedControllerGroup(neo1, neo2);
         // leftShooter = new SpeedControllerGroup(neo3, neo4);
         // neoTwo.follow(neoOne);
         // newOne.getEncoder
@@ -61,17 +57,15 @@ public class Shooter {
 
     public void run() {
         magazine.run();
+        turret.run();
         if (maintainSpeed) {
+            shooter.set(getCorrection());
             // speed PID loop
         }
     }
 
     public boolean atSpeed() {
-        if (UtilityMethods.between(neo1.getEncoder().getVelocity(), targetSpeed - 50, targetSpeed + 50)) {
-            return true;
-        } else {
-            return false;
-        }
+        return UtilityMethods.between(Math.abs(neo1.getEncoder().getVelocity()), targetSpeed - 50, targetSpeed + 50);
     }
 
     public void prepairToShoot() {
@@ -84,44 +78,41 @@ public class Shooter {
     }
 
     public void runShooter() {
-        if (operator.getRT() > 0) {
-            checkSpeed();
-            shooter.set(correction);
-        } else {
-            stopShooter();
-        }
+        // if (operator.getRT() > 0) {
+        //     getCorrection();
+        //     shooter.set(correction);
+        // } else {
+        //     stopShooter();
+        // }
 
+        shooter.set(SHOOTER_SPEED);
+        maintainSpeed = true;
     }
 
     public void stopShooter() {
         shooter.stopMotor();
-        magazine.stopLoadToTop();
         maintainSpeed = false;
+        magazine.stopLoadToTop();
     }
 
-    public void checkSpeed() {
-        speed = operator.getRT();
-        if (speed > 0.9) {
-            speed = 0.9;
-        }
-        //PD = new PDController(speed);
-        if (speed == 0) {
-            integral = 0;
-        }
-        error = speed*5874.0 - neo1.getEncoder().getVelocity(); // Error = Target - Actual
-        integral += (error*.02); // Integral is increased by the error*time (which is .02 seconds using normal IterativeRobot)
+    public double getCorrection() {
+        // PD = new PDController(speed);
+
+        error = speed * MOTOR_MAX_RPM - neo1.getEncoder().getVelocity(); // Error = Target - Actual
+        integral += (error * .02); // Integral is increased by the error*time (which is .02 seconds using normal
+                                   // IterativeRobot)
         derivative = (error - previous_error);
-        correction = (P*error + I*integral + D*derivative)/5874.0;
+        correction = (P * error + I * integral + D * derivative) / MOTOR_MAX_RPM;
         previous_error = error;
 
         SmartDashboard.putNumber("RT", operator.getRT());
-        SmartDashboard.putNumber("error", P*error);// RPM
-        SmartDashboard.putNumber("integral", I*integral);// RPM
-        SmartDashboard.putNumber("derivative", D*derivative);// RPM
+        SmartDashboard.putNumber("error", P * error);// RPM
+        SmartDashboard.putNumber("integral", I * integral);// RPM
+        SmartDashboard.putNumber("derivative", D * derivative);// RPM
         SmartDashboard.putNumber("correction", correction);// RPM
         SmartDashboard.putNumber("previous error", previous_error);// RPM
         SmartDashboard.putNumber("velocity", neo1.getEncoder().getVelocity());// RPM
-
+        return correction;
     }
 
     public void unload() {
@@ -129,7 +120,7 @@ public class Shooter {
     }
 
     public boolean isReady() {
-        if (magazine.isThereABallTopForShooter() && atSpeed()) {
+        if (atSpeed() && magazine.isThereABallTopForShooter()) {
             return true;
         }
         return false;
@@ -143,6 +134,11 @@ public class Shooter {
 
     public void shootBall() {
         magazine.feedOneBall();
+    }
+
+    public void setTargetSpeed(double targetSpeed) {
+        this.targetSpeed = targetSpeed;
+        integral = 0;
     }
 
 }

@@ -26,6 +26,7 @@ public class TurnDegrees implements MCRCommand {
 	private final int ACTIVE = 1;
 	private final int DONE = 2;
 	private int numMatches = 0;
+	private int count = 0;
 
 	public TurnDegrees(double degrees) {
 		super();
@@ -54,8 +55,8 @@ public class TurnDegrees implements MCRCommand {
 			driveController.set_kD(dashboard.getTurnKD());
 
 			double currentAngle = driveTrain.getAngle();
-			// if (Math.abs(currentAngle) >= Math.abs(.95 * degrees)) {
-			if (Math.abs(currentAngle) >= Math.abs(degrees)) {
+			if (Math.abs(currentAngle) >= Math.abs(.95 * degrees)) {
+			//if (Math.abs(currentAngle) >= Math.abs(degrees)) {
 
 				driveController.set_kI(dashboard.getTurnKI());
 			} else {
@@ -85,7 +86,7 @@ public class TurnDegrees implements MCRCommand {
 			// limitCorrection(correction, RobotMap.TurnDegrees.SLOW_ADJUSTMENT));
 			// // logger.info("Turn Degrees Slow");
 			// } else {
-			if (numMatches > 2) {
+			if (numMatches > 200) {
 				driveTrain.stop();
 				currentState = DONE;
 			} else {
