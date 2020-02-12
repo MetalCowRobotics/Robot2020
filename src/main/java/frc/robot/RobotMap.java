@@ -40,18 +40,18 @@ public class RobotMap {
 	}
 
 	public final class TurnDegrees {
-		public static final double kP = .04; 
-		public static final double kI = .001; 
-		public static final double kD = .0; 
+		public static final double kP = 0.04; 
+		public static final double kI = .004; 
+		public static final double kD = .008;
 		public static final double TOP_SPEED = 0;
-		public static final double VARIANCE = 1; //.25
+		public static final double VARIANCE = 2; //.25
 		public static final double MAX_ADJUSTMENT = .6;
-		public static final double SLOW_VARIANCE = 20; //10
-		public static final double SLOW_ADJUSTMENT = .4;
+		public static final double SLOW_VARIANCE = 15; //10
+		public static final double SLOW_ADJUSTMENT = .6;
 	}
 
 	public final class DriveStraightTime {
-		public static final double TOP_SPEED = .6;
+		public static final double TOP_SPEED = 1;
 		public static final double MAX_ADJUSTMENT = .4;
 		public static final double BOTTOM_SPEED = .3;
 		public static final double SLOW_DOWN_TIME = 2;
@@ -119,5 +119,19 @@ public class RobotMap {
 		public static final Level missionClass = Level.WARNING;
 		public static final Level autoDriveClass = Level.WARNING;
 		public static final Level componentBuilderClass = Level.WARNING;
+	}
+
+
+	public static final class ColorWheel{
+		public static final int Motor = 0;
+	} 
+
+	public static final class LightRing {
+		public static final int PORT = 0; //RELAY Port
+	}
+
+	public static final class LightBar {
+		public static final int PORT = 0;  //PWM Port
+		public static final int LENGTH = 60;
 	}
 }

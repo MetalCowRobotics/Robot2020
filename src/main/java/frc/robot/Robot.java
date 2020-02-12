@@ -17,10 +17,13 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
+import frc.autonomous.ShootAndGather;
 import frc.autonomous.ShootAndGo;
+import frc.commands.TurnDegrees;
 import frc.lib14.MCRCommand;
 import frc.lib14.XboxControllerMetalCow;
 import frc.systems.Climber;
+import frc.systems.ColorWheel;
 import frc.systems.DriveTrain;
 import frc.systems.Hood;
 import frc.systems.Intake;
@@ -38,9 +41,9 @@ import frc.systems.Turret;
 public class Robot extends TimedRobot {
   // systems
   DriveTrain driveTrain = DriveTrain.getInstance();
-  Intake intake = Intake.getInstance();
-  Shooter shooter = Shooter.getInstance();
-  Climber climber = Climber.getInstance();
+  Intake intake;// = Intake.getInstance();
+  Shooter shooter;// = Shooter.getInstance();
+  Climber climber;// = Climber.getInstance();
   MasterControls controls = MasterControls.getInstance();
   RobotDashboard dashboard = RobotDashboard.getInstance();
 
@@ -49,8 +52,8 @@ public class Robot extends TimedRobot {
 
   // testing only
   Magazine magazine = Magazine.getInstance();
-  Turret turret = Turret.getInstance();
-  Hood hood = Hood.getInstance();
+//  Turret turret = Turret.getInstance();
+ // Hood hood = Hood.getInstance();
   XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
 
   String shootAndGo = "shoot and go";
@@ -85,7 +88,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    mission = new ShootAndGo("left");
+    mission = new ShootAndGather("test");
+
   }
 
   @Override
@@ -94,7 +98,7 @@ public class Robot extends TimedRobot {
     runSystemsState();
   }
 
-  I2C.Port port = I2C.Port.kOnboard;
+  I2C.Port port = I2C.Port.kOnboard; /*
   ColorSensorV3 sensor = new ColorSensorV3(port);
   ColorMatch color = new ColorMatch();
 
@@ -102,18 +106,19 @@ public class Robot extends TimedRobot {
   final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
   final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
   final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
-
+*/
   @Override
   public void teleopInit() {
     // testing
+    /*
     color.addColorMatch(kBlueTarget);
     color.addColorMatch(kGreenTarget);
     color.addColorMatch(kRedTarget);
     color.addColorMatch(kYellowTarget);
-    turret.resetTurretEncoder();
+    turret.resetTurretEncoder(); */
     // Magazine.getInstance();
   }
-
+/*
   private void applyInputs() {
     if (controls.lowerIntake()) {
       intake.lowerIntake();
@@ -124,32 +129,18 @@ public class Robot extends TimedRobot {
       shooter.shootBallWhenReady();
     }
 
-  }
+  } */
 
   @Override
   public void teleopPeriodic() {
     controls.changeMode();
+    /*
     applyInputs();
     driveTrain.drive();
-    runSystemsState();
-    //
-    // color sensor testing
-    //
-    SmartDashboard.putNumber("red", sensor.getRed());
-    SmartDashboard.putNumber("green", sensor.getGreen());
-    SmartDashboard.putNumber("blue", sensor.getBlue());
-    SmartDashboard.putNumber("proximity", sensor.getProximity());
-    ColorMatchResult result = color.matchClosestColor(sensor.getColor());
-    SmartDashboard.putNumber("confidence", result.confidence);
-    if (result.color == kRedTarget) {
-      SmartDashboard.putString("color", "red");
-    } else if (result.color == kGreenTarget) {
-      SmartDashboard.putString("color", "green");
-    } else if (result.color == kBlueTarget) {
-      SmartDashboard.putString("color", "blue");
-    } else if (result.color == kYellowTarget) {
-      SmartDashboard.putString("color", "yellow");
-    }
+    intake.run();
+    shooter.run();
+    climber.run();
+    //colorwheel.run();
     // drive train testing
     // driveTrain.arcadeDrive(-controller.getRY(), -controller.getX());
     //
@@ -192,7 +183,7 @@ public class Robot extends TimedRobot {
     // }
     // feedback
     SmartDashboard.putNumber("Gyro", driveTrain.getAngle());
-    SmartDashboard.putNumber("Drive Encoder", driveTrain.getEncoderTics());
+    SmartDashboard.putNumber("Drive Encoder", driveTrain.getEncoderTics()); */
   }
 
   private void runSystemsState() {
