@@ -41,9 +41,9 @@ import frc.systems.Turret;
 public class Robot extends TimedRobot {
   // systems
   DriveTrain driveTrain = DriveTrain.getInstance();
-  //Intake intake = Intake.getInstance();
-  //Shooter shooter = Shooter.getInstance();
-  //Climber climber = Climber.getInstance();
+  Intake intake;// = Intake.getInstance();
+  Shooter shooter;// = Shooter.getInstance();
+  Climber climber;// = Climber.getInstance();
   MasterControls controls = MasterControls.getInstance();
   RobotDashboard dashboard = RobotDashboard.getInstance();
 
@@ -95,6 +95,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     mission.run();
+    runSystemsState();
   }
 
   I2C.Port port = I2C.Port.kOnboard; /*
@@ -183,6 +184,12 @@ public class Robot extends TimedRobot {
     // feedback
     SmartDashboard.putNumber("Gyro", driveTrain.getAngle());
     SmartDashboard.putNumber("Drive Encoder", driveTrain.getEncoderTics()); */
+  }
+
+  private void runSystemsState() {
+    intake.run();
+    shooter.run();
+    climber.run();
   }
 
   @Override
