@@ -20,10 +20,7 @@ public class Turret {
     
 
     private Turret() {
-<<<<<<< Updated upstream
-=======
         
->>>>>>> Stashed changes
     }
 
     public static Turret getInstance() {

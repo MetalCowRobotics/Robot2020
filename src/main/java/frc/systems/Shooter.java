@@ -2,22 +2,13 @@ package frc.systems;
 
 import frc.robot.RobotMap;
 
-<<<<<<< Updated upstream
-=======
-import javax.sound.sampled.Clip;
-
->>>>>>> Stashed changes
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-<<<<<<< Updated upstream
-import frc.lib14.MCR_SRX;
-import frc.lib14.UtilityMethods;
-=======
 import frc.lib14.PDController;
->>>>>>> Stashed changes
+import frc.lib14.UtilityMethods;
 import frc.lib14.XboxControllerMetalCow;
 import frc.systems.Magazine;
 
@@ -93,18 +84,12 @@ public class Shooter {
     }
 
     public void runShooter() {
-<<<<<<< Updated upstream
-        double speed = .65;
-        shooter.set(speed);
-        maintainSpeed = true;
-=======
         if (operator.getRT() > 0) {
             checkSpeed();
             shooter.set(correction);
         } else {
             stopShooter();
         }
->>>>>>> Stashed changes
 
     }
 
