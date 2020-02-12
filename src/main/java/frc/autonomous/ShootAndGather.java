@@ -38,7 +38,7 @@ public class ShootAndGather implements MCRCommand {
         // MCRCommand driveset = new SequentialCommands( new TimedCommandSet(new TurnDegrees(170), 4),new CommandPause(.02), new DriveStraightInches(98, 4), new TimedCommandSet(new TurnDegrees(22), 4), new CommandPause(.02), new DriveStraightInches(36, 4),new CommandPause(.02), new DriveStraightInches(36, 4));
         MCRCommand driveSet = new TurnDegrees(90);
         // mission = new SequentialCommands(new TimedCommandSet(commandSet, 5), new TimedCommandSet(driveset, 30));
-        mission = new SequentialCommands(new TimedCommandSet (commandSet, 100), driveSet);
+        mission = new SequentialCommands(new TimedCommandSet (commandSet, 10), driveSet);
     }
 
 
