@@ -32,7 +32,7 @@ public class Robot extends TimedRobot {
   // systems
   DriveTrain driveTrain = DriveTrain.getInstance();
   Intake intake;// = Intake.getInstance();
-  Shooter shooter;// = Shooter.getInstance();
+  Shooter shooter = Shooter.getInstance();
   Climber climber;// = Climber.getInstance();
   MasterControls controls = MasterControls.getInstance();
   RobotDashboard dashboard = RobotDashboard.getInstance();

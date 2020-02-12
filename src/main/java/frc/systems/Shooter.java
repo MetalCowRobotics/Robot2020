@@ -1,5 +1,6 @@
 package frc.systems;
 
+import frc.robot.RobotDashboard;
 import frc.robot.RobotMap;
 
 import com.revrobotics.CANSparkMax;
@@ -36,9 +37,9 @@ public class Shooter {
 
     double speed;
 
-    double P = 2.0;
-    double I = 1.0;
-    double D = 2.5;
+    double P = .000015;
+    double I = .00003;
+    double D = 0;
     double integral, correction, derivative, error, previous_error = 0;
 
     private Shooter() {
@@ -49,6 +50,7 @@ public class Shooter {
         // neoOne.set(speed);
         // SpeedControllerGroup shooterR = new SpeedControllerGroup(neoOne, neoTwo);
         // shooterL.follow(shooterR);
+        RobotDashboard.getInstance().pushShooterPIDValues(P, I, D);
     }
 
     public static Shooter getInstance() {
@@ -59,7 +61,7 @@ public class Shooter {
         magazine.run();
         turret.run();
         if (maintainSpeed) {
-            shooter.set(getCorrection());
+            shooter.set(SHOOTER_SPEED + getCorrection());
             // speed PID loop
         }
     }
@@ -96,15 +98,17 @@ public class Shooter {
     }
 
     public double getCorrection() {
-        // PD = new PDController(speed);
-
-        error = speed * MOTOR_MAX_RPM - neo1.getEncoder().getVelocity(); // Error = Target - Actual
-        integral += (error * .02); // Integral is increased by the error*time (which is .02 seconds using normal
+        error = targetSpeed - neo1.getEncoder().getVelocity(); // Error = Target - Actual
+        if (Math.abs(error) < 200) {
+        integral += (error); // Integral is increased by the error*time (which is .02 seconds using normal
                                    // IterativeRobot)
+        }
         derivative = (error - previous_error);
-        correction = (P * error + I * integral + D * derivative) / MOTOR_MAX_RPM;
+        correction = (getP() * error + getI() * integral + getD() * derivative);
         previous_error = error;
 
+
+        System.out.println(targetSpeed+" vel:"+neo1.getEncoder().getVelocity()+" correction:"+correction);
         SmartDashboard.putNumber("RT", operator.getRT());
         SmartDashboard.putNumber("error", P * error);// RPM
         SmartDashboard.putNumber("integral", I * integral);// RPM
@@ -114,6 +118,21 @@ public class Shooter {
         SmartDashboard.putNumber("velocity", neo1.getEncoder().getVelocity());// RPM
         return correction;
     }
+
+    private double getP() {
+        return SmartDashboard.getNumber("SkP", P);
+    }
+
+    
+    private double getI() {
+        return SmartDashboard.getNumber("SkI", I);
+    }
+
+    
+    private double getD() {
+        return SmartDashboard.getNumber("SkD", D);
+    }
+
 
     public void unload() {
         // unload the magazine
