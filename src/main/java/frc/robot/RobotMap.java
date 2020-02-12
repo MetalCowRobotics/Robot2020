@@ -121,6 +121,11 @@ public class RobotMap {
 		public static final Level componentBuilderClass = Level.WARNING;
 	}
 
+
+	public static final class ColorWheel{
+		public static final int Motor = 0;
+	} 
+
 	public static final class LightRing {
 		public static final int PORT = 0; //RELAY Port
 	}
@@ -128,6 +133,5 @@ public class RobotMap {
 	public static final class LightBar {
 		public static final int PORT = 0;  //PWM Port
 		public static final int LENGTH = 60;
-
 	}
 }

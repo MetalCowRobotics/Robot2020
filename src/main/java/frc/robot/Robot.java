@@ -23,6 +23,7 @@ import frc.commands.TurnDegrees;
 import frc.lib14.MCRCommand;
 import frc.lib14.XboxControllerMetalCow;
 import frc.systems.Climber;
+import frc.systems.ColorWheel;
 import frc.systems.DriveTrain;
 import frc.systems.Hood;
 import frc.systems.Intake;
@@ -138,24 +139,7 @@ public class Robot extends TimedRobot {
     intake.run();
     shooter.run();
     climber.run();
-    //
-    // color sensor testing
-    //
-    SmartDashboard.putNumber("red", sensor.getRed());
-    SmartDashboard.putNumber("green", sensor.getGreen());
-    SmartDashboard.putNumber("blue", sensor.getBlue());
-    SmartDashboard.putNumber("proximity", sensor.getProximity());
-    ColorMatchResult result = color.matchClosestColor(sensor.getColor());
-    SmartDashboard.putNumber("confidence", result.confidence);
-    if (result.color == kRedTarget) {
-      SmartDashboard.putString("color", "red");
-    } else if (result.color == kGreenTarget) {
-      SmartDashboard.putString("color", "green");
-    } else if (result.color == kBlueTarget) {
-      SmartDashboard.putString("color", "blue");
-    } else if (result.color == kYellowTarget) {
-      SmartDashboard.putString("color", "yellow");
-    }
+    //colorwheel.run();
     // drive train testing
     // driveTrain.arcadeDrive(-controller.getRY(), -controller.getX());
     //
