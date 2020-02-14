@@ -2,6 +2,7 @@ package frc.commands;
 
 import frc.lib14.MCRCommand;
 import frc.lib14.PDController;
+import frc.lib14.PIDController;
 import frc.lib14.UtilityMethods;
 import frc.robot.RobotDashboard;
 import frc.robot.RobotMap;
@@ -15,7 +16,7 @@ public class TurnDegrees implements MCRCommand {
 	private double setPoint;
 	private DriveTrain driveTrain = DriveTrain.getInstance();
 	private RobotDashboard dashboard = RobotDashboard.getInstance();
-	private PDController driveController;
+	private PIDController driveController;
 	private int currentState = 0;
 	private final int IDLE = 0;
     private final int ACTIVE = 1;
@@ -29,10 +30,13 @@ public class TurnDegrees implements MCRCommand {
 		
 		case IDLE:
 			driveTrain.resetGyro();
-			setPoint = driveTrain.getAngle() + degrees; 
-//System.out.println(("TurnDegrees SetPoint:" + setPoint));
-			// driveController = new PDController(setPoint, dashboard.getTurnKP(), dashboard.getTurnKI()); 
-			driveTrain.arcadeDrive(RobotMap.TurnDegrees.TOP_SPEED, driveController.calculateAdjustment(setPoint));
+			setPoint = driveTrain.getAngle() + degrees;
+			System.out.println(("TurnDegrees SetPoint:" + setPoint));
+			driveController = new PIDController(setPoint, RobotMap.TurnDegrees.kP, RobotMap.TurnDegrees.kI,	RobotMap.TurnDegrees.kD, RobotMap.TurnDegrees.Iz);
+			System.out.println("Before line 35  " + driveController.calculateAdjustment(setPoint));
+			// driveTrain.arcadeDrive(RobotMap.TurnDegrees.TOP_SPEED,
+			// driveController.calculateAdjustment(setPoint));
+			System.out.println("After line 35");
 			currentState = ACTIVE;
 			break;
 		case ACTIVE:

@@ -40,9 +40,10 @@ public class RobotMap {
 	}
 
 	public final class TurnDegrees {
-		public static final double kP = .6; 
-		public static final double kI = 0; 
-		public static final double kD = .05; 
+		public static final double kP = 0.04; 
+		public static final double kI = .004; 
+		public static final double kD = .08;
+		public static final double Iz = 1000;
 		public static final double TOP_SPEED = 0;
 		public static final double VARIANCE = .25;
 		public static final double MAX_ADJUSTMENT = 8;

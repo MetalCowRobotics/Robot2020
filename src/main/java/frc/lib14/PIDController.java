@@ -12,6 +12,7 @@ public class PIDController {
 	private double kP = 0;
 	private double kI = 0;
 	private double kD = 0;
+	private double Iz = 10000;
 
 	// control variables
 	private double setPoint;
@@ -25,11 +26,24 @@ public class PIDController {
 		this.kP = kP;
 	}
 
+	public PIDController(double setPoint, double kP, double kI, double kD, double Iz) {
+		this.setPoint = setPoint;
+		this.kD = kD;
+		this.kI = kI;
+		this.kP = kP;
+		this.Iz = Iz;
+	}
+
 	public double calculateAdjustment(double curPosition) {
 		double error = calaculateError(setPoint, curPosition);
 		double motorAdjustment = determineAdjustment(error);
 		previousError = error;
-		accumulatedError = accumulatedError + error;
+		// if (Math.abs(kI) > 0){
+		// 	accumulatedError = accumulatedError + error;
+		// }
+		if (Math.abs(setPoint - curPosition) < Iz ) {
+			accumulatedError += error;
+		}
 		return motorAdjustment;
 	}
 
