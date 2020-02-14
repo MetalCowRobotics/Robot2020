@@ -32,6 +32,7 @@ public class Vision {
     double maxYaw = 25;
     double yawDegrees = 0;
     boolean targetMode = false;
+    
 
     // MCRCommand turnCW = new SequentialCommands(new TimedCommandSet(new
     // TurnDegrees(turnAdjustment), 2),new CommandPause(.2));
@@ -51,7 +52,7 @@ public class Vision {
         NetworkTable myCam = table.getTable("chameleon-vision").getSubTable("Mindstone");
         yaw = myCam.getEntry("targetYaw");
         pitch = myCam.getEntry("targetPitch");
-        isDriverMode = myCam.getEntry("driver_mode");
+        isDriverMode = myCam.getEntry("driverMode");
         width = myCam.getEntry("targetFittedWidth");
         height = myCam.getEntry("targetFittedHeight");
 
@@ -74,6 +75,7 @@ public class Vision {
 
     public void setTargetMode(boolean cameraMode) {
         isDriverMode.setBoolean(!cameraMode);
+        System.out.println("   cameraMode:" + cameraMode);
     }
 
     public boolean getTargetMode() {
