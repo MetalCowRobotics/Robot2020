@@ -2,6 +2,7 @@ package frc.systems;
 
 import frc.robot.RobotDashboard;
 import frc.robot.RobotMap;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -10,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib14.PIDController;
 import frc.lib14.UtilityMethods;
 import frc.lib14.XboxControllerMetalCow;
+import frc.systems.Magazine;
 
 public class Shooter {
     private static final double SHOOTER_SPEED = .65;
@@ -33,7 +35,6 @@ public class Shooter {
     // singleton instance
     private static final Shooter instance = new Shooter();
 
-
     private Shooter() {
 
         // leftShooter = new SpeedControllerGroup(neo3, neo4);
@@ -51,14 +52,44 @@ public class Shooter {
         return instance;
     }
 
-    public void runShooter() {
-        double speed = operator.getLT();
-        shooter.set(speed);
+    public void run() {
+        magazine.run();
+        turret.run();
+        if (maintainSpeed) {
+            shooter.set(SHOOTER_SPEED + getCorrection());
+            // speed PID loop
+        }
+    }
 
+    public boolean atSpeed() {
+        return UtilityMethods.between(Math.abs(neo1.getEncoder().getVelocity()), targetSpeed - 50, targetSpeed + 50);
+    }
+
+    public void prepairToShoot() {
+        runShooter();
+        magazine.loadBallInShootingPosition();
+    }
+
+    public int ballShots() {
+        return magazine.getCounted();
+    }
+
+    public void runShooter() {
+        // if (operator.getRT() > 0) {
+        //     getCorrection();
+        //     shooter.set(correction);
+        // } else {
+        //     stopShooter();
+        // }
+
+        shooter.set(SHOOTER_SPEED);
+        maintainSpeed = true;
     }
 
     public void stopShooter() {
         shooter.stopMotor();
+        maintainSpeed = false;
+        magazine.stopLoadToTop();
     }
 
     public double getCorrection() {
@@ -82,15 +113,14 @@ public class Shooter {
         return SmartDashboard.getNumber("SkD", D);
     }
 
-    }
-    public void unload(){
+    public void unload() {
         // unload the magazine
     }
 
     public boolean isReady() {
-        // if (atSpeed() && magazine.isThereABallTopForShooter()) {
-        //     return true;
-        // }
+        if (atSpeed() && magazine.isThereABallTopForShooter()) {
+            return true;
+        }
         return false;
     }
 

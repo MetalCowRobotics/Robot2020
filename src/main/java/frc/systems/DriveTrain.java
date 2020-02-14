@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib14.MCR_SRX;
 import frc.robot.RobotDashboard;
 import frc.robot.RobotMap;
@@ -25,7 +26,7 @@ public class DriveTrain {
 	private static final DifferentialDrive drive = new DifferentialDrive(LEFT_DRIVE_MOTORS, RIGHT_DRIVE_MOTORS);
 	private static final RobotDashboard dashboard = RobotDashboard.getInstance();
 	private static final MasterControls controller = MasterControls.getInstance();
-	private static final DriveTrain instance = new DriveTrain();
+
 
 	public static final double SPRINT_SPEED = 1.0;
 	public static final double NORMAL_SPEED = 0.7;
@@ -33,21 +34,17 @@ public class DriveTrain {
 
 	
 	private int inverted = 1;
-	
+	private static final DriveTrain instance = new DriveTrain();
 		
 	
 
 	// Singleton
 	protected DriveTrain() {
-		rightFrontMotor.configOpenloopRamp(Drivetrain.RAMP_SPEED);
-		leftFrontMotor.configOpenloopRamp(Drivetrain.RAMP_SPEED);
-		//rightBackMotor.configOpenloopRamp(Drivetrain.RAMP;
-		//leftBackMotor.configOpenloopRamp(Drivetrain.RAMP);
-		rightFrontMotor.setNeutralMode(NeutralMode.Brake);
-		leftFrontMotor.setNeutralMode(NeutralMode.Brake);
-		//rightBackMotor.setNeutralMode(NeutalMode.Break);
-		//rightBackMotor.setNeutralMode(NeutralMode.Brake);
-		logger.setLevel(RobotMap.LogLevels.driveTrainClass);
+		// rightFrontMotor.configOpenloopRamp(Drivetrain.RAMP_SPEED);
+		// leftFrontMotor.configOpenloopRamp(Drivetrain.RAMP_SPEED);
+		// rightFrontMotor.setNeutralMode(NeutralMode.Brake);
+		// leftFrontMotor.setNeutralMode(NeutralMode.Brake);
+		// logger.setLevel(RobotMap.LogLevels.driveTrainClass);
 	}
 
 	public static DriveTrain getInstance() {
@@ -75,7 +72,9 @@ public class DriveTrain {
 		// if only used in autonomous may not need the throttle
 		drive.arcadeDrive(speed, angle);
 	}
-
+	public void tankDrive(double leftSpeed, double rightSpeed) {
+		drive.tankDrive(leftSpeed, rightSpeed);
+	}
 	public void stop() {
 		drive.stopMotor();
 	}
@@ -85,14 +84,14 @@ public class DriveTrain {
 	}
 
 	public void resetGyro() {
-		DriverStation.reportWarning("Gyro Before Reset: " + GYRO.getAngle(), false);
+		DriverStation.reportWarning("Gyro Before Reset: " + getAngle(), false);
 		GYRO.reset();
-		DriverStation.reportWarning("Gryo After Reset: " + GYRO.getAngle(), false);
+		DriverStation.reportWarning("Gryo After Reset: " + getAngle(), false);
 	}
 
 	public double getAngle() {
-		dashboard.pushGyro(GYRO.getAngle());
-		return GYRO.getAngle();
+		dashboard.pushGyro(-GYRO.getAngle());
+		return -GYRO.getAngle();
 	}
 
 	
@@ -127,21 +126,22 @@ public class DriveTrain {
 	}
 
 	public void printRightEncoder() {
-		//System.out.println(getRightEncoderTics() + " RightEncoder");
+		System.out.println(getRightEncoderTics() + " RightEncoder");
+		SmartDashboard.putNumber("encoder", getRightEncoderTics());
 	}
-
 	public void printLeftEncoder() {
-		//System.out.println(getLeftEncoderTics() + " LeftEncoder");
-
+		System.out.println(getLeftEncoderTics() + " LeftEncoder");
+		SmartDashboard.putNumber("left encoder", getLeftEncoderTics());
 	}
-
+	
 	public double encoderDifference() {
 		return (getRightEncoderTics() - getLeftEncoderTics());
 	}
 
 	public double getEncoderTics() {
 		// return (getRightEncoderTics() + getLeftEncoderTics()) / 2;
-		return getRightEncoderTics();
+		// return getRightEncoderTics();
+		return -getLeftEncoderTics();
 	}
 
 }

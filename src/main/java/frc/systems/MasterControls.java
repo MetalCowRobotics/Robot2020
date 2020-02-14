@@ -2,9 +2,6 @@ package frc.systems;
 
 import java.util.logging.Logger;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib14.UtilityMethods;
 import frc.lib14.XboxControllerMetalCow;
 import frc.robot.RobotDashboard;
@@ -19,11 +16,13 @@ public class MasterControls {
 	private static final XboxControllerMetalCow operator = new XboxControllerMetalCow(
 			RobotMap.OperatorController.USB_PORT);
 	private boolean fieldMode = true;
+	private static boolean xLast = false;
 
 	private MasterControls() {
 		// Intentionally Blank for Singleton
 		logger.setLevel(RobotMap.LogLevels.masterControlsClass);
 	}
+
 	private static final RobotDashboard dash = RobotDashboard.getInstance();
 
 	public static MasterControls getInstance() {
@@ -52,5 +51,56 @@ public class MasterControls {
 
 	public double direction() {
 		return driver.getLX();
+	}
+
+	public boolean raiseIntake() {
+		if (UtilityMethods.between(operator.getPOV(), 0, 89)) {
+			return true;
+		}
+		if (UtilityMethods.between(operator.getPOV(), 271, 360)) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean lowerIntake() {
+		if (UtilityMethods.between(operator.getPOV(), 91, 269)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean intakeOnOff() {
+		return operator.getRB();
+	}
+
+	public void changeMode() {
+		if (operator.getRawButtonPressed(7)) {
+			fieldMode = !fieldMode;
+		}
+	}
+
+	public boolean getFieldMode() {
+		return fieldMode;
+	}
+
+	public double climbSpeed() {
+		if (fieldMode) {
+			return 0;
+		}
+		return operator.getLY();
+	}
+
+	public boolean target() {
+		return operator.getYButtonPressed();
+	}
+
+	public boolean shootNow() {
+		return operator.getAButton();
+	}
+
+	public boolean spinUpAndShoot() {
+		return operator.getBButton();
 	}
 }

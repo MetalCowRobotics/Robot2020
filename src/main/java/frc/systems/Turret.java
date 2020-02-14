@@ -17,13 +17,17 @@ public class Turret {
     double turretSpeed = .4;
     int deadZone = 30;
     int startPos = 0;
+    
 
     private Turret() {
-
+        
     }
 
     public static Turret getInstance() {
         return instance;
+    }
+
+    public void run() {
     }
 
     // 4096tics = 360 degrees 11.25tics = 1 degree
@@ -64,4 +68,5 @@ public class Turret {
         // turret.getSensorCollection().setQuadraturePosition(0, 10);
         startPos = turret.getSelectedSensorPosition();
     }
+
 }

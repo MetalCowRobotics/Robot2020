@@ -13,16 +13,16 @@ public class RobotMap {
 	}
 
 	public static final class Drivetrain {
-		public static final int LEFT_MOTOR = 15;//CAN
-		public static final int LEFT_MOTOR_NO_ENCODER = 4;
-		public static final int RIGHT_MOTOR = 2;//CAN
-		public static final int RIGHT_MOTOR_NO_ENCODER = 5;
+		public static final int LEFT_MOTOR = 3;
+		public static final int LEFT_MOTOR_NO_ENCODER = 5;
+		public static final int RIGHT_MOTOR = 4;
+		public static final int RIGHT_MOTOR_NO_ENCODER = 6;
 		public static final int WHEEL_DIAMETER = 6;
 		public static final double RAMP_SPEED = .6;
 	}
 
 	public final class DriveToSensor {
-		public static final double TOP_SPEED =.6;
+		public static final double TOP_SPEED =.95;
 		public static final int SLOW_DOWN_DISTANCE = 18;
 		public static final double BOTTOM_SPEED = .5;
 		public static final double MAX_ADJUSTMENT = .4;
@@ -31,7 +31,7 @@ public class RobotMap {
 	public final class DriveWithEncoder {
 		public static final double TOP_SPEED = .5;
 		public static final double BOTTOM_SPEED = .4;
-		public static final double MAX_ADJUSTMENT = .4;
+		public static final double MAX_ADJUSTMENT = .6;
 		public static final int TICS_PER_ROTATION = 4096; 
 		public static final double INCHES_PER_ROTATION = Math.PI * RobotMap.Drivetrain.WHEEL_DIAMETER;
 		public static final double SLOW_DOWN_DISTANCE = (12 / INCHES_PER_ROTATION) * TICS_PER_ROTATION;
@@ -45,14 +45,14 @@ public class RobotMap {
 		public static final double kD = .08;
 		public static final double Iz = 1000;
 		public static final double TOP_SPEED = 0;
-		public static final double VARIANCE = .25;
-		public static final double MAX_ADJUSTMENT = 8;
-		public static final double SLOW_VARIANCE = 10;
-		public static final double SLOW_ADJUSTMENT = .3;
+		public static final double VARIANCE = 2; //.25
+		public static final double MAX_ADJUSTMENT = .6;
+		public static final double SLOW_VARIANCE = 15; //10
+		public static final double SLOW_ADJUSTMENT = .6;
 	}
 
 	public final class DriveStraightTime {
-		public static final double TOP_SPEED = .6;
+		public static final double TOP_SPEED = 1;
 		public static final double MAX_ADJUSTMENT = .4;
 		public static final double BOTTOM_SPEED = .3;
 		public static final double SLOW_DOWN_TIME = 2;
@@ -61,12 +61,16 @@ public class RobotMap {
 	public final class Shooter {
 		public static final int TOP_MOTOR = 0;//assign channel
 		public static final int BOTTOM_MOTOR = 0;//assign channel
-		public static final int TOP_MOTOR_ID = 0;
+		public static final int TOP_MOTOR_ID = 4;
 		public static final int BOTTOM_MOTOR_ID = 1;
 	}
 	
 	public final class Hood {
-		public static final int HOOD_MOTOR = 0;//assign channel
+		public static final int HOOD_MOTOR = 2;
+		public static final int HOOD_UP = 0;
+		public static final int HOOD_DOWN = 1;
+		public static final double HOOD_SPEED = .6;
+
 	}
 
 	public final class Turret {
@@ -76,7 +80,11 @@ public class RobotMap {
 		public static final int BAG_MOTOR = 2;
 	}
 	public final class Magazine {
-		public static final int MAGAZINE_MOTOR = 1;//assign channel
+		public static final int MAGAZINE_MOTOR = 0;//assign channel
+		public static final int LIMIT_SWITCH_TOP = 0;
+		public static final int LIMIT_SWITCH_BOTTOM = 1;
+		public static final int RIGHT_MAGAZINE_MOTOR = 0;
+		public static final int LEFT_MAGAZINE_MOTOR = 1;
 		public static final int IS_THERE_A_BALL_TOP = 9;//DIO
 		public static final int IS_THERE_A_BALL_BOTTOM = 8;//DIO
 	}
@@ -112,5 +120,19 @@ public class RobotMap {
 		public static final Level missionClass = Level.WARNING;
 		public static final Level autoDriveClass = Level.WARNING;
 		public static final Level componentBuilderClass = Level.WARNING;
+	}
+
+
+	public static final class ColorWheel{
+		public static final int Motor = 0;
+	} 
+
+	public static final class LightRing {
+		public static final int PORT = 0; //RELAY Port
+	}
+
+	public static final class LightBar {
+		public static final int PORT = 0;  //PWM Port
+		public static final int LENGTH = 60;
 	}
 }

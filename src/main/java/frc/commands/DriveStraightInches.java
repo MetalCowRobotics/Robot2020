@@ -31,13 +31,13 @@ public class DriveStraightInches extends TimedCommand implements MCRCommand {
         setTargetTime(timeoutSeconds);
     }
 
-	private void initialize(DRIVE_DIRECTION direction, double targetInches) {
+    private void initialize(DRIVE_DIRECTION direction, double targetInches) {
         logger.setLevel(RobotMap.LogLevels.autoDriveClass);
-		switch(direction) {
-            case forward:
-                dir = 1;
-                break;
-            case backward:
+        switch (direction) {
+        case forward:
+            dir = 1;
+            break;
+        case backward:
             dir = -1;
             break;
         }
@@ -51,7 +51,7 @@ public class DriveStraightInches extends TimedCommand implements MCRCommand {
     private void setTarget(double targetInches) {
         targetTics = (targetInches / RobotMap.DriveWithEncoder.INCHES_PER_ROTATION)
                 * RobotMap.DriveWithEncoder.TICS_PER_ROTATION;
-        logger.info("target for encoder drive: <<" + targetTics + ">>");
+      //  logger.info("target for encoder drive: <<" + targetTics + ">>");
     }
 
     public void run() {
@@ -62,12 +62,14 @@ public class DriveStraightInches extends TimedCommand implements MCRCommand {
             driveController = new PDController(driveTrain.getAngle());
             startTics = driveTrain.getEncoderTics();
         }
+
         if (ticsTravelled() < targetTics) {
             driveTrain.arcadeDrive(calculateSpeed(), getCorrection() * dir);
         } else {
             end();
         }
-    } 
+      //  System.out.println("gyro:"+driveTrain.getAngle()+"  |  tics:" + driveTrain.getEncoderTics() + "  |  startTics:" + startTics+ "  |  correction:" + getCorrection());
+    }
 
     private void end() {
         driveTrain.stop();
@@ -76,7 +78,7 @@ public class DriveStraightInches extends TimedCommand implements MCRCommand {
     }
 
     private double ticsTravelled() {
-        logger.info("Drivetrain tics travelled: " + (driveTrain.getEncoderTics() - startTics));
+       // logger.info("Drivetrain tics travelled: " + (driveTrain.getEncoderTics() - startTics));
         return Math.abs(driveTrain.getEncoderTics() - startTics);
     }
 

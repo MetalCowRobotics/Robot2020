@@ -8,27 +8,25 @@
 package frc.commands;
 
 import frc.lib14.MCRCommand;
-import frc.systems.Magazine;
-import frc.systems.Shooter;
+import frc.systems.Intake;
 
 /**
  * Add your docs here.
  */
-public class ShootBall implements MCRCommand{ 
-    Shooter shooter = Shooter.getInstance();
-    Magazine magazine = Magazine.getInstance();
-    boolean firstTime = true;
-    boolean done = false;
+public class IntakeDeployRun implements MCRCommand {
+    private Intake intake = Intake.getInstance();
+    private boolean done = false;
+
+    public IntakeDeployRun() {
+    }
 
     @Override
     public void run() {
-        if(firstTime){
-            firstTime = false;
-            shooter.runShooter();
-        }
-        if(shooter.atSpeed()){
-            magazine.feedOneBall();
+        intake.startIntake();
+        if (intake.intakeDeployed()) {
             done = true;
+        } else {
+            intake.lowerIntake();
         }
     }
 
@@ -36,4 +34,5 @@ public class ShootBall implements MCRCommand{
     public boolean isFinished() {
         return done;
     }
+
 }
