@@ -41,8 +41,7 @@ public class TurnDegrees implements MCRCommand {
 			driveTrain.resetGyro();
 			setPoint = driveTrain.getAngle() + degrees;
 			System.out.println(("TurnDegrees SetPoint:" + setPoint));
-			driveController = new PIDController(setPoint, RobotMap.TurnDegrees.kP, RobotMap.TurnDegrees.kI,
-					RobotMap.TurnDegrees.kD);
+			driveController = new PIDController(setPoint, RobotMap.TurnDegrees.kP, RobotMap.TurnDegrees.kI,	RobotMap.TurnDegrees.kD, RobotMap.TurnDegrees.Iz);
 			System.out.println("Before line 35  " + driveController.calculateAdjustment(setPoint));
 			// driveTrain.arcadeDrive(RobotMap.TurnDegrees.TOP_SPEED,
 			// driveController.calculateAdjustment(setPoint));
