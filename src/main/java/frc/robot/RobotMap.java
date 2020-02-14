@@ -63,6 +63,8 @@ public class RobotMap {
 		public static final int BOTTOM_MOTOR = 0;//assign channel
 		public static final int TOP_MOTOR_ID = 4;
 		public static final int BOTTOM_MOTOR_ID = 1;
+		public static final int BOTTOM_MOTOR_ID = 2;
+		public static final double SHOOTER_SPEED = .65;
 	}
 	
 	public final class Hood {

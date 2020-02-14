@@ -50,6 +50,10 @@ public class RobotDashboard {
 		SmartDashboard.putNumber("SIz", Iz);
 	}
 
+	public void pushShooterSpeed() {
+		SmartDashboard.putNumber("Shooter_Speed", RobotMap.Shooter.SHOOTER_SPEED * 5874);
+	}
+
 	// public double getElevatorTolerance() {
 	// return SmartDashboard.getNumber("Etolerance", RobotMap.Elevator.tolerance);
 	// }

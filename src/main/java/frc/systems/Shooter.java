@@ -3,6 +3,7 @@ package frc.systems;
 import frc.robot.RobotDashboard;
 import frc.robot.RobotMap;
 
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -17,20 +18,23 @@ public class Shooter {
     private static final double SHOOTER_SPEED = .65;
     private static final XboxControllerMetalCow operator = new XboxControllerMetalCow(1);
     private static CANSparkMax neo1 = new CANSparkMax(RobotMap.Shooter.TOP_MOTOR_ID, MotorType.kBrushless);
-    // private static CANSparkMax neo2 = new CANSparkMax(RobotMap.Shooter.BOTTOM_MOTOR_ID, MotorType.kBrushless);
+    private static CANSparkMax neo2 = new CANSparkMax(RobotMap.Shooter.BOTTOM_MOTOR_ID, MotorType.kBrushless);
     // private CANSparkMax neo3 = new CANSparkMax(2, MotorType.kBrushless);
     // private CANSparkMax neo4 = new CANSparkMax(3, MotorType.kBrushless);
     // private static SpeedControllerGroup shooter = new SpeedControllerGroup(neo1, neo2);
-    private static SpeedControllerGroup shooter = new SpeedControllerGroup(neo1);
+    private static SpeedControllerGroup shooter = new SpeedControllerGroup(neo1, neo2);
     private Magazine magazine = Magazine.getInstance();
     private Turret turret = Turret.getInstance();
     private double targetSpeed;// RPM's
     private boolean maintainSpeed = false;
     private static PIDController pidController;
+    private static CANPIDController canPID;
     private static double P = .000015;
     private static double I = .00003;
     private static double D = 0;
-    private static double Iz = 200;
+    private static double Iz = 1000;
+    private static double MinOutput = -1;
+    private static double MaxOutput = 1;
 
     // singleton instance
     private static final Shooter instance = new Shooter();
@@ -44,8 +48,17 @@ public class Shooter {
         // neoOne.set(speed);
         // SpeedControllerGroup shooterR = new SpeedControllerGroup(neoOne, neoTwo);
         // shooterL.follow(shooterR);
+        //canPID = neo1.getPIDController();
         pidController = new PIDController(0, P, I, D, Iz);
         RobotDashboard.getInstance().pushShooterPIDValues(P, I, D, Iz);
+        // set PID coefficients
+        // canPID.setP(P);
+        // canPID.setI(I);
+        // canPID.setD(D);
+        // canPID.setIZone(Iz);
+        // canPID.setFF(0);
+        // canPID.setOutputRange(MinOutput, MaxOutput);
+
     }
 
     public static Shooter getInstance() {
@@ -57,6 +70,7 @@ public class Shooter {
         turret.run();
         if (maintainSpeed) {
             shooter.set(SHOOTER_SPEED + getCorrection());
+            SmartDashboard.putNumber("Shooter_Velocity", neo1.getEncoder().getVelocity());
             // speed PID loop
         }
     }
@@ -75,6 +89,7 @@ public class Shooter {
     }
 
     public void runShooter() {
+        shooter.set(.35);
         // if (operator.getRT() > 0) {
         //     getCorrection();
         //     shooter.set(correction);
@@ -82,8 +97,8 @@ public class Shooter {
         //     stopShooter();
         // }
 
-        shooter.set(SHOOTER_SPEED);
-        maintainSpeed = true;
+        // shooter.set(SmartDashboard.getNumber("ShooterPercent", .45));
+        // maintainSpeed = true;
     }
 
     public void stopShooter() {
@@ -96,9 +111,13 @@ public class Shooter {
         pidController.set_kP(getP());
         pidController.set_kI(getI());
         pidController.set_kD(getD());
+        // canPID.setP(getP());
+        // canPID.setI(getI());
+        // canPID.setD(getD());
+
         double correction = pidController.calculateAdjustment(neo1.getEncoder().getVelocity());
         System.out.println(targetSpeed+" vel:"+neo1.getEncoder().getVelocity()+" correction:"+correction);
-        return correction;
+        return 0;//correction
     }
 
     private double getP() {

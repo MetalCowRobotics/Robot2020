@@ -12,6 +12,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.autonomous.ShootAndGather;
 import frc.lib14.MCRCommand;
 import frc.lib14.XboxControllerMetalCow;
@@ -58,6 +59,7 @@ public class Robot extends TimedRobot {
     dashboard.pushAuto();
     dashboard.pushTurnPID();
     driveTrain.calibrateGyro();
+    SmartDashboard.putNumber("ShooterPercent", .35);
     // autonomous setup
     SendableChooser<String> autonomousAction = new SendableChooser<>();
     SendableChooser<String> startingPosition = new SendableChooser<>();
@@ -69,6 +71,7 @@ public class Robot extends TimedRobot {
     dashboard.pushStartingPosition(startingPosition);
     dashboard.pushAutonomousAction(autonomousAction);
     dashboard.pushAuto();
+    dashboard.pushShooterSpeed();
   }
 
   @Override
@@ -95,7 +98,7 @@ public class Robot extends TimedRobot {
   private boolean firstTime = true;
   @Override
   public void teleopInit() {
-    shooter.setTargetSpeed(.65*5874);
+    shooter.setTargetSpeed(SmartDashboard.getNumber("Shooter_Speed", .65*5874));
   }
 /*
   private void applyInputs() {
@@ -112,7 +115,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    controls.changeMode();
+    // controls.changeMode();
+    shooter.runShooter();
     /*
     applyInputs();
     driveTrain.drive();
@@ -162,17 +166,17 @@ public class Robot extends TimedRobot {
     // feedback
     SmartDashboard.putNumber("Gyro", driveTrain.getAngle());
     SmartDashboard.putNumber("Drive Encoder", driveTrain.getEncoderTics()); */
-    if (firstTime) {
-      shooter.runShooter();
-      firstTime = false;
-    }
-    shooter.run();
-  }
+  //   if (firstTime) {
+  //     shooter.runShooter();
+  //     firstTime = false;
+  //   }
+  //   shooter.run();
+  // }
 
-  private void runSystemsState() {
-    intake.run();
-    shooter.run();
-    climber.run();
+  // private void runSystemsState() {
+  //   intake.run();
+  //   shooter.run();
+  //   climber.run();
   }
 
   @Override
