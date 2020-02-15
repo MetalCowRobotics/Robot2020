@@ -67,7 +67,10 @@ public class Shooter {
     }
 
     public void prepairToShoot() {
+        //get target distance
+        //set shooter speed
         runShooter();
+        //set hood poistion
         magazine.loadBallInShootingPosition();
     }
 
