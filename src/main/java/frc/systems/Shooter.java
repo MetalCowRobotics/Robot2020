@@ -56,8 +56,8 @@ public class Shooter {
         magazine.run();
         turret.run();
         if (maintainSpeed) {
+            // speed PID loop            
             shooter.set(SHOOTER_SPEED + getCorrection());
-            // speed PID loop
         }
     }
 

@@ -9,9 +9,7 @@ package frc.robot;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.autonomous.NoAuto;
 import frc.autonomous.ShootAndGather;
@@ -24,6 +22,8 @@ import frc.systems.Intake;
 import frc.systems.Magazine;
 import frc.systems.MasterControls;
 import frc.systems.Shooter;
+
+import frc.commands.NewTurn;
 
 /**
  * The VM is configured to automatically run this class. If you change the name
@@ -69,19 +69,20 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GO == dashboard.getAutoMission()) {
-      mission = new ShootAndGo();
-    } else if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GATHER == dashboard.getAutoMission()) {
-      mission = new ShootAndGather();
-    } else {
-      mission = new NoAuto();
-    }
+    // if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GO == dashboard.getAutoMission()) {
+    //   mission = new ShootAndGo();
+    // } else if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GATHER == dashboard.getAutoMission()) {
+    //   mission = new ShootAndGather();
+    // } else {
+    //   mission = new NoAuto();
+    // }
+    mission = new NewTurn(90);
   }
 
   @Override
   public void autonomousPeriodic() {
     mission.run();
-    runSystemsState();
+    runSystemsStateMachine();
   }
 
   @Override
@@ -91,7 +92,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     // controls.changeMode();
-    // applyInputs();
+    // applyOperatorInputs();
     // runSystemsState();
 
     //testing
@@ -103,18 +104,21 @@ public class Robot extends TimedRobot {
     // shooter.run();
   }
 
-  private void applyInputs() {
+  private void applyOperatorInputs() {
+    //intake
     if (controls.lowerIntake()) {
       intake.lowerIntake();
     } else if (controls.raiseIntake()) {
       intake.retractIntake();
     }
+    //shooter
     if (controls.spinUpAndShoot()) {
       shooter.shootBallWhenReady();
     }
+    //climber
   } 
 
-  private void runSystemsState() {
+  private void runSystemsStateMachine() {
     driveTrain.drive();
     intake.run();
     shooter.run();

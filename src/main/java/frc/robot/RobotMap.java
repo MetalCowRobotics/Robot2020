@@ -44,11 +44,11 @@ public class RobotMap {
 		public static final double kI = .004; 
 		public static final double kD = .08;
 		public static final double Iz = 1000;
-		public static final double TOP_SPEED = 0;
-		public static final double VARIANCE = 2; //.25
-		public static final double MAX_ADJUSTMENT = .6;
-		public static final double SLOW_VARIANCE = 15; //10
-		public static final double SLOW_ADJUSTMENT = .6;
+		// public static final double TOP_SPEED = 0;
+		// public static final double VARIANCE = 2; //.25
+		// public static final double MAX_ADJUSTMENT = .6;
+		// public static final double SLOW_VARIANCE = 15; //10
+		// public static final double SLOW_ADJUSTMENT = .6;
 	}
 
 	public final class DriveStraightTime {
