@@ -51,7 +51,7 @@ public class Robot extends TimedRobot {
   MCRCommand mission;
 
   // testing only
-  Magazine magazine = Magazine.getInstance();
+  Magazine magazine;// = Magazine.getInstance();
 //  Turret turret = Turret.getInstance();
  // Hood hood = Hood.getInstance();
   XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
@@ -95,7 +95,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     mission.run();
-    runSystemsState();
+    // runSystemsState();
   }
 
   I2C.Port port = I2C.Port.kOnboard; /*
