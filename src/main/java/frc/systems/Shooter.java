@@ -22,8 +22,8 @@ public class Shooter {
     // private CANSparkMax neo4 = new CANSparkMax(3, MotorType.kBrushless);
     // private static SpeedControllerGroup shooter = new SpeedControllerGroup(neo1, neo2);
     private static SpeedControllerGroup shooter = new SpeedControllerGroup(neo1);
-    private Magazine magazine = Magazine.getInstance();
-    private Turret turret = Turret.getInstance();
+    private Magazine magazine;// = Magazine.getInstance();
+    private Turret turret;// = Turret.getInstance();
     private double targetSpeed;// RPM's
     private boolean maintainSpeed = false;
     private static PIDController pidController;
@@ -56,8 +56,8 @@ public class Shooter {
         magazine.run();
         turret.run();
         if (maintainSpeed) {
+            // speed PID loop            
             shooter.set(SHOOTER_SPEED + getCorrection());
-            // speed PID loop
         }
     }
 
@@ -140,6 +140,15 @@ public class Shooter {
     public void setTargetSpeed(double targetSpeed) {
         this.targetSpeed = targetSpeed;
         pidController.setSetPoint(targetSpeed);
+    }
+
+    private boolean firstTime = true;
+    public void shooterTest() {
+        if (firstTime) {
+            firstTime = false;
+        }
+        shooter.set(SmartDashboard.getNumber("Target Percentage", .45));
+        SmartDashboard.putNumber("Actual Velocity", neo1.getEncoder().getVelocity());
     }
 
 }
