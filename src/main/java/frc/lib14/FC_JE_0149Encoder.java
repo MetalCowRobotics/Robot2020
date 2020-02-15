@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.systems;
+package frc.lib14;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
@@ -14,8 +14,12 @@ import edu.wpi.first.wpilibj.CounterBase.EncodingType;
  * Add your docs here.
  */
 public class FC_JE_0149Encoder {
+    // Encoder encoder = new Encoder(0, 1, true, EncodingType.k2X);
+    Encoder encoder;
 
-    Encoder encoder = new Encoder(0, 1, true, EncodingType.k2X);
+    public FC_JE_0149Encoder(int channelA, int channelB) {
+        encoder = new Encoder(channelA, channelB, true, EncodingType.k2X);
+    }
 
     public double getRate() {     
         return encoder.getRate();
