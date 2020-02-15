@@ -83,7 +83,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     mission.run();
-    runSystemsState();
+    //runSystemsState();
   }
 
   I2C.Port port = I2C.Port.kOnboard; /*
@@ -98,7 +98,7 @@ public class Robot extends TimedRobot {
   private boolean firstTime = true;
   @Override
   public void teleopInit() {
-    shooter.setTargetSpeed(SmartDashboard.getNumber("Shooter_Speed", .65*5874));
+    //shooter.setTargetSpeed(SmartDashboard.getNumber("Shooter_Speed", .65*5874));
   }
 /*
   private void applyInputs() {
