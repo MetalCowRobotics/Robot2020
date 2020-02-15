@@ -8,16 +8,12 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.lib14.PDController;
+import frc.lib14.PIDController;
 import frc.lib14.UtilityMethods;
 import frc.lib14.XboxControllerMetalCow;
 import frc.systems.Magazine;
 
 public class Shooter {
-    /**
-     *
-     */
-    private static final double MOTOR_MAX_RPM = 5874.0;
     private static final double SHOOTER_SPEED = .65;
     private static final XboxControllerMetalCow operator = new XboxControllerMetalCow(1);
     private static CANSparkMax neo1 = new CANSparkMax(RobotMap.Shooter.TOP_MOTOR_ID, MotorType.kBrushless);
@@ -30,19 +26,17 @@ public class Shooter {
     private Turret turret = Turret.getInstance();
     private double targetSpeed;// RPM's
     private boolean maintainSpeed = false;
+    private static PIDController pidController;
+    private static double P = .000015;
+    private static double I = .00003;
+    private static double D = 0;
+    private static double Iz = 200;
 
     // singleton instance
     private static final Shooter instance = new Shooter();
-    private PDController PD;
-
-    double speed;
-
-    double P = .000015;
-    double I = .00003;
-    double D = 0;
-    double integral, correction, derivative, error, previous_error = 0;
 
     private Shooter() {
+
         // leftShooter = new SpeedControllerGroup(neo3, neo4);
         // neoTwo.follow(neoOne);
         // newOne.getEncoder
@@ -50,7 +44,8 @@ public class Shooter {
         // neoOne.set(speed);
         // SpeedControllerGroup shooterR = new SpeedControllerGroup(neoOne, neoTwo);
         // shooterL.follow(shooterR);
-        RobotDashboard.getInstance().pushShooterPIDValues(P, I, D);
+        pidController = new PIDController(0, P, I, D, Iz);
+        RobotDashboard.getInstance().pushShooterPIDValues(P, I, D, Iz);
     }
 
     public static Shooter getInstance() {
@@ -71,7 +66,10 @@ public class Shooter {
     }
 
     public void prepairToShoot() {
+        //get target distance
+        //set shooter speed
         runShooter();
+        //set hood poistion
         magazine.loadBallInShootingPosition();
     }
 
@@ -98,24 +96,11 @@ public class Shooter {
     }
 
     public double getCorrection() {
-        error = targetSpeed - neo1.getEncoder().getVelocity(); // Error = Target - Actual
-        if (Math.abs(error) < 200) {
-        integral += (error); // Integral is increased by the error*time (which is .02 seconds using normal
-                                   // IterativeRobot)
-        }
-        derivative = (error - previous_error);
-        correction = (getP() * error + getI() * integral + getD() * derivative);
-        previous_error = error;
-
-
+        pidController.set_kP(getP());
+        pidController.set_kI(getI());
+        pidController.set_kD(getD());
+        double correction = pidController.calculateAdjustment(neo1.getEncoder().getVelocity());
         System.out.println(targetSpeed+" vel:"+neo1.getEncoder().getVelocity()+" correction:"+correction);
-        SmartDashboard.putNumber("RT", operator.getRT());
-        SmartDashboard.putNumber("error", P * error);// RPM
-        SmartDashboard.putNumber("integral", I * integral);// RPM
-        SmartDashboard.putNumber("derivative", D * derivative);// RPM
-        SmartDashboard.putNumber("correction", correction);// RPM
-        SmartDashboard.putNumber("previous error", previous_error);// RPM
-        SmartDashboard.putNumber("velocity", neo1.getEncoder().getVelocity());// RPM
         return correction;
     }
 
@@ -123,16 +108,13 @@ public class Shooter {
         return SmartDashboard.getNumber("SkP", P);
     }
 
-    
     private double getI() {
         return SmartDashboard.getNumber("SkI", I);
     }
 
-    
     private double getD() {
         return SmartDashboard.getNumber("SkD", D);
     }
-
 
     public void unload() {
         // unload the magazine
@@ -157,7 +139,7 @@ public class Shooter {
 
     public void setTargetSpeed(double targetSpeed) {
         this.targetSpeed = targetSpeed;
-        integral = 0;
+        pidController.setSetPoint(targetSpeed);
     }
 
 }
