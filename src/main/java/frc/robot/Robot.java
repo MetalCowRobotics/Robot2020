@@ -69,13 +69,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    // if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GO == dashboard.getAutoMission()) {
-    //   mission = new ShootAndGo();
-    // } else if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GATHER == dashboard.getAutoMission()) {
-    //   mission = new ShootAndGather();
-    // } else {
-    //   mission = new NoAuto();
-    // }
+    if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GO == dashboard.getAutoMission()) {
+      mission = new ShootAndGo();
+    } else if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GATHER == dashboard.getAutoMission()) {
+      mission = new ShootAndGather();
+    } else {
+      mission = new NoAuto();
+    }
+    //testing
     mission = new NewTurn(90);
   }
 
