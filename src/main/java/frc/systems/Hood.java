@@ -2,6 +2,7 @@ package frc.systems;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.lib14.FC_JE_0149Encoder;
 import frc.lib14.MCR_SRX;
 import frc.robot.RobotMap;
 
@@ -14,7 +15,7 @@ public class Hood {
     private boolean raisingHood = false;
     private boolean loweringHood = false;
     private boolean firstTime = true;
-
+    private static FC_JE_0149Encoder encoder = new FC_JE_0149Encoder(0,1);
     private Hood() {
 
     }
