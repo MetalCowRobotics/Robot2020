@@ -7,9 +7,7 @@
 
 package frc.autonomous;
 
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.commands.DriveBackwardsStraight;
 import frc.commands.DriveStraightInches;
 import frc.commands.ShootBall;
 import frc.commands.TurnDegrees;
@@ -34,8 +32,8 @@ public class ShootAndGo implements MCRCommand {
 
     public ShootAndGo(String position) {
         MCRCommand commandSet = new SequentialCommands(new ShootBall(), new ShootBall(), new ShootBall());
-        MCRCommand driveset = new SequentialCommands( new TimedCommandSet(new TurnDegrees(180), 4),new CommandPause(.2), new DriveStraightInches(70, 4));
-        mission = new SequentialCommands(new TimedCommandSet(commandSet, 5), new TimedCommandSet(driveset, 10));
+        MCRCommand driveset = new SequentialCommands( new TimedCommandSet(new TurnDegrees(167), 3),new CommandPause(.05), new DriveStraightInches(96, 4), new TimedCommandSet( new TurnDegrees(21.5), 2) , new CommandPause(.05), new DriveStraightInches(98, 8));
+        mission = new SequentialCommands(new TimedCommandSet(commandSet, 5), new TimedCommandSet(driveset, 15));
     }
     @Override
     public void run() {
