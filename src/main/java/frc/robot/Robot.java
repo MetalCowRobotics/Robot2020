@@ -116,7 +116,11 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     // controls.changeMode();
+    if (firstTime) {
     shooter.runShooter();
+    firstTime= false;
+    }
+    shooter.run();
     /*
     applyInputs();
     driveTrain.drive();

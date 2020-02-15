@@ -19,11 +19,12 @@ public class Shooter {
     private static final double SHOOTER_SPEED = .65;
     private static final XboxControllerMetalCow operator = new XboxControllerMetalCow(1);
     private static CANSparkMax neo1 = new CANSparkMax(RobotMap.Shooter.TOP_MOTOR_ID, MotorType.kBrushless);
-    private static CANSparkMax neo2 = new CANSparkMax(RobotMap.Shooter.BOTTOM_MOTOR_ID, MotorType.kBrushless);
+    // private static CANSparkMax neo2 = new CANSparkMax(RobotMap.Shooter.BOTTOM_MOTOR_ID, MotorType.kBrushless);
     // private CANSparkMax neo3 = new CANSparkMax(2, MotorType.kBrushless);
     // private CANSparkMax neo4 = new CANSparkMax(3, MotorType.kBrushless);
     // private static SpeedControllerGroup shooter = new SpeedControllerGroup(neo1, neo2);
-    private static SpeedControllerGroup shooter = new SpeedControllerGroup(neo1, neo2);
+    // private static SpeedControllerGroup shooter = new SpeedControllerGroup(neo1, neo2);
+    private static SpeedControllerGroup shooter = new SpeedControllerGroup(neo1);
     private Magazine magazine;// = Magazine.getInstance();
     private Turret turret;// = Turret.getInstance();
     private double targetSpeed;// RPM's
@@ -33,16 +34,21 @@ public class Shooter {
     private static double P = .000015;
     private static double I = .00003;
     private static double D = 0;
-    private static double Iz = 1000;
-    private static double MinOutput = -1;
-    private static double MaxOutput = 1;
-    private double velocity = SmartDashboard.getNumber("Set Velocity", 1500);
+    private static double Iz = 200;
+    private static double MinOutput = -.75;
+    private static double MaxOutput = .75;
 
 
     // singleton instance
     private static final Shooter instance = new Shooter();
 
     private Shooter() {
+        // neo1.restoreFactoryDefaults();
+        // neo1.setOpenLoopRampRate(.25);
+        // neo1.setClosedLoopRampRate(.25);
+        // neo2.restoreFactoryDefaults();
+        // neo2.setOpenLoopRampRate(.25);
+        // neo2.setClosedLoopRampRate(.25);
 
         // leftShooter = new SpeedControllerGroup(neo3, neo4);
         // neoTwo.follow(neoOne);
@@ -51,7 +57,7 @@ public class Shooter {
         // neoOne.set(speed);
         // SpeedControllerGroup shooterR = new SpeedControllerGroup(neoOne, neoTwo);
         // shooterL.follow(shooterR);
-        //canPID = neo1.getPIDController();
+        canPID = neo1.getPIDController();
         //pidController = new PIDController(0, P, I, D, Iz);
         RobotDashboard.getInstance().pushShooterPIDValues(P, I, D, Iz);
         //set PID coefficients
@@ -69,7 +75,7 @@ public class Shooter {
         SmartDashboard.putNumber("I Zone", Iz);
         SmartDashboard.putNumber("Max Output", MaxOutput);
         SmartDashboard.putNumber("Min Output", MinOutput);
-        SmartDashboard.putNumber("Set Rotations", 0);
+        SmartDashboard.putNumber("Set Velocity", 0);
 
     }
 
@@ -78,16 +84,16 @@ public class Shooter {
     }
 
     public void run() {
-        magazine.run();
-        turret.run();
+        // magazine.run();
+        // turret.run();
 
         // read PID coefficients from SmartDashboard
-        double p = SmartDashboard.getNumber("P Gain", 0);
-        double i = SmartDashboard.getNumber("I Gain", 0);
-        double d = SmartDashboard.getNumber("D Gain", 0);
-        double iz = SmartDashboard.getNumber("I Zone", 0);
-        double max = SmartDashboard.getNumber("Max Output", 0);
-        double min = SmartDashboard.getNumber("Min Output", 0);
+        double p = SmartDashboard.getNumber("P Gain", P);
+        double i = SmartDashboard.getNumber("I Gain", I);
+        double d = SmartDashboard.getNumber("D Gain", D);
+        double iz = SmartDashboard.getNumber("I Zone", Iz);
+        double max = SmartDashboard.getNumber("Max Output", MaxOutput);
+        double min = SmartDashboard.getNumber("Min Output", MinOutput);
 
         // if PID coefficients on SmartDashboard have changed, write new values to controller
         if((p != P)) { canPID.setP(p); P = p; }
@@ -101,9 +107,9 @@ public class Shooter {
 
         if (maintainSpeed) {
             //shooter.set(SHOOTER_SPEED + getCorrection());
-            SmartDashboard.putNumber("Shooter_Velocity", neo1.getEncoder().getVelocity());
             // speed PID loop
         }
+        SmartDashboard.putNumber("Shooter_Velocity", neo1.getEncoder().getVelocity());
     }
 
     public boolean atSpeed() {
@@ -120,9 +126,11 @@ public class Shooter {
     }
 
     public void runShooter() {
-
+        double velocity = SmartDashboard.getNumber("Set Velocity", 1500);
         canPID.setReference(velocity, ControlType.kVelocity);
-        neo2.follow(neo1);
+        //neo2.follow(neo1);
+        SmartDashboard.putNumber("Shooter_Velocity", neo1.getEncoder().getVelocity());
+
 
         // if (operator.getRT() > 0) {
         //     getCorrection();
@@ -132,7 +140,7 @@ public class Shooter {
         // }
 
         // shooter.set(SmartDashboard.getNumber("ShooterPercent", .45));
-        maintainSpeed = true;
+        // maintainSpeed = true;
     }
 
     public void stopShooter() {
