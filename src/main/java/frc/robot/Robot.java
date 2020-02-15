@@ -9,7 +9,6 @@ package frc.robot;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -24,6 +23,8 @@ import frc.systems.Intake;
 import frc.systems.Magazine;
 import frc.systems.MasterControls;
 import frc.systems.Shooter;
+
+import frc.commands.NewTurn;
 
 /**
  * The VM is configured to automatically run this class. If you change the name
@@ -62,6 +63,9 @@ public class Robot extends TimedRobot {
     driveTrain.calibrateGyro();
     dashboard.pushAuto();
     dashboard.pushTurnPID();
+
+    //testing
+    SmartDashboard.putNumber("Target Percentage", .45);
   }
 
   @Override
@@ -73,12 +77,14 @@ public class Robot extends TimedRobot {
     } else {
       mission = new NoAuto();
     }
+    //testing
+    mission = new NewTurn(90);
   }
 
   @Override
   public void autonomousPeriodic() {
     mission.run();
-    runSystemsState();
+    runSystemsStateMachine();
   }
 
   @Override
@@ -89,27 +95,35 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     controls.changeMode();
-    applyInputs();
-    runSystemsState();
+    applyOperatorInputs();
+    runSystemsStateMachine();
 
     //testing
     // shooter.shooterTest();
     shooter.runShooter();
     shooter.run();
+    // if (firstTime) {
+    //   shooter.runShooter();
+    //   firstTime = false;
+    // }
+    // shooter.run();
   }
 
-  private void applyInputs() {
+  private void applyOperatorInputs() {
+    //intake
     if (controls.lowerIntake()) {
       intake.lowerIntake();
     } else if (controls.raiseIntake()) {
       intake.retractIntake();
     }
+    //shooter
     if (controls.spinUpAndShoot()) {
       shooter.shootBallWhenReady();
     }
+    //climber
   } 
 
-  private void runSystemsState() {
+  private void runSystemsStateMachine() {
     driveTrain.drive();
     intake.run();
     shooter.run();
