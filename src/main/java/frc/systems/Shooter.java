@@ -27,10 +27,12 @@ public class Shooter {
     private double targetSpeed;// RPM's
     private boolean maintainSpeed = false;
     private static PIDController pidController;
-    private static double P = .000015;
-    private static double I = .00003;
+    private static double P = .00003;
+    private static double I = .000025;
     private static double D = 0;
-    private static double Iz = 200;
+    private static double Iz = 400;
+    private boolean firstTime = true;
+
 
     // singleton instance
     private static final Shooter instance = new Shooter();
@@ -53,11 +55,13 @@ public class Shooter {
     }
 
     public void run() {
-        magazine.run();
-        turret.run();
+        //magazine.run();
+        //turret.run();
         if (maintainSpeed) {
             // speed PID loop            
             shooter.set(SHOOTER_SPEED + getCorrection());
+            SmartDashboard.putNumber("Correction", getCorrection());
+            SmartDashboard.putNumber("Actual Velocity", neo1.getEncoder().getVelocity());            // speed PID loop
         }
     }
 
@@ -78,14 +82,11 @@ public class Shooter {
     }
 
     public void runShooter() {
-        // if (operator.getRT() > 0) {
-        //     getCorrection();
-        //     shooter.set(correction);
-        // } else {
-        //     stopShooter();
-        // }
-
-        shooter.set(SHOOTER_SPEED);
+        if (firstTime) {
+            setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));//needs velocity
+            firstTime = false;
+        }
+        //shooter.set(SmartDashboard.getNumber("Set Velocity", 1500));
         maintainSpeed = true;
     }
 
@@ -99,6 +100,7 @@ public class Shooter {
         pidController.set_kP(getP());
         pidController.set_kI(getI());
         pidController.set_kD(getD());
+        pidController.set_Iz(getIz());
         double correction = pidController.calculateAdjustment(neo1.getEncoder().getVelocity());
         System.out.println(targetSpeed+" vel:"+neo1.getEncoder().getVelocity()+" correction:"+correction);
         return correction;
@@ -114,6 +116,10 @@ public class Shooter {
 
     private double getD() {
         return SmartDashboard.getNumber("SkD", D);
+    }
+
+    private double getIz() {
+        return SmartDashboard.getNumber("SIz", Iz);
     }
 
     public void unload() {
@@ -142,12 +148,14 @@ public class Shooter {
         pidController.setSetPoint(targetSpeed);
     }
 
-    private boolean firstTime = true;
     public void shooterTest() {
         if (firstTime) {
+            setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));//needs velocity
             firstTime = false;
         }
-        shooter.set(SmartDashboard.getNumber("Target Percentage", .45));
+        //shooter.set(SmartDashboard.getNumber("Set Velocity", 1500));
+        shooter.set(SHOOTER_SPEED + getCorrection());
+        SmartDashboard.putNumber("Correction", getCorrection());
         SmartDashboard.putNumber("Actual Velocity", neo1.getEncoder().getVelocity());
     }
 

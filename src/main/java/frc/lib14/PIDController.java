@@ -18,6 +18,7 @@ public class PIDController {
 	private double setPoint;
 	private double previousError = 0;
 	private double accumulatedError = 0;
+	private boolean IzStarted = false;
 
 	public PIDController(double setPoint, double kP, double kI, double kD) {
 		this.setPoint = setPoint;
@@ -42,8 +43,9 @@ public class PIDController {
 		// if (Math.abs(kI) > 0){
 		// 	accumulatedError = accumulatedError + error;
 		// }
-		if (Math.abs(setPoint - curPosition) < Iz ) {
+		if (IzStarted || Math.abs(setPoint - curPosition) < Iz) {
 			accumulatedError += error;
+			IzStarted = true;
 		}
 		return motorAdjustment;
 		
@@ -83,9 +85,15 @@ public class PIDController {
 		this.kD = kD;
 	}
 
+	
+	public void set_Iz(double Iz) {
+		this.Iz = Iz;
+	}
+
 	public void reset() {
 		previousError = 0;
 		accumulatedError = 0;
+		IzStarted = false;
 	}
 
 }

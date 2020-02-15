@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.autonomous.NoAuto;
 import frc.autonomous.ShootAndGather;
@@ -88,6 +89,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    shooter.setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));//needs velocity
   }
 
   @Override
@@ -98,6 +100,8 @@ public class Robot extends TimedRobot {
 
     //testing
     // shooter.shooterTest();
+    shooter.runShooter();
+    shooter.run();
     // if (firstTime) {
     //   shooter.runShooter();
     //   firstTime = false;
