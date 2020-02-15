@@ -7,13 +7,9 @@
 
 package frc.autonomous;
 
-import edu.wpi.first.wpilibj.interfaces.Gyro;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.commands.DriveBackwardsStraight;
 import frc.commands.DriveStraightInches;
 import frc.commands.ShootBall;
 import frc.commands.TurnDegrees;
-import frc.commands.DriveStraightInches.DRIVE_DIRECTION;
 import frc.lib14.CommandPause;
 import frc.lib14.MCRCommand;
 import frc.lib14.SequentialCommands;
