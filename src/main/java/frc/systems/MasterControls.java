@@ -70,7 +70,7 @@ public class MasterControls {
 
 		return false;
 	}
-	public boolean prepairToShoot (){
+	public boolean prepairToShoot(){
 		if (operator.getRT() > .1){
 			return true;
 		}else {
@@ -107,7 +107,7 @@ public class MasterControls {
 		return operator.getAButton();
 	}
 
-	public boolean spinUpAndShoot() {
+	public boolean shootWhenTargetted() {
 		return operator.getBButton();
 	}
 }
