@@ -12,6 +12,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.autonomous.NoAuto;
 import frc.autonomous.ShootAndGather;
 import frc.autonomous.ShootAndGo;
@@ -61,6 +62,9 @@ public class Robot extends TimedRobot {
     driveTrain.calibrateGyro();
     dashboard.pushAuto();
     dashboard.pushTurnPID();
+
+    //testing
+    SmartDashboard.putNumber("Target Percentage", .45);
   }
 
   @Override
@@ -82,22 +86,21 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    //testing
-    shooter.setTargetSpeed(.65*5874);
   }
 
   @Override
   public void teleopPeriodic() {
-    controls.changeMode();
-    applyInputs();
-    runSystemsState();
+    // controls.changeMode();
+    // applyInputs();
+    // runSystemsState();
 
     //testing
-    if (firstTime) {
-      shooter.runShooter();
-      firstTime = false;
-    }
-    shooter.run();
+    shooter.shooterTest();
+    // if (firstTime) {
+    //   shooter.runShooter();
+    //   firstTime = false;
+    // }
+    // shooter.run();
   }
 
   private void applyInputs() {
