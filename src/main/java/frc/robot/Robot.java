@@ -91,12 +91,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    // controls.changeMode();
-    // applyOperatorInputs();
-    // runSystemsState();
+    controls.changeMode();
+    applyOperatorInputs();
+    runSystemsStateMachine();
 
     //testing
-    shooter.shooterTest();
+    // shooter.shooterTest();
     // if (firstTime) {
     //   shooter.runShooter();
     //   firstTime = false;
