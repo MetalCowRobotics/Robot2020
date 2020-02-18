@@ -4,6 +4,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.commands.TurnDegrees;
 import frc.lib14.CommandPause;
 import frc.lib14.MCRCommand;
@@ -32,8 +33,9 @@ public class Vision {
     double maxYaw = 25;
     double yawDegrees = 0;
     boolean targetMode = false;
-    
 
+    private static final Vision instance = new Vision();
+    
     // MCRCommand turnCW = new SequentialCommands(new TimedCommandSet(new
     // TurnDegrees(turnAdjustment), 2),new CommandPause(.2));
     // MCRCommand turnCCW = new SequentialCommands(new TimedCommandSet(new
@@ -46,6 +48,10 @@ public class Vision {
     public NetworkTableEntry pitch;
     public NetworkTableEntry width;
     public NetworkTableEntry height;
+
+    public static Vision getInstance() {
+        return instance;
+    }
 
     public void visionInit() {
         NetworkTableInstance table = NetworkTableInstance.getDefault();

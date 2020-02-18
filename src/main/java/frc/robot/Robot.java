@@ -23,7 +23,7 @@ import frc.systems.Intake;
 import frc.systems.Magazine;
 import frc.systems.MasterControls;
 import frc.systems.Shooter;
-
+import frc.systems.Vision;
 import frc.commands.NewTurn;
 
 /**
@@ -46,6 +46,7 @@ public class Robot extends TimedRobot {
 
   // testing only
   Magazine magazine = Magazine.getInstance();
+  Vision vision = Vision.getInstance();
   //  Turret turret = Turret.getInstance();
   // Hood hood = Hood.getInstance();
   boolean firstTime = true;
@@ -60,6 +61,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     final UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
+    vision.visionInit();
     driveTrain.calibrateGyro();
     dashboard.pushAuto();
     dashboard.pushTurnPID();
@@ -102,6 +104,10 @@ public class Robot extends TimedRobot {
     // shooter.shooterTest();
     shooter.runShooter();
     shooter.run();
+
+    SmartDashboard.putNumber("distance", vision.getTargetDistance());
+    SmartDashboard.putNumber("yaw", vision.getYawDegrees());
+
     // if (firstTime) {
     //   shooter.runShooter();
     //   firstTime = false;
