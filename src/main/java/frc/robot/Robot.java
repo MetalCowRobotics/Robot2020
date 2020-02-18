@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.autonomous.NoAuto;
 import frc.autonomous.ShootAndGather;
 import frc.autonomous.ShootAndGo;
+import frc.commands.TurnDegrees;
 import frc.lib14.MCRCommand;
 import frc.lib14.XboxControllerMetalCow;
 import frc.systems.Climber;
@@ -45,11 +46,10 @@ public class Robot extends TimedRobot {
 
   // testing only
   Magazine magazine = Magazine.getInstance();
-  //  Turret turret = Turret.getInstance();
+  // Turret turret = Turret.getInstance();
   // Hood hood = Hood.getInstance();
   boolean firstTime = true;
   XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
-
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -66,24 +66,25 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GO == dashboard.getAutoMission()) {
-      mission = new ShootAndGo();
-    } else if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GATHER == dashboard.getAutoMission()) {
-      mission = new ShootAndGather();
-    } else {
-      mission = new NoAuto();
-    }
+    // if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GO == dashboard.getAutoMission()) {
+    //   mission = new ShootAndGo();
+    // } else if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GATHER == dashboard.getAutoMission()) {
+    //   mission = new ShootAndGather();
+    // } else {
+    //   mission = new NoAuto();
+    // }
+    mission = new TurnDegrees(90);
   }
 
   @Override
   public void autonomousPeriodic() {
     mission.run();
-    runSystemsState();
+    //runSystemsState();
   }
 
   @Override
   public void teleopInit() {
-    shooter.setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));//needs velocity
+    shooter.setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));// needs velocity
   }
 
   @Override
@@ -92,7 +93,7 @@ public class Robot extends TimedRobot {
     applyInputs();
     runSystemsState();
 
-    //testing
+    // testing
     // shooter.shooterTest();
     shooter.runShooter();
     shooter.run();
@@ -107,13 +108,13 @@ public class Robot extends TimedRobot {
     if (controls.spinUpAndShoot()) {
       shooter.shootBallWhenReady();
     }
-  } 
+  }
 
   private void runSystemsState() {
     driveTrain.drive();
-    intake.run();
-    shooter.run();
-    climber.run();
+    //intake.run();
+    //shooter.run();
+    //climber.run();
   }
 
   @Override
@@ -122,5 +123,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testPeriodic() {
+
   }
 }

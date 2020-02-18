@@ -19,7 +19,6 @@ public class Shooter {
     private static CANSparkMax neo1 = new CANSparkMax(RobotMap.Shooter.TOP_MOTOR_ID, MotorType.kBrushless);
     private static CANSparkMax neo2 = new CANSparkMax(RobotMap.Shooter.BOTTOM_MOTOR_ID, MotorType.kBrushless);
     private static SpeedControllerGroup shooter = new SpeedControllerGroup(neo1, neo2);
-    // private static SpeedControllerGroup shooter = new SpeedControllerGroup(neo1);
     private Magazine magazine;// = Magazine.getInstance();
     private Turret turret;// = Turret.getInstance();
     private double targetSpeed;// RPM's
