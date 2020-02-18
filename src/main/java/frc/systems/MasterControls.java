@@ -70,9 +70,16 @@ public class MasterControls {
 
 		return false;
 	}
+	public boolean prepairToShoot (){
+		if (operator.getRT() > .1){
+			return true;
+		}else {
+			return false;
+		}
+	}
 
 	public boolean intakeOnOff() {
-		return operator.getRB();
+		return operator.getYButtonPressed();
 	}
 
 	public void changeMode() {

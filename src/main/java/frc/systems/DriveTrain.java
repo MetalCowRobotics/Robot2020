@@ -57,24 +57,19 @@ public class DriveTrain {
 		}
 		double speed = (controller.forwardSpeed() - controller.reverseSpeed()) * inverted * getThrottle();
 		drive.arcadeDrive(speed, controller.direction() * getThrottle());
+		//testing
 		dashboard.pushLeftEncoder(getLeftEncoderTics());
 		dashboard.pushRightEncoder(getRightEncoderTics());
 	}
 	
-
-	/**
-	 * Used in Autonomous
-	 * 
-	 * @param speed
-	 * @param angle
-	 */
 	public void arcadeDrive(double speed, double angle) {
-		// if only used in autonomous may not need the throttle
 		drive.arcadeDrive(speed, angle);
 	}
+
 	public void tankDrive(double leftSpeed, double rightSpeed) {
 		drive.tankDrive(leftSpeed, rightSpeed);
 	}
+
 	public void stop() {
 		drive.stopMotor();
 	}
@@ -90,11 +85,8 @@ public class DriveTrain {
 	}
 
 	public double getAngle() {
-		dashboard.pushGyro(-GYRO.getAngle());
 		return -GYRO.getAngle();
 	}
-
-	
 
 	/**
 	 * Determine the top speed threshold: CRAWL - Lowest speed threshold Normal -
@@ -118,7 +110,6 @@ public class DriveTrain {
 
 	private double getLeftEncoderTics() {
 		return leftFrontMotor.getSelectedSensorPosition();
-		
 	}
 
 	private double getRightEncoderTics() {

@@ -55,6 +55,7 @@ public class Shooter {
         //magazine.run();
         //turret.run();
         if (maintainSpeed) {
+            // speed PID loop            
             shooter.set(SHOOTER_SPEED + getCorrection());
             SmartDashboard.putNumber("Correction", getCorrection());
             SmartDashboard.putNumber("Actual Velocity", neo1.getEncoder().getVelocity());            // speed PID loop
@@ -66,7 +67,10 @@ public class Shooter {
     }
 
     public void prepairToShoot() {
+        //get target distance
+        //set shooter speed
         runShooter();
+        //set hood poistion
         magazine.loadBallInShootingPosition();
     }
 

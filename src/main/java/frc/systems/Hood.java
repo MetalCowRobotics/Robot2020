@@ -11,9 +11,9 @@ public class Hood {
     private static DigitalInput hoodDown = new DigitalInput(RobotMap.Hood.HOOD_DOWN);
     private static final Hood instance = new Hood();
 
-    public boolean raisingHood = false;
-    public boolean loweringHood = false;
-  
+    private boolean raisingHood = false;
+    private boolean loweringHood = false;
+    private boolean firstTime = true;
 
     private Hood() {
 
@@ -24,9 +24,14 @@ public class Hood {
     }
 
     public void run() {
+        if (firstTime) {
+            firstTime = false;
+            //set starting encoder reading so everything will be based on that
+        }
         if (isHoodAtBottomPos() || isHoodAtTopPos()){
             hood.stopMotor();
         }
+        //keep moving the hood until it is at position
     }
 
     public void raiseHood() {
@@ -54,4 +59,17 @@ public class Hood {
     private boolean isHoodAtBottomPos() {
         return !hoodDown.get();
     }
+
+    public void setFarShot() {
+
+    }
+
+    public void setTenFoot() {
+
+    }
+
+    public void setSafeZone() {
+
+    }
+
 }
