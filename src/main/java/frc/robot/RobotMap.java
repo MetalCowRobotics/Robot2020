@@ -31,8 +31,8 @@ public class RobotMap {
 	}
 
 	public final class DriveWithEncoder {
-		public static final double TOP_SPEED = .5;
-		public static final double BOTTOM_SPEED = .4;
+		public static final double TOP_SPEED = .7;
+		public static final double BOTTOM_SPEED = .5;
 		public static final double MAX_ADJUSTMENT = .6;
 		public static final int TICS_PER_ROTATION = 4096; 
 		public static final double INCHES_PER_ROTATION = Math.PI * RobotMap.Drivetrain.WHEEL_DIAMETER;
