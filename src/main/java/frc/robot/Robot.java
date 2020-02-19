@@ -34,7 +34,7 @@ import frc.commands.NewTurn;
 
 public class Robot extends TimedRobot {
   // systems
-  DriveTrain driveTrain = DriveTrain.getInstance();
+  DriveTrain driveTrain;// = DriveTrain.getInstance();
   Intake intake;// = Intake.getInstance();
   Shooter shooter = Shooter.getInstance();
   Climber climber;// = Climber.getInstance();
@@ -45,7 +45,7 @@ public class Robot extends TimedRobot {
   MCRCommand mission;
 
   // testing only
-  Magazine magazine = Magazine.getInstance();
+  Magazine magazine;// = Magazine.getInstance();
   //  Turret turret = Turret.getInstance();
   // Hood hood = Hood.getInstance();
   boolean firstTime = true;
@@ -59,8 +59,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
+    SmartDashboard.putNumber("ShooterSpeed", .6);
     final UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
-    driveTrain.calibrateGyro();
+    //driveTrain.calibrateGyro();
     dashboard.pushAuto();
     dashboard.pushTurnPID();
 
@@ -95,8 +96,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     controls.changeMode();
-    applyOperatorInputs();
-    runSystemsStateMachine();
+    //applyOperatorInputs();
+    //runSystemsStateMachine();
 
     //testing
     // shooter.shooterTest();
