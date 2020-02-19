@@ -10,9 +10,9 @@ import frc.robot.RobotMap;
 public class Intake {
 
     private static MCR_SRX intake = new MCR_SRX(RobotMap.Intake.INTAKE_MOTOR);
-    private static MCR_SRX lift = new MCR_SRX(RobotMap.Intake.LIFT_MOTOR);
-    private static DigitalInput topLimit = new DigitalInput(RobotMap.Intake.TOP_LIMIT_SWITCH);
-    private static DigitalInput bottomLimit = new DigitalInput(RobotMap.Intake.BOTTOM_LIMIT_SWITCH);
+    // private static MCR_SRX lift = new MCR_SRX(RobotMap.Intake.LIFT_MOTOR);
+    // private static DigitalInput topLimit = new DigitalInput(RobotMap.Intake.TOP_LIMIT_SWITCH);
+    // private static DigitalInput bottomLimit = new DigitalInput(RobotMap.Intake.BOTTOM_LIMIT_SWITCH);
     private static MCR_SRX raiseLowerIntake = new MCR_SRX(RobotMap.Intake.RAISE_LOWER_INTAKE_MOTOR);
     private static final Intake instance = new Intake();
 
@@ -72,7 +72,7 @@ public class Intake {
     }
 
     public void run() {
-        System.out.println("deploying"+ deploying + " Stowing" + stowing);
+        System.out.println("deploying:"+ deploying + "   Stowing:" + stowing);
         if (deploying && intakeDeployed()) {
             raiseLowerIntake.stopMotor();
             deploying = false;
