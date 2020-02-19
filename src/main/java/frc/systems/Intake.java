@@ -13,18 +13,20 @@ public class Intake {
     private static MCR_SRX lift = new MCR_SRX(RobotMap.Intake.LIFT_MOTOR);
     private static DigitalInput topLimit = new DigitalInput(RobotMap.Intake.TOP_LIMIT_SWITCH);
     private static DigitalInput bottomLimit = new DigitalInput(RobotMap.Intake.BOTTOM_LIMIT_SWITCH);
-    private static final Intake instance = new Intake();
     private static MCR_SRX raiseLowerIntake = new MCR_SRX(RobotMap.Intake.RAISE_LOWER_INTAKE_MOTOR);
+    private static final Intake instance = new Intake();
+
 
     private final double TopSpeed = .3;
     double LowerSpeed = .3;
     double RaiseSpeed = -.3;
     boolean stowing = false;
     boolean deploying = false;
+    private boolean intakeIsRunning = false;
 
     private Intake() {
         raiseLowerIntake.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
-                LimitSwitchNormal.NormallyClosed);
+                LimitSwitchNormal.NormallyOpen);
         raiseLowerIntake.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
                 LimitSwitchNormal.NormallyOpen);
     }
@@ -36,6 +38,7 @@ public class Intake {
     // run the intake belts
     public void startIntake() {
         intake.set(TopSpeed);
+        intakeIsRunning = true;
     }
 
     // run the intake belts in a reverse direction
@@ -45,26 +48,31 @@ public class Intake {
 
     public void stopIntake() {
         intake.stopMotor();
+        intakeIsRunning = false;
     }
 
     // lower the intake mechanism
     public void lowerIntake() {
         raiseLowerIntake.set(.5);
         deploying = true;
+        System.out.println("Lower Intake");
     }
 
     // raise the intake mechanism
     public void retractIntake() {
         raiseLowerIntake.set(-.5);
         stowing = true;
+        System.out.println("Retract Intake");
     }
 
     public boolean intakeDeployed() {
         // 1=closed
+        System.out.println("Is intake deployed?" +raiseLowerIntake.isFwdLimitSwitchClosed());
         return 1 == raiseLowerIntake.isFwdLimitSwitchClosed();
     }
 
     public void run() {
+        System.out.println("deploying"+ deploying + " Stowing" + stowing);
         if (deploying && intakeDeployed()) {
             raiseLowerIntake.stopMotor();
             deploying = false;
@@ -77,7 +85,16 @@ public class Intake {
 
     public boolean intakeStowed() {
         // 1==closed
+        System.out.println("Is intake stowed?" +raiseLowerIntake.isRevLimitSwitchClosed());
         return 1 == raiseLowerIntake.isRevLimitSwitchClosed();
+    }
+    public void toggleIntakeState(){
+        if (intakeIsRunning){
+            stopIntake();
+        }
+        else{
+            startIntake();
+        }
     }
 
 }

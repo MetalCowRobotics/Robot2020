@@ -94,10 +94,10 @@ public class RobotMap {
 		public static final double EJECT_SPEED = -1;
 		public static final double RAMP_SPEED = .8;
 		public static final int LIFT_MOTOR = 0; //CAN
-		public static final int INTAKE_MOTOR = 1; //CAN
+		public static final int INTAKE_MOTOR = 15; //CAN
 		public static final int TOP_LIMIT_SWITCH = 1;//DIO
 		public static final int BOTTOM_LIMIT_SWITCH = 2;//DIO
-		public static final int RAISE_LOWER_INTAKE_MOTOR = 1;
+		public static final int RAISE_LOWER_INTAKE_MOTOR = 9;
 		
 	}
 
