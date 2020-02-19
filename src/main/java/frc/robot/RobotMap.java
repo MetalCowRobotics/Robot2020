@@ -66,7 +66,7 @@ public class RobotMap {
 	}
 	
 	public final class Hood {
-		public static final int HOOD_MOTOR = 2;
+		public static final int HOOD_MOTOR = 10;
 		public static final int HOOD_UP = 0;
 		public static final int HOOD_DOWN = 1;
 		public static final double HOOD_SPEED = .6;

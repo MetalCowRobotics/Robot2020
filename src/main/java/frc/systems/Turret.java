@@ -1,14 +1,10 @@
 package frc.systems;
 
-import java.util.function.DoubleToIntFunction;
-
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib14.MCR_SRX;
 import frc.lib14.PIDController;
 import frc.lib14.UtilityMethods;
 import frc.robot.RobotMap;
-import frc.lib14.UtilityMethods;
 
 public class Turret {
     private PIDController holdPID;

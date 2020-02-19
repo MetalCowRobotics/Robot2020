@@ -3,13 +3,6 @@ package frc.systems;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.commands.TurnDegrees;
-import frc.lib14.CommandPause;
-import frc.lib14.MCRCommand;
-import frc.lib14.SequentialCommands;
-import frc.lib14.TimedCommandSet;
 
 public class Vision {
     double focalWidth = 773.7660;
