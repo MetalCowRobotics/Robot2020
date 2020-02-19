@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.autonomous.ShootAndGo;
 import frc.lib14.MCRCommand;
+import frc.lib14.MCR_SRX;
 import frc.lib14.XboxControllerMetalCow;
 // import frc.robot.RobotMap.Magazine;
 import frc.systems.Climber;
@@ -26,6 +27,7 @@ import frc.systems.Shooter;
  */
 
 public class Robot extends TimedRobot {
+  private static MCR_SRX testMotor = new MCR_SRX(1);
   DriveTrain drive = DriveTrain.getInstance();
   Intake intake = Intake.getInstance();
   Shooter shooter = Shooter.getInstance();
@@ -80,6 +82,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testPeriodic() {
+    testMotor.set(controller.getRY());
     //  if (controller.getAButton()) {
     //    climber.lowerClimber();
     //  } else if (controller.getBButton()) {
@@ -87,13 +90,13 @@ public class Robot extends TimedRobot {
     //  } else {
     //    climber.stopClimber();
     //  }
-    if (controller.getAButton()) {
-      climber.lowerClimber();
-    } else if (controller.getBButton()) {
-      climber.raiseClimber();
-    } else {
-      climber.stopClimber();
-    }
+    // if (controller.getAButton()) {
+    //   climber.lowerClimber();
+    // } else if (controller.getBButton()) {
+    //   climber.raiseClimber();
+    // } else {
+    //   climber.stopClimber();
+    // }
   }
 
   public void test() {
