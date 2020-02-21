@@ -78,8 +78,11 @@ public class Intake {
             deploying = false;
         }
         if (stowing && intakeStowed()) {
+            System.out.println("stop stowing");
             raiseLowerIntake.stopMotor();
             stowing = false;
+        } else {
+            System.out.println("not stopping stowing");
         }
     }
 

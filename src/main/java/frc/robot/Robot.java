@@ -108,6 +108,8 @@ public class Robot extends TimedRobot {
     //   firstTime = false;
     // }
     // shooter.run();
+    SmartDashboard.putBoolean("Stowing", intake.intakeStowed());
+    SmartDashboard.putBoolean("Deploying", intake.intakeDeployed());
   }
 
   private void applyOperatorInputs() {
