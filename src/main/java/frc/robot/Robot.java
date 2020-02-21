@@ -20,6 +20,7 @@ import frc.lib14.XboxControllerMetalCow;
 import frc.systems.Climber;
 import frc.systems.DriveTrain;
 import frc.systems.Intake;
+import frc.systems.MCRPotentiometer;
 import frc.systems.Magazine;
 import frc.systems.MasterControls;
 import frc.systems.Shooter;
@@ -34,9 +35,9 @@ import frc.commands.NewTurn;
 
 public class Robot extends TimedRobot {
   // systems
-  DriveTrain driveTrain = DriveTrain.getInstance();
+  DriveTrain driveTrain;// = DriveTrain.getInstance();
   Intake intake;// = Intake.getInstance();
-  Shooter shooter = Shooter.getInstance();
+  Shooter shooter;// = Shooter.getInstance();
   Climber climber;// = Climber.getInstance();
   MasterControls controls = MasterControls.getInstance();
   RobotDashboard dashboard = RobotDashboard.getInstance();
@@ -45,11 +46,12 @@ public class Robot extends TimedRobot {
   MCRCommand mission;
 
   // testing only
-  Magazine magazine = Magazine.getInstance();
+  Magazine magazine;// = Magazine.getInstance();
   //  Turret turret = Turret.getInstance();
   // Hood hood = Hood.getInstance();
   boolean firstTime = true;
   XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
+  private MCRPotentiometer myPot;
 
 
   /**
@@ -60,7 +62,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     final UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
-    driveTrain.calibrateGyro();
+    // driveTrain.calibrateGyro();
     dashboard.pushAuto();
     dashboard.pushTurnPID();
 
@@ -132,9 +134,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
+    myPot = new MCRPotentiometer();
   }
 
   @Override
   public void testPeriodic() {
+    System.out.println("Potentiometer:" + myPot.getPosistion());
   }
 }
