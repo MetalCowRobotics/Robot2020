@@ -55,40 +55,40 @@ public class Intake {
     public void lowerIntake() {
         raiseLowerIntake.set(.5);
         deploying = true;
-        System.out.println("Lower Intake");
+        // System.out.println("Lower Intake");
     }
 
     // raise the intake mechanism
     public void retractIntake() {
         raiseLowerIntake.set(-.5);
         stowing = true;
-        System.out.println("Retract Intake");
+       // System.out.println("Retract Intake");
     }
 
     public boolean intakeDeployed() {
         // 1=closed
-        System.out.println("Is intake deployed?" +raiseLowerIntake.isFwdLimitSwitchClosed());
+       // System.out.println("Is intake deployed?" +raiseLowerIntake.isFwdLimitSwitchClosed());
         return 1 == raiseLowerIntake.isFwdLimitSwitchClosed();
     }
 
     public void run() {
-        System.out.println("deploying:"+ deploying + "   Stowing:" + stowing);
+       // System.out.println("deploying:"+ deploying + "   Stowing:" + stowing);
         if (deploying && intakeDeployed()) {
             raiseLowerIntake.stopMotor();
             deploying = false;
         }
         if (stowing && intakeStowed()) {
-            System.out.println("stop stowing");
+            //System.out.println("stop stowing");
             raiseLowerIntake.stopMotor();
             stowing = false;
         } else {
-            System.out.println("not stopping stowing");
+            //System.out.println("not stopping stowing");
         }
     }
 
     public boolean intakeStowed() {
         // 1==closed
-        System.out.println("Is intake stowed?" +raiseLowerIntake.isRevLimitSwitchClosed());
+        // System.out.println("Is intake stowed?" +raiseLowerIntake.isRevLimitSwitchClosed());
         return 1 == raiseLowerIntake.isRevLimitSwitchClosed();
     }
     public void toggleIntakeState(){
