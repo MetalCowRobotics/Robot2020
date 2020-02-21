@@ -34,7 +34,7 @@ import frc.systems.Vision;
 
 public class Robot extends TimedRobot {
   // systems
-  DriveTrain driveTrain = DriveTrain.getInstance();
+  DriveTrain driveTrain;// = DriveTrain.getInstance();
   Intake intake;// = Intake.getInstance();
   Shooter shooter;// = Shooter.getInstance();
   Climber climber;// = Climber.getInstance();
@@ -45,7 +45,7 @@ public class Robot extends TimedRobot {
   MCRCommand mission;
 
   // testing only
-  Magazine magazine = Magazine.getInstance();
+  Magazine magazine;// = Magazine.getInstance();
   Vision vision = Vision.getInstance();
   // Turret turret = Turret.getInstance();
   Hood hood = Hood.getInstance();
@@ -61,7 +61,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     final UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
     vision.visionInit();
-    driveTrain.calibrateGyro();
+    //driveTrain.calibrateGyro();
     dashboard.pushAuto();
     dashboard.pushTurnPID();
 
@@ -90,14 +90,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    hood.encoder.reset();
+    hood.resetEncoder();
     //shooter.setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));// needs velocity
   }
 
   @Override
   public void teleopPeriodic() {
-    controls.changeMode();
-    applyOperatorInputs();
+    //controls.changeMode();
+    //applyOperatorInputs();
     // runSystemsStateMachine();
 
     // testing
@@ -105,7 +105,19 @@ public class Robot extends TimedRobot {
     // shooter.runShooter();
     // shooter.run();
 
-    hood.setFarShot();
+    if (controller.getPOV() == 0) {
+      hood.calculateTicks();
+      hood.setFarShot();
+    } else if (controller.getPOV() == 90) {
+      hood.calculateTicks();
+      hood.setTenFoot();
+    } else if (controller.getPOV() == 180) {
+      hood.calculateTicks();
+      hood.setSafeZone();
+    } else {
+      Hood.hood.set(0);
+    }
+
     SmartDashboard.putNumber("distance", vision.getTargetDistance());
     SmartDashboard.putNumber("yaw", vision.getYawDegrees());
 
