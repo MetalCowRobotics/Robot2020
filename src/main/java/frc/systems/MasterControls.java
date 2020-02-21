@@ -96,7 +96,7 @@ public class MasterControls {
 		if (fieldMode) {
 			return 0;
 		}
-		return operator.getLY();
+		return driver.getLY();
 	}
 
 	public boolean target() {
