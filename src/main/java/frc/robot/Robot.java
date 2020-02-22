@@ -105,13 +105,13 @@ public class Robot extends TimedRobot {
     // shooter.runShooter();
     // shooter.run();
 
-    if (controller.getPOV() == 0) {
+    if (vision.getTargetDistance() > 25) {
       hood.calculateTicks();
       hood.setFarShot();
-    } else if (controller.getPOV() == 90) {
+    } else if (vision.getTargetDistance() > 5) {
       hood.calculateTicks();
       hood.setTenFoot();
-    } else if (controller.getPOV() == 180) {
+    } else if (vision.getTargetDistance() > 1) {
       hood.calculateTicks();
       hood.setSafeZone();
     } else {
