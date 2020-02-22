@@ -87,6 +87,7 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     hood.resetEncoder();
     //shooter.setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));// needs velocity
+    vision.visionInit();
   }
 
   @Override
