@@ -16,12 +16,11 @@ import frc.autonomous.ShootAndGather;
 import frc.autonomous.ShootAndGo;
 import frc.commands.NewTurn;
 import frc.lib14.MCRCommand;
-import frc.lib14.XboxControllerMetalCow;
+import frc.robot.RobotMap.Magazine;
 import frc.systems.Climber;
 import frc.systems.DriveTrain;
 import frc.systems.Hood;
 import frc.systems.Intake;
-import frc.systems.Magazine;
 import frc.systems.MasterControls;
 import frc.systems.Shooter;
 import frc.systems.Vision;
@@ -50,7 +49,6 @@ public class Robot extends TimedRobot {
   // Turret turret = Turret.getInstance();
   Hood hood = Hood.getInstance();
   boolean firstTime = true;
-  XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -64,9 +62,6 @@ public class Robot extends TimedRobot {
     //driveTrain.calibrateGyro();
     dashboard.pushAuto();
     dashboard.pushTurnPID();
-
-    // testing
-    SmartDashboard.putNumber("Target Percentage", .45);
   }
 
   @Override
@@ -136,11 +131,16 @@ public class Robot extends TimedRobot {
       intake.retractIntake();
     }
     // shooter
-    if (controls.spinUpAndShoot()) {
-      shooter.shootBallWhenReady();
+    if(controls.intakeOnOff()){
+      intake.toggleIntakeState();
     }
-    // climber
-  }
+    //shooter
+    if (controls.spinUpAndShoot()) {
+     // shooter.shootBallWhenReady();
+    }
+    //climber
+    climber.raiseClimber(controls.climbSpeed());
+  } 
 
   private void runSystemsStateMachine() {
     driveTrain.drive();

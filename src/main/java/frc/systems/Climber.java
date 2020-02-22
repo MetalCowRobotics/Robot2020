@@ -13,7 +13,8 @@ public class Climber {
     private static MCR_SRX leftClimber = new MCR_SRX(RobotMap.Climber.RIGHT_CLIMB_MOTOR);
     private static MCR_SRX rightClimber = new MCR_SRX(RobotMap.Climber.LEFT_CLIMB_MOTOR);
     private static final SpeedControllerGroup climber = new SpeedControllerGroup(leftClimber, rightClimber);
-    private static final DigitalInput camIn = new DigitalInput(4);//= new DigitalInput(RobotMap.Climber.CAM_IN_LIMITSWITCH);
+    private static final DigitalInput camIn = new DigitalInput(4);// = new
+                                                                  // DigitalInput(RobotMap.Climber.CAM_IN_LIMITSWITCH);
     private static final Servo camServo = new Servo(RobotMap.Climber.SERVO);
     private static final Climber instance = new Climber();
     private static final double RAISE_SPEED = 0.5;
@@ -30,7 +31,7 @@ public class Climber {
     }
 
     public void run() {
-	}
+    }
 
     public void stopClimber() {
         climber.stopMotor();
@@ -40,12 +41,12 @@ public class Climber {
     }
 
     // lift the robot off the ground
-    public void raiseClimber() {
-        if (!isCamDeployed()) {
-            deployCam();
-        } else {
-            climber.set(RAISE_SPEED);
-        }
+    public void raiseClimber(double speed) {
+        // if (!isCamDeployed()) {
+        // deployCam();
+        // } else {
+        climber.set(speed);
+        // }
     }
 
     // deploy hook

@@ -9,9 +9,8 @@ import frc.robot.RobotMap;
 public class Magazine {
     private static MCR_SRX motor1 = new MCR_SRX(RobotMap.Magazine.LEFT_MAGAZINE_MOTOR);
     private static MCR_SRX motor2 = new MCR_SRX(RobotMap.Magazine.RIGHT_MAGAZINE_MOTOR);
-    private static final DigitalInput topLimit = new DigitalInput(RobotMap.Magazine.LIMIT_SWITCH_TOP);
-    private static final DigitalInput bottomLimit = new DigitalInput(RobotMap.Magazine.LIMIT_SWITCH_BOTTOM);
     boolean feedMode = false;
+    private static final DigitalInput topLimit = new DigitalInput(RobotMap.Magazine.LIMIT_SWITCH_TOP);
     XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
     private static MCR_SRX magazineMotor = new MCR_SRX(RobotMap.Magazine.MAGAZINE_MOTOR);
     private static final Magazine instance = new Magazine();
