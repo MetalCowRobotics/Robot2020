@@ -10,21 +10,16 @@ package frc.robot;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.autonomous.NoAuto;
 import frc.autonomous.ShootAndGather;
 import frc.autonomous.ShootAndGo;
+import frc.commands.NewTurn;
 import frc.lib14.MCRCommand;
-import frc.lib14.XboxControllerMetalCow;
 import frc.systems.Climber;
 import frc.systems.DriveTrain;
 import frc.systems.Intake;
-import frc.systems.Magazine;
 import frc.systems.MasterControls;
 import frc.systems.Shooter;
-
-import frc.commands.NewTurn;
 
 /**
  * The VM is configured to automatically run this class. If you change the name
@@ -34,23 +29,16 @@ import frc.commands.NewTurn;
 
 public class Robot extends TimedRobot {
   // systems
-  DriveTrain driveTrain;// = DriveTrain.getInstance();
+  DriveTrain driveTrain = DriveTrain.getInstance();
   Intake intake = Intake.getInstance();
-  Shooter shooter;//= Shooter.getInstance();
-  Climber climber;// = Climber.getInstance();
+  Shooter shooter = Shooter.getInstance();
+  Climber climber = Climber.getInstance();
   MasterControls controls = MasterControls.getInstance();
   RobotDashboard dashboard = RobotDashboard.getInstance();
 
   // class variables
   MCRCommand mission;
-
-  // testing only
-  Magazine magazine;//= Magazine.getInstance();
-  //  Turret turret = Turret.getInstance();
-  // Hood hood = Hood.getInstance();
   boolean firstTime = true;
-  XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
-
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -60,17 +48,14 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     final UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
-   // driveTrain.calibrateGyro();
+    driveTrain.calibrateGyro();
     dashboard.pushAuto();
     dashboard.pushTurnPID();
-
-    //testing
-    SmartDashboard.putNumber("Target Percentage", .45);
   }
 
   @Override
   public void autonomousInit() {
-    /*if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GO == dashboard.getAutoMission()) {
+    if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GO == dashboard.getAutoMission()) {
       mission = new ShootAndGo();
     } else if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GATHER == dashboard.getAutoMission()) {
       mission = new ShootAndGather();
@@ -78,16 +63,13 @@ public class Robot extends TimedRobot {
       mission = new NoAuto();
     }
     //testing
-    mission = new NewTurn(90);*/
+    mission = new NewTurn(90);
   }
 
   @Override
   public void autonomousPeriodic() {
-    /*mission.run();
-    runSystemsState();*/
-
-    // mission.run();
-    // runSystemsStateMachine();
+    mission.run();
+    runSystemsStateMachine();
   }
 
   @Override
@@ -99,22 +81,9 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     controls.changeMode();
     applyOperatorInputs();
-    //runSystemsStateMachine();
-
-    //testing
-    intake.run();
-    // shooter.shooterTest();
-   // shooter.runShooter();
-    //shooter.run();
-    // if (firstTime) {
-    //   shooter.runShooter();
-    //   firstTime = false;
-    // }
-    // shooter.run();
-    SmartDashboard.putBoolean("Stowing", intake.intakeStowed());
-    SmartDashboard.putBoolean("Deploying", intake.intakeDeployed());
-    climber.raiseClimber(controls.climbSpeed());
+    runSystemsStateMachine();
   }
+
   private void applyOperatorInputs() {
     //intake
     if (controls.lowerIntake()) {
@@ -130,6 +99,7 @@ public class Robot extends TimedRobot {
      // shooter.shootBallWhenReady();
     }
     //climber
+    climber.raiseClimber(controls.climbSpeed());
   } 
 
   private void runSystemsStateMachine() {
