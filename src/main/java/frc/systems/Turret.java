@@ -2,12 +2,10 @@ package frc.systems;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib14.MCR_SRX;
-import frc.lib14.PIDController;
 import frc.lib14.UtilityMethods;
 import frc.robot.RobotMap;
 
 public class Turret {
-    private PIDController holdPID;
     private static MCR_SRX turret = new MCR_SRX(RobotMap.Turret.TURRET_MOTOR);
     private static final Turret instance = new Turret();
     double turretSpeed = .4;
@@ -23,18 +21,11 @@ public class Turret {
         return instance;
     }
 
-    public void run() {
-    }
-
     // 4096tics = 360 degrees 11.25tics = 1 degree
     public void rotateTurret(int degrees) {
         int targetTics = 0;
         targetTics = degrees * 11;
         double totalTicsDiff = (targetTics - turret.getSelectedSensorPosition()) * .003;
-        // if (error < .2){
-        // error = .2;
-        // }
-        // error = UtilityMethods.copySign(error, UtilityMethods.absMin(error, .2));
         double error = UtilityMethods.copySign(totalTicsDiff, UtilityMethods.absMax(totalTicsDiff, .05));
         error = UtilityMethods.copySign(totalTicsDiff, UtilityMethods.absMin(error, .4));
         System.out.println("Target" + targetTics + "; current " + turret.getSelectedSensorPosition() + "; error" + error

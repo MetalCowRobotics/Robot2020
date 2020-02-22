@@ -16,6 +16,7 @@ import frc.autonomous.ShootAndGather;
 import frc.autonomous.ShootAndGo;
 import frc.commands.NewTurn;
 import frc.lib14.MCRCommand;
+import frc.lib14.XboxControllerMetalCow;
 import frc.robot.RobotMap.Magazine;
 import frc.systems.Climber;
 import frc.systems.DriveTrain;
@@ -39,13 +40,14 @@ public class Robot extends TimedRobot {
   Climber climber;// = Climber.getInstance();
   MasterControls controls = MasterControls.getInstance();
   RobotDashboard dashboard = RobotDashboard.getInstance();
+  Vision vision = Vision.getInstance();
+  XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
 
   // class variables
   MCRCommand mission;
 
   // testing only
   Magazine magazine;// = Magazine.getInstance();
-  Vision vision = Vision.getInstance();
   // Turret turret = Turret.getInstance();
   Hood hood = Hood.getInstance();
   boolean firstTime = true;
@@ -57,8 +59,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    final UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
-    vision.visionInit();
     //driveTrain.calibrateGyro();
     dashboard.pushAuto();
     dashboard.pushTurnPID();
@@ -66,6 +66,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    vision.visionInit();
     if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GO == dashboard.getAutoMission()) {
       mission = new ShootAndGo();
     } else if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GATHER == dashboard.getAutoMission()) {
@@ -85,9 +86,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    vision.visionInit();
     hood.resetEncoder();
     //shooter.setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));// needs velocity
-    vision.visionInit();
   }
 
   @Override
@@ -96,32 +97,39 @@ public class Robot extends TimedRobot {
     //applyOperatorInputs();
     // runSystemsStateMachine();
 
-    // testing
-    // shooter.shooterTest();
-    // shooter.runShooter();
-    // shooter.run();
-
-    if (vision.getTargetDistance() > 25) {
-      hood.calculateTicks();
-      hood.setFarShot();
-    } else if (vision.getTargetDistance() > 5) {
-      hood.calculateTicks();
-      hood.setTenFoot();
-    } else if (vision.getTargetDistance() > 1) {
-      hood.calculateTicks();
-      hood.setSafeZone();
+    //check if operator wants to shoot
+    if (controls.prepairToShoot()) {
+      shooter.prepairToShoot();
     } else {
-      Hood.hood.set(0);
+      shooter.stopShooter();
     }
+
+    //set shooting mode
+    if (controller.getYButton()) {
+      shooter.shootNow = true;
+    } else if (controller.getAButton()) {
+      shooter.shootNow = false;
+    }
+
+    //do on first time
+    if (firstTime) {
+      shooter.setupShooter();
+      firstTime = false;
+    }
+
+    //shoot ball
+    if (controls.shootNow()) {
+      shooter.shootBall();
+    } else if (controls.shootWhenReady()) {
+      shooter.shootBallWhenReady();
+    }
+
+    //run systems
+    shooter.run();
+    intake.run();
 
     SmartDashboard.putNumber("distance", vision.getTargetDistance());
     SmartDashboard.putNumber("yaw", vision.getYawDegrees());
-
-    // if (firstTime) {
-    // shooter.runShooter();
-    // firstTime = false;
-    // }
-    // shooter.run();
   }
 
   private void applyOperatorInputs() {
@@ -136,7 +144,7 @@ public class Robot extends TimedRobot {
       intake.toggleIntakeState();
     }
     //shooter
-    if (controls.spinUpAndShoot()) {
+    if (controls.shootWhenReady()) {
      // shooter.shootBallWhenReady();
     }
     //climber
