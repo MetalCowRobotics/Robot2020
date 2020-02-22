@@ -1,9 +1,7 @@
 package frc.systems;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib14.MCR_SRX;
-import frc.lib14.XboxControllerMetalCow;
 import frc.robot.RobotMap;
 
 /**
