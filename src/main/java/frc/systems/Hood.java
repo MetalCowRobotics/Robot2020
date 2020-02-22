@@ -1,19 +1,20 @@
 package frc.systems;
 
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.lib14.MCR_SRX;
+import edu.wpi.first.wpilibj.VictorSP;
+import frc.lib14.FC_JE_0149Encoder;
 import frc.robot.RobotMap;
 
 public class Hood {
-    private static MCR_SRX hood = new MCR_SRX(RobotMap.Hood.HOOD_MOTOR);
-    private static DigitalInput hoodUp = new DigitalInput(RobotMap.Hood.HOOD_UP);
-    private static DigitalInput hoodDown = new DigitalInput(RobotMap.Hood.HOOD_DOWN);
+    //private static MCR_SRX hood = new MCR_SRX(RobotMap.Hood.HOOD_MOTOR);
+    public static VictorSP hood = new VictorSP(RobotMap.Hood.HOOD_MOTOR);
+    public static FC_JE_0149Encoder encoder = new FC_JE_0149Encoder(3,4);
     private static final Hood instance = new Hood();
 
-    private boolean raisingHood = false;
-    private boolean loweringHood = false;
-    private boolean firstTime = true;
+    private final double TICKS_PER_REV = 44.4;
+    private double target_inches = 1;
+    private double TOTAL_REVS = target_inches * 10;
+    private double TARGET_TICKS = TICKS_PER_REV * TOTAL_REVS;
+    private double adjustment = 0;
 
     private Hood() {
 
@@ -23,53 +24,94 @@ public class Hood {
         return instance;
     }
 
-    public void run() {
-        if (firstTime) {
-            firstTime = false;
-            //set starting encoder reading so everything will be based on that
-        }
-        if (isHoodAtBottomPos() || isHoodAtTopPos()){
-            hood.stopMotor();
-        }
-        //keep moving the hood until it is at position
+    public void calculateTicks() {
+        TOTAL_REVS = target_inches * 10;
+        TARGET_TICKS = TICKS_PER_REV * TOTAL_REVS + adjustment;
     }
 
-    public void raiseHood() {
-        if (!isHoodAtTopPos()) {
-            hood.set(RobotMap.Hood.HOOD_SPEED);
-            SmartDashboard.putString("raiseHood", "running");
+    public void run(double distance) {
+        setDistance(distance);
+    }
+
+    public void calculateAdjustment(double y) {
+        if (y > .1) {
+            adjustment += 4;
+        } else if (y < -.1){
+            adjustment -= 4;
+        }
+    }
+
+    public void resetAdjustment() {
+        adjustment = 0;
+    }
+
+    //automated set hood position
+    public void setDistance(double distance) {
+        if (distance > 25) {
+            calculateTicks();
+            setFarShot();
+        } else if (distance > 5) {
+            calculateTicks();
+            setTenFoot();
+        } else if (distance > 1) {
+            calculateTicks();
+            setSafeZone();
         } else {
-            hood.stopMotor();
-            SmartDashboard.putString("raiseHood", "stopped");
+            hood.set(0);
         }
     }
 
-    private boolean isHoodAtTopPos() {
-        return !hoodUp.get();
-    }
-
-    public void lowerHood() {
-        if (!isHoodAtBottomPos()) {
-            hood.set(-RobotMap.Hood.HOOD_SPEED);
+    //manual set hood position
+    public void setDistance(boolean farShot) {
+        if (farShot) {
+            setFarShot();
         } else {
-            hood.stopMotor();
+            setSafeZone();
         }
     }
 
-    private boolean isHoodAtBottomPos() {
-        return !hoodDown.get();
-    }
 
     public void setFarShot() {
-
+        target_inches = 1.4;
+        System.out.println("EncoderTicks:" + encoder.getTics());
+        double error = ((TARGET_TICKS+3) - encoder.getTics()) / 100;
+        if (error > .5) {
+            error = .5;
+        }
+        if (error < -.5) {
+            error = -.5;
+        }
+        hood.set(error);
     }
 
     public void setTenFoot() {
-
+        target_inches = 1.8;
+        System.out.println("EncoderTicks:" + encoder.getTics());
+        double error = ((TARGET_TICKS+3) - encoder.getTics()) / 100;
+        if (error > .5) {
+            error = .5;
+        }
+        if (error < -.5) {
+            error = -.5;
+        }
+        hood.set(error);
     }
 
     public void setSafeZone() {
+        target_inches = 3.4;
+        System.out.println("EncoderTicks:" + encoder.getTics());
+        double error = ((TARGET_TICKS+3) - encoder.getTics()) / 100;
+        if (error > .5) {
+            error = .5;
+        }
+        if (error < -.5) {
+            error = -.5;
+        }
+        hood.set(error);
+    }
 
+    public void resetEncoder() {
+        encoder.reset();
     }
 
 }

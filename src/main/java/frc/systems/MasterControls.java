@@ -108,7 +108,11 @@ public class MasterControls {
 		return operator.getAButton();
 	}
 
-	public boolean spinUpAndShoot() {
+	public boolean shootWhenReady() {
 		return operator.getBButton();
+	}
+
+	public double hoodAdjustment() {
+		return operator.getY();
 	}
 }
