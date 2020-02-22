@@ -7,7 +7,6 @@
 
 package frc.robot;
 
-import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.autonomous.NoAuto;
@@ -48,6 +47,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
+    CameraServer.getInstance().startAutomaticCapture(0);
     driveTrain.calibrateGyro();
     dashboard.pushAuto();
     dashboard.pushTurnPID();
