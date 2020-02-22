@@ -13,15 +13,15 @@ import frc.robot.RobotMap;
 public class Shooter {
     private static CANSparkMax neo1 = new CANSparkMax(RobotMap.Shooter.TOP_MOTOR_ID, MotorType.kBrushless);
     private static CANSparkMax neo2 = new CANSparkMax(RobotMap.Shooter.BOTTOM_MOTOR_ID, MotorType.kBrushless);
-    // private CANSparkMax neo3 = new CANSparkMax(2, MotorType.kBrushless);
-    // private CANSparkMax neo4 = new CANSparkMax(3, MotorType.kBrushless);
     private static SpeedControllerGroup shooter = new SpeedControllerGroup(neo1, neo2);
-    // private static SpeedControllerGroup shooter = new SpeedControllerGroup(neo1);
+    private static MasterControls controls = MasterControls.getInstance();
     private Magazine magazine = Magazine.getInstance();
+    private Hood hood = Hood.getInstance();
     private Turret turret = Turret.getInstance();
     private Funnel funnel = Funnel.getInstance();
+    private static Vision vision = Vision.getInstance();
     private double targetSpeed;// RPM's
-    private boolean maintainSpeed = false;
+    private boolean readyToShoot = false;
     private static PIDController pidController;
     private static final double SHOOTER_SPEED = .65;
     private static double P = .00003;
@@ -29,18 +29,13 @@ public class Shooter {
     private static double D = 0;
     private static double Iz = 400;
     private boolean firstTime = true;
+    public boolean operatorReady = false;// does operator want to shoot
+    public boolean shootNow = false; //true = shoot now, false = shoot when ready
 
     // singleton instance
     private static final Shooter instance = new Shooter();
 
     private Shooter() {
-        // leftShooter = new SpeedControllerGroup(neo3, neo4);
-        // neoTwo.follow(neoOne);
-        // newOne.getEncoder
-        // newTwo.clone()
-        // neoOne.set(speed);
-        // SpeedControllerGroup shooterR = new SpeedControllerGroup(neoOne, neoTwo);
-        // shooterL.follow(shooterR);
         pidController = new PIDController(0, P, I, D, Iz);
         RobotDashboard.getInstance().pushShooterPIDValues(P, I, D, Iz);
     }
@@ -50,15 +45,24 @@ public class Shooter {
     }
 
     public void run() {
-        magazine.run();
-        turret.run();
+        hood.calculateAdjustment(controls.hoodAdjustment());
+        hood.run(vision.getTargetDistance());
+
         funnel.run();
-        if (maintainSpeed) {
+        if (readyToShoot) {
             // speed PID loop            
             shooter.set(SHOOTER_SPEED + getCorrection());
             SmartDashboard.putNumber("Correction", getCorrection());
             SmartDashboard.putNumber("Actual Velocity", neo1.getEncoder().getVelocity());
+        } else {
+            shooter.set(0);
+            prepairToShoot();
+            hood.resetAdjustment();
         }
+
+        magazine.run();
+        funnel.run();
+        //turret.rotateToDegrees(vision.getYaw); //no turret yet
     }
 
     public boolean atSpeed() {
@@ -69,7 +73,7 @@ public class Shooter {
     public void prepairToShoot() {
         //get target distance
         //set shooter speed
-        runShooter();
+        setupShooter();
         //set hood poistion
         magazine.loadBallInShootingPosition();
     }
@@ -78,18 +82,16 @@ public class Shooter {
         return magazine.getCounted();
     }
 
-    public void runShooter() {
-        if (firstTime) {
-            setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));//needs velocity
-            firstTime = false;
-        }
+    public void setupShooter() {
+        setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));//needs velocity
+        firstTime = false;
         //shooter.set(SmartDashboard.getNumber("Set Velocity", 1500));
-        maintainSpeed = true;
+        readyToShoot = true;
     }
 
     public void stopShooter() {
         shooter.stopMotor();
-        maintainSpeed = false;
+        readyToShoot = false;
         magazine.stopLoadToTop();
     }
 
@@ -131,13 +133,15 @@ public class Shooter {
     }
 
     public void shootBallWhenReady() {
-        if (isReady()) {
+        if (readyToShoot && isReady()) {
             magazine.feedOneBall();
         }
     }
 
     public void shootBall() {
-        magazine.feedOneBall();
+        if (readyToShoot) {
+            magazine.feedOneBall();
+        }
     }
 
     public void setTargetSpeed(double targetSpeed) {
