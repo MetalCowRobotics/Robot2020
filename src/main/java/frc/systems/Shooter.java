@@ -24,6 +24,7 @@ public class Shooter {
     private static SpeedControllerGroup shooter = new SpeedControllerGroup(neo1);
     private Magazine magazine;// = Magazine.getInstance();
     private Turret turret;// = Turret.getInstance();
+    private Funnel funnel = Funnel.getInstance();
     private double targetSpeed;// RPM's
     private boolean maintainSpeed = false;
     private static PIDController pidController;
@@ -57,6 +58,7 @@ public class Shooter {
     public void run() {
         //magazine.run();
         //turret.run();
+        funnel.run();
         if (maintainSpeed) {
             // speed PID loop            
             shooter.set(SHOOTER_SPEED + getCorrection());

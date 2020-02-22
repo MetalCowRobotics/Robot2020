@@ -140,6 +140,7 @@ public class RobotMap {
 		public static int Magazine_Funnel_Motor = 0;
 		public static int LIMIT_SWITCH_BOTTOM = 1;
 		public static double motorSpeed = 0.5;
+		public static double motorASpeed = 0.6;
        
 	}
 }
