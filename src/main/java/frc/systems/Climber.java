@@ -10,10 +10,12 @@ import frc.robot.RobotMap;
 
 public class Climber {
 
-    private static MCR_SRX leftClimber = new MCR_SRX(RobotMap.Climber.RIGHT_CLIMB_MOTOR);
-    private static MCR_SRX rightClimber = new MCR_SRX(RobotMap.Climber.LEFT_CLIMB_MOTOR);
+    private static MCR_SRX rightClimber = new MCR_SRX(RobotMap.Climber.RIGHT_CLIMB_MOTOR);
+    private static MCR_SRX leftClimber = new MCR_SRX(RobotMap.Climber.LEFT_CLIMB_MOTOR);
+    //private static final SpeedControllerGroup climber = new SpeedControllerGroup(leftClimber);
     private static final SpeedControllerGroup climber = new SpeedControllerGroup(leftClimber, rightClimber);
-    private static final DigitalInput camIn = new DigitalInput(4);// = new
+
+    //private static final DigitalInput camIn = new DigitalInput(4);// = new
                                                                   // DigitalInput(RobotMap.Climber.CAM_IN_LIMITSWITCH);
     private static final Servo camServo = new Servo(RobotMap.Climber.SERVO);
     private static final Climber instance = new Climber();
@@ -33,12 +35,12 @@ public class Climber {
     public void run() {
     }
 
-    public void stopClimber() {
-        climber.stopMotor();
-        if (!isCamDeployed()) {
-            deployCam();
-        }
-    }
+    // public void stopClimber() {
+    //     climber.stopMotor();
+    //     if (!isCamDeployed()) {
+    //         deployCam();
+    //     }
+    // }
 
     // lift the robot off the ground
     public void raiseClimber(double speed) {
@@ -50,26 +52,26 @@ public class Climber {
     }
 
     // deploy hook
-    public void lowerClimber() {
-        SmartDashboard.putBoolean("limitSwitch", camIn.get());
-        if (isCamDeployed()) {
-            releaseCam();
-        } else {
-            climber.set(LOWER_SPEED);
-        }
-    }
+    // public void lowerClimber() {
+    //     SmartDashboard.putBoolean("limitSwitch", camIn.get());
+    //     if (isCamDeployed()) {
+    //         releaseCam();
+    //     } else {
+    //         climber.set(LOWER_SPEED);
+    //     }
+    // }
 
-    private void releaseCam() {
-        camServo.set(SERVO_OUT);
-    }
+    // private void releaseCam() {
+    //     camServo.set(SERVO_OUT);
+    // }
 
-    private void deployCam() {
-        camServo.set(SERVO_IN);
-    }
+    // private void deployCam() {
+    //     camServo.set(SERVO_IN);
+    // }
 
-    private boolean isCamDeployed() {
-        SmartDashboard.putBoolean("camLimit", !camIn.get());
-        return !camIn.get();
-    }
+    // private boolean isCamDeployed() {
+    //     SmartDashboard.putBoolean("camLimit", !camIn.get());
+    //     return !camIn.get();
+    // }
 
 }

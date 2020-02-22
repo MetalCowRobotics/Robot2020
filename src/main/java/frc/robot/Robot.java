@@ -9,6 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.autonomous.NoAuto;
 import frc.autonomous.ShootAndGather;
 import frc.autonomous.ShootAndGo;
@@ -81,21 +82,25 @@ public class Robot extends TimedRobot {
     controls.changeMode();
     applyOperatorInputs();
     runSystemsStateMachine();
+
+    //testing
+    SmartDashboard.putBoolean("limit deployed", intake.intakeDeployed());
+    SmartDashboard.putBoolean("limit stowed", intake.intakeStowed());
   }
 
   private void applyOperatorInputs() {
-    // check if operator wants to shoot
-    // if (controls.prepairToShoot()) {
-    //   shooter.prepairToShoot();
-    // } else {
-    //   shooter.stopShooter();
-    // }
-    // // shoot ball
-    // if (controls.shootNow()) {
-    //   shooter.shootBall();
-    // } else if (controls.shootWhenReady()) {
-    //   shooter.shootBallWhenReady();
-    // }
+    //check if operator wants to shoot
+    if (controls.prepairToShoot()) {
+      shooter.prepairToShoot();
+    } else {
+      shooter.stopShooter();
+    }
+    // shoot ball
+    if (controls.shootNow()) {
+      shooter.shootBall();
+    } else if (controls.shootWhenReady()) {
+      shooter.shootBallWhenReady();
+    }
     // intake
     if (controls.lowerIntake()) {
       intake.lowerIntake();
@@ -107,6 +112,7 @@ public class Robot extends TimedRobot {
     }
     // climber
     climber.raiseClimber(controls.climbSpeed());
+
   }
 
   private void runSystemsStateMachine() {

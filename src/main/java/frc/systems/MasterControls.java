@@ -2,6 +2,7 @@ package frc.systems;
 
 import java.util.logging.Logger;
 
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.lib14.UtilityMethods;
 import frc.lib14.XboxControllerMetalCow;
 import frc.robot.RobotDashboard;
@@ -79,7 +80,7 @@ public class MasterControls {
 	}
 
 	public boolean intakeOnOff() {
-		return operator.getYButtonPressed();
+		return operator.getBumper(Hand.kRight);
 	}
 
 	public void changeMode() {
