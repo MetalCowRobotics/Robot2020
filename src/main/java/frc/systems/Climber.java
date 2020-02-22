@@ -40,11 +40,11 @@ public class Climber {
     }
 
     // lift the robot off the ground
-    public void raiseClimber() {
+    public void raiseClimber(double speed) {
         if (!isCamDeployed()) {
             deployCam();
         } else {
-            climber.set(RAISE_SPEED);
+            climber.set(speed);
         }
     }
 

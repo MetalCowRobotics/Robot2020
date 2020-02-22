@@ -70,7 +70,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GO == dashboard.getAutoMission()) {
+    /*if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GO == dashboard.getAutoMission()) {
       mission = new ShootAndGo();
     } else if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GATHER == dashboard.getAutoMission()) {
       mission = new ShootAndGather();
@@ -78,13 +78,16 @@ public class Robot extends TimedRobot {
       mission = new NoAuto();
     }
     //testing
-    mission = new NewTurn(90);
+    mission = new NewTurn(90);*/
   }
 
   @Override
   public void autonomousPeriodic() {
-    mission.run();
-    runSystemsStateMachine();
+    /*mission.run();
+    runSystemsState();*/
+
+    // mission.run();
+    // runSystemsStateMachine();
   }
 
   @Override
@@ -110,8 +113,8 @@ public class Robot extends TimedRobot {
     // shooter.run();
     SmartDashboard.putBoolean("Stowing", intake.intakeStowed());
     SmartDashboard.putBoolean("Deploying", intake.intakeDeployed());
+    climber.raiseClimber(controls.climbSpeed());
   }
-
   private void applyOperatorInputs() {
     //intake
     if (controls.lowerIntake()) {

@@ -96,7 +96,8 @@ public class MasterControls {
 		if (fieldMode) {
 			return 0;
 		}
-		return operator.getLY();
+
+		return UtilityMethods.deadZoneCalculation(operator.getLT(), 0.1);
 	}
 
 	public boolean target() {
