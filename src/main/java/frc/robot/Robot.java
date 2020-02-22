@@ -10,16 +10,20 @@ package frc.robot;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.autonomous.NoAuto;
 import frc.autonomous.ShootAndGather;
 import frc.autonomous.ShootAndGo;
 import frc.commands.NewTurn;
 import frc.lib14.MCRCommand;
+import frc.robot.RobotMap.Magazine;
 import frc.systems.Climber;
 import frc.systems.DriveTrain;
+import frc.systems.Hood;
 import frc.systems.Intake;
 import frc.systems.MasterControls;
 import frc.systems.Shooter;
+import frc.systems.Vision;
 
 /**
  * The VM is configured to automatically run this class. If you change the name
@@ -29,15 +33,21 @@ import frc.systems.Shooter;
 
 public class Robot extends TimedRobot {
   // systems
-  DriveTrain driveTrain = DriveTrain.getInstance();
-  Intake intake = Intake.getInstance();
-  Shooter shooter = Shooter.getInstance();
-  Climber climber = Climber.getInstance();
+  DriveTrain driveTrain;// = DriveTrain.getInstance();
+  Intake intake;// = Intake.getInstance();
+  Shooter shooter;// = Shooter.getInstance();
+  Climber climber;// = Climber.getInstance();
   MasterControls controls = MasterControls.getInstance();
   RobotDashboard dashboard = RobotDashboard.getInstance();
 
   // class variables
   MCRCommand mission;
+
+  // testing only
+  Magazine magazine;// = Magazine.getInstance();
+  Vision vision = Vision.getInstance();
+  // Turret turret = Turret.getInstance();
+  Hood hood = Hood.getInstance();
   boolean firstTime = true;
 
   /**
@@ -48,7 +58,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     final UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
-    driveTrain.calibrateGyro();
+    vision.visionInit();
+    //driveTrain.calibrateGyro();
     dashboard.pushAuto();
     dashboard.pushTurnPID();
   }
@@ -62,7 +73,7 @@ public class Robot extends TimedRobot {
     } else {
       mission = new NoAuto();
     }
-    //testing
+    // testing
     mission = new NewTurn(90);
   }
 
@@ -74,23 +85,53 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-   // shooter.setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));//needs velocity
+    hood.resetEncoder();
+    //shooter.setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));// needs velocity
+    vision.visionInit();
   }
 
   @Override
   public void teleopPeriodic() {
-    controls.changeMode();
-    applyOperatorInputs();
-    runSystemsStateMachine();
+    //controls.changeMode();
+    //applyOperatorInputs();
+    // runSystemsStateMachine();
+
+    // testing
+    // shooter.shooterTest();
+    // shooter.runShooter();
+    // shooter.run();
+
+    if (vision.getTargetDistance() > 25) {
+      hood.calculateTicks();
+      hood.setFarShot();
+    } else if (vision.getTargetDistance() > 5) {
+      hood.calculateTicks();
+      hood.setTenFoot();
+    } else if (vision.getTargetDistance() > 1) {
+      hood.calculateTicks();
+      hood.setSafeZone();
+    } else {
+      Hood.hood.set(0);
+    }
+
+    SmartDashboard.putNumber("distance", vision.getTargetDistance());
+    SmartDashboard.putNumber("yaw", vision.getYawDegrees());
+
+    // if (firstTime) {
+    // shooter.runShooter();
+    // firstTime = false;
+    // }
+    // shooter.run();
   }
 
   private void applyOperatorInputs() {
-    //intake
+    // intake
     if (controls.lowerIntake()) {
       intake.lowerIntake();
     } else if (controls.raiseIntake()) {
       intake.retractIntake();
     }
+    // shooter
     if(controls.intakeOnOff()){
       intake.toggleIntakeState();
     }
