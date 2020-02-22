@@ -85,17 +85,17 @@ public class Robot extends TimedRobot {
 
   private void applyOperatorInputs() {
     // check if operator wants to shoot
-    if (controls.prepairToShoot()) {
-      shooter.prepairToShoot();
-    } else {
-      shooter.stopShooter();
-    }
-    // shoot ball
-    if (controls.shootNow()) {
-      shooter.shootBall();
-    } else if (controls.shootWhenReady()) {
-      shooter.shootBallWhenReady();
-    }
+    // if (controls.prepairToShoot()) {
+    //   shooter.prepairToShoot();
+    // } else {
+    //   shooter.stopShooter();
+    // }
+    // // shoot ball
+    // if (controls.shootNow()) {
+    //   shooter.shootBall();
+    // } else if (controls.shootWhenReady()) {
+    //   shooter.shootBallWhenReady();
+    // }
     // intake
     if (controls.lowerIntake()) {
       intake.lowerIntake();

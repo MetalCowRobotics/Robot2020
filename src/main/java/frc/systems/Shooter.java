@@ -48,17 +48,16 @@ public class Shooter {
         hood.calculateAdjustment(controls.hoodAdjustment());
         hood.run(vision.getTargetDistance());
 
-        funnel.run();
-        if (readyToShoot) {
-            // speed PID loop            
-            shooter.set(SHOOTER_SPEED + getCorrection());
-            SmartDashboard.putNumber("Correction", getCorrection());
-            SmartDashboard.putNumber("Actual Velocity", neo1.getEncoder().getVelocity());
-        } else {
-            shooter.set(0);
-            prepairToShoot();
-            hood.resetAdjustment();
-        }
+        // if (readyToShoot) {
+        //     // speed PID loop            
+        //     shooter.set(SHOOTER_SPEED + getCorrection());
+        //     SmartDashboard.putNumber("Correction", getCorrection());
+        //     SmartDashboard.putNumber("Actual Velocity", neo1.getEncoder().getVelocity());
+        // } else {
+        //     shooter.set(0);
+        //     prepairToShoot();
+        //     hood.resetAdjustment();
+        // }
 
         magazine.run();
         funnel.run();
