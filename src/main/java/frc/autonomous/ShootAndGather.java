@@ -34,8 +34,6 @@ public class ShootAndGather implements MCRCommand {
         else {mission = new ShootAndGo(); System.out.println("auto mission defaulted to shoot and go");}
     }
 
-
-
     @Override
     public void run() {
         mission.run();

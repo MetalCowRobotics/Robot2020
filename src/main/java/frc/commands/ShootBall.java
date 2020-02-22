@@ -24,10 +24,10 @@ public class ShootBall implements MCRCommand{
     public void run() {
         if(firstTime){
             firstTime = false;
-            shooter.runShooter();
+            shooter.prepairToShoot();
         }
-        if(shooter.atSpeed()){
-            magazine.feedOneBall();
+        if(shooter.isReady()){
+            shooter.shootBallWhenReady();
             done = true;
         }
     }
