@@ -85,13 +85,7 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     /*mission.run();
     runSystemsState();*/
-    SmartDashboard.putNumber("LT", controls.climbSpeed());
-    if (controls.climbSpeed() > 0) {
-      SmartDashboard.putString("climber", "raising");
-      // climber.raiseClimber(controls.climbSpeed());
-    } else {
-      SmartDashboard.putString("climber", "stopped");
-    }
+
     // mission.run();
     // runSystemsStateMachine();
   }
@@ -103,22 +97,31 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    controls.changeMode();
-    applyOperatorInputs();
-    //runSystemsStateMachine();
+  //   controls.changeMode();
+  //   applyOperatorInputs();
+  //   //runSystemsStateMachine();
 
-    //testing
-    intake.run();
-    // shooter.shooterTest();
-   // shooter.runShooter();
-    //shooter.run();
-    // if (firstTime) {
-    //   shooter.runShooter();
-    //   firstTime = false;
-    // }
-    // shooter.run();
-    SmartDashboard.putBoolean("Stowing", intake.intakeStowed());
-    SmartDashboard.putBoolean("Deploying", intake.intakeDeployed());
+  //   //testing
+  //   intake.run();
+  //   // shooter.shooterTest();
+  //  // shooter.runShooter();
+  //   //shooter.run();
+  //   // if (firstTime) {
+  //   //   shooter.runShooter();
+  //   //   firstTime = false;
+  //   // }
+  //   // shooter.run();
+  //   SmartDashboard.putBoolean("Stowing", intake.intakeStowed());
+  //   SmartDashboard.putBoolean("Deploying", intake.intakeDeployed());
+  SmartDashboard.putNumber("LT", controls.climbSpeed());
+  SmartDashboard.putBoolean("field mode", controls.getFieldMode());
+  controls.changeMode();
+  if (controls.climbSpeed() > 0) {
+    SmartDashboard.putString("climber", "raising");
+    // climber.raiseClimber(controls.climbSpeed());
+  } else {
+    SmartDashboard.putString("climber", "stopped");
+  }
   }
 
   private void applyOperatorInputs() {
