@@ -34,9 +34,9 @@ import frc.commands.NewTurn;
 
 public class Robot extends TimedRobot {
   // systems
-  DriveTrain driveTrain = DriveTrain.getInstance();
-  Intake intake;// = Intake.getInstance();
-  Shooter shooter = Shooter.getInstance();
+  DriveTrain driveTrain;// = DriveTrain.getInstance();
+  Intake intake = Intake.getInstance();
+  Shooter shooter;//= Shooter.getInstance();
   Climber climber;// = Climber.getInstance();
   MasterControls controls = MasterControls.getInstance();
   RobotDashboard dashboard = RobotDashboard.getInstance();
@@ -45,7 +45,7 @@ public class Robot extends TimedRobot {
   MCRCommand mission;
 
   // testing only
-  Magazine magazine = Magazine.getInstance();
+  Magazine magazine;//= Magazine.getInstance();
   //  Turret turret = Turret.getInstance();
   // Hood hood = Hood.getInstance();
   boolean firstTime = true;
@@ -60,7 +60,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     final UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
-    driveTrain.calibrateGyro();
+   // driveTrain.calibrateGyro();
     dashboard.pushAuto();
     dashboard.pushTurnPID();
 
@@ -89,24 +89,27 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    shooter.setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));//needs velocity
+   // shooter.setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));//needs velocity
   }
 
   @Override
   public void teleopPeriodic() {
     controls.changeMode();
     applyOperatorInputs();
-    runSystemsStateMachine();
+    //runSystemsStateMachine();
 
     //testing
+    intake.run();
     // shooter.shooterTest();
-    shooter.runShooter();
-    shooter.run();
+   // shooter.runShooter();
+    //shooter.run();
     // if (firstTime) {
     //   shooter.runShooter();
     //   firstTime = false;
     // }
     // shooter.run();
+    SmartDashboard.putBoolean("Stowing", intake.intakeStowed());
+    SmartDashboard.putBoolean("Deploying", intake.intakeDeployed());
   }
 
   private void applyOperatorInputs() {
@@ -116,9 +119,12 @@ public class Robot extends TimedRobot {
     } else if (controls.raiseIntake()) {
       intake.retractIntake();
     }
+    if(controls.intakeOnOff()){
+      intake.toggleIntakeState();
+    }
     //shooter
     if (controls.spinUpAndShoot()) {
-      shooter.shootBallWhenReady();
+     // shooter.shootBallWhenReady();
     }
     //climber
   } 
