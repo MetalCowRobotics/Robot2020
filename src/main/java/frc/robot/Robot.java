@@ -59,7 +59,7 @@ public class Robot extends TimedRobot {
     if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GO == dashboard.getAutoMission()) {
       mission = new ShootAndGo();
     } else if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GATHER == dashboard.getAutoMission()) {
-      mission = new ShootAndGather();
+      mission = new ShootAndGather(dashboard.getStartingPosition());
     } else {
       mission = new NoAuto();
     }
