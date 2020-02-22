@@ -21,7 +21,7 @@ public class MCRPotentiometer {
     // The "starting point" of the motion, i.e. where the mechanism is located when
     // the potentiometer reads 0v, is 30.
 
-    AnalogPotentiometer pot = new AnalogPotentiometer(0, 4.85, 4.8);
+    AnalogPotentiometer pot = new AnalogPotentiometer(0, 100);
     // AnalogInput pot = new AnalogInput(0);
 
     public double getPosistion() {

@@ -16,6 +16,7 @@ import frc.autonomous.NoAuto;
 import frc.autonomous.ShootAndGather;
 import frc.autonomous.ShootAndGo;
 import frc.lib14.MCRCommand;
+import frc.lib14.UtilityMethods;
 import frc.lib14.XboxControllerMetalCow;
 import frc.systems.Climber;
 import frc.systems.DriveTrain;
@@ -132,13 +133,23 @@ public class Robot extends TimedRobot {
     climber.run();
   }
 
+  double lowest = 0;
+  double highest = 0;
   @Override
   public void testInit() {
     myPot = new MCRPotentiometer();
+    lowest = myPot.getPosistion();
+    highest = myPot.getPosistion();
   }
-
   @Override
   public void testPeriodic() {
-    System.out.println("Potentiometer:" + myPot.getPosistion());
+    System.out.println("Potentiometer:" + UtilityMethods.round(myPot.getPosistion(), 100));
+    if (myPot.getPosistion() > highest) {
+      highest = myPot.getPosistion();
+    } else if (myPot.getPosistion() < lowest) {
+      lowest = myPot.getPosistion();
+    }
+    SmartDashboard.putNumber("lowest", lowest);
+    SmartDashboard.putNumber("highest", highest);
   }
 }
