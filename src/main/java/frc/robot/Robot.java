@@ -78,7 +78,7 @@ public class Robot extends TimedRobot {
       mission = new NoAuto();
     }
     //testing
-    mission = new NewTurn(90);
+    mission = new NewTurn(90);*/
   }
 
   @Override
@@ -87,10 +87,13 @@ public class Robot extends TimedRobot {
     runSystemsState();*/
     SmartDashboard.putNumber("LT", controls.climbSpeed());
     if (controls.climbSpeed() > 0) {
-      climber.raiseClimber(controls.climbSpeed());
+      SmartDashboard.putString("climber", "raising");
+      // climber.raiseClimber(controls.climbSpeed());
+    } else {
+      SmartDashboard.putString("climber", "stopped");
     }
-    mission.run();
-    runSystemsStateMachine();
+    // mission.run();
+    // runSystemsStateMachine();
   }
 
   @Override
