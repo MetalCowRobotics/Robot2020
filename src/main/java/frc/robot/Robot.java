@@ -9,7 +9,6 @@ package frc.robot;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -25,6 +24,8 @@ import frc.systems.Magazine;
 import frc.systems.MasterControls;
 import frc.systems.Shooter;
 
+import frc.commands.NewTurn;
+
 /**
  * The VM is configured to automatically run this class. If you change the name
  * of this class or the package after creating this project, you must also
@@ -33,9 +34,9 @@ import frc.systems.Shooter;
 
 public class Robot extends TimedRobot {
   // systems
-  DriveTrain driveTrain = DriveTrain.getInstance();
-  Intake intake;// = Intake.getInstance();
-  Shooter shooter = Shooter.getInstance();
+  DriveTrain driveTrain;// = DriveTrain.getInstance();
+  Intake intake = Intake.getInstance();
+  Shooter shooter;//= Shooter.getInstance();
   Climber climber;// = Climber.getInstance();
   MasterControls controls = MasterControls.getInstance();
   RobotDashboard dashboard = RobotDashboard.getInstance();
@@ -44,7 +45,7 @@ public class Robot extends TimedRobot {
   MCRCommand mission;
 
   // testing only
-  Magazine magazine = Magazine.getInstance();
+  Magazine magazine;//= Magazine.getInstance();
   //  Turret turret = Turret.getInstance();
   // Hood hood = Hood.getInstance();
   boolean firstTime = true;
@@ -59,9 +60,12 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     final UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
-    driveTrain.calibrateGyro();
+   // driveTrain.calibrateGyro();
     dashboard.pushAuto();
     dashboard.pushTurnPID();
+
+    //testing
+    SmartDashboard.putNumber("Target Percentage", .45);
   }
 
   @Override
@@ -72,7 +76,9 @@ public class Robot extends TimedRobot {
       mission = new ShootAndGather();
     } else {
       mission = new NoAuto();
-    }*/
+    }
+    //testing
+    mission = new NewTurn(90);
   }
 
   @Override
@@ -83,40 +89,53 @@ public class Robot extends TimedRobot {
     if (controls.climbSpeed() > 0) {
       climber.raiseClimber(controls.climbSpeed());
     }
+    mission.run();
+    runSystemsStateMachine();
   }
 
   @Override
   public void teleopInit() {
-    //testing
-    shooter.setTargetSpeed(.65*5874);
+   // shooter.setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));//needs velocity
   }
 
   @Override
   public void teleopPeriodic() {
     controls.changeMode();
-    applyInputs();
-    runSystemsState();
+    applyOperatorInputs();
+    //runSystemsStateMachine();
 
     //testing
-    if (firstTime) {
-      shooter.runShooter();
-      firstTime = false;
-    }
-    shooter.run();
+    intake.run();
+    // shooter.shooterTest();
+   // shooter.runShooter();
+    //shooter.run();
+    // if (firstTime) {
+    //   shooter.runShooter();
+    //   firstTime = false;
+    // }
+    // shooter.run();
+    SmartDashboard.putBoolean("Stowing", intake.intakeStowed());
+    SmartDashboard.putBoolean("Deploying", intake.intakeDeployed());
   }
 
-  private void applyInputs() {
+  private void applyOperatorInputs() {
+    //intake
     if (controls.lowerIntake()) {
       intake.lowerIntake();
     } else if (controls.raiseIntake()) {
       intake.retractIntake();
     }
-    if (controls.spinUpAndShoot()) {
-      shooter.shootBallWhenReady();
+    if(controls.intakeOnOff()){
+      intake.toggleIntakeState();
     }
+    //shooter
+    if (controls.spinUpAndShoot()) {
+     // shooter.shootBallWhenReady();
+    }
+    //climber
   } 
 
-  private void runSystemsState() {
+  private void runSystemsStateMachine() {
     driveTrain.drive();
     intake.run();
     shooter.run();

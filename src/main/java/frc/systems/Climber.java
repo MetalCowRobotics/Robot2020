@@ -29,6 +29,9 @@ public class Climber {
         return instance;
     }
 
+    public void run() {
+	}
+
     public void stopClimber() {
         climber.stopMotor();
         if (!isCamDeployed()) {
@@ -68,6 +71,4 @@ public class Climber {
         return !camIn.get();
     }
 
-	public void run() {
-	}
 }
