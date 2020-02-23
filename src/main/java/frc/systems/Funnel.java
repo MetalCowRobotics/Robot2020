@@ -8,8 +8,8 @@ import frc.robot.RobotMap;
  * Add your docs here.
  */
 public class Funnel {
-    private static final DigitalInput bottomLimit = new DigitalInput(RobotMap.Funnel.LIMIT_SWITCH_BOTTOM);
-    private static MCR_SRX motorA = new MCR_SRX(RobotMap.Funnel.Agitator_Motor);
+    //private static final DigitalInput bottomLimit = new DigitalInput(RobotMap.Funnel.LIMIT_SWITCH_BOTTOM);
+    //private static MCR_SRX motorA = new MCR_SRX(RobotMap.Funnel.Agitator_Motor);
     private static MCR_SRX motorM = new MCR_SRX(RobotMap.Funnel.Magazine_Funnel_Motor);
     private static final Funnel instance = new Funnel();
 
@@ -20,17 +20,17 @@ public class Funnel {
         return instance;
     }
 
-    public void run() {
-        if (bottomLimit.get() == true) {
+    public void run(boolean bottomLimit) {
+        if (bottomLimit) {
             runMotors();
         } else {
-            motorA.stopMotor();
+            //motorA.stopMotor();
             motorM.stopMotor();
         }
     }
 
     private void runMotors() {
-        motorA.set(RobotMap.Funnel.motorASpeed);
+        //motorA.set(RobotMap.Funnel.motorASpeed);
         motorM.set(RobotMap.Funnel.motorSpeed);
     }
 }

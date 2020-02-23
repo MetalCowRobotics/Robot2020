@@ -67,8 +67,8 @@ public class RobotMap {
 	
 	public final class Hood {
 		public static final int HOOD_MOTOR = 0;
-		public static final int HOOD_UP = 0;
-		public static final int HOOD_DOWN = 1;
+		// public static final int HOOD_UP = 0;
+		// public static final int HOOD_DOWN = 1;
 		public static final double HOOD_SPEED = .6;
 
 	}
@@ -80,29 +80,29 @@ public class RobotMap {
 		public static final int BAG_MOTOR = 2;
 	}
 	public final class Magazine {
-		public static final int MAGAZINE_MOTOR = 7;//assign channel
-		public static final int LIMIT_SWITCH_TOP = 0;
-		public static final int RIGHT_MAGAZINE_MOTOR = 0;
-		public static final int LEFT_MAGAZINE_MOTOR = 1;
-		public static final int IS_THERE_A_BALL_TOP = 9;//DIO
-		public static final int IS_THERE_A_BALL_BOTTOM = 8;//DIO
+		public static final int MAGAZINE_MOTOR = 7;
+		//public static final int LIMIT_SWITCH_TOP = 0;
+		//public static final int RIGHT_MAGAZINE_MOTOR = 0;
+		//public static final int LEFT_MAGAZINE_MOTOR = 1;
+		public static final int IS_THERE_A_BALL_TOP = 0;//DIO
+		public static final int IS_THERE_A_BALL_BOTTOM = 1;//DIO
 	}
 
 	public final class Intake {
 		public static final double INTAKE_SPEED = 1;
 		public static final double EJECT_SPEED = -1;
 		public static final double RAMP_SPEED = .8;
-		public static final int LIFT_MOTOR = 16; //CAN
+		//public static final int LIFT_MOTOR = 16; //CAN
 		public static final int INTAKE_MOTOR = 12; //CAN
 		public static final int TOP_LIMIT_SWITCH = 1;//DIO
 		public static final int BOTTOM_LIMIT_SWITCH = 2;//DIO
-		public static final int RAISE_LOWER_INTAKE_MOTOR = 9;
+		public static final int RAISE_LOWER_INTAKE_MOTOR = 16;
 		
 	}
 
 	public final class Climber {
 		public static final int LEFT_CLIMB_MOTOR = 10;//assign channel
-		public static final int RIGHT_CLIMB_MOTOR = 0;//assign channel
+		public static final int RIGHT_CLIMB_MOTOR = 9;//assign channel
 		public static final int CAM_IN_LIMITSWITCH = 4;
 		public static final int SERVO = 9;
 	}
@@ -139,8 +139,8 @@ public class RobotMap {
 		public static int Agitator_Motor = 0;
 		public static int Magazine_Funnel_Motor = 15;
 		public static int LIMIT_SWITCH_BOTTOM = 1;
-		public static double motorSpeed = 0.5;
-		public static double motorASpeed = 0.6;
+		public static double motorSpeed = 1;
+		public static double motorASpeed = 1;
        
 	}
 }

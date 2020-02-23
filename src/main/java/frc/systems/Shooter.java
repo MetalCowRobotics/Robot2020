@@ -11,12 +11,12 @@ import frc.robot.RobotDashboard;
 import frc.robot.RobotMap;
 
 public class Shooter {
-    private static CANSparkMax neo1 = new CANSparkMax(RobotMap.Shooter.TOP_MOTOR_ID, MotorType.kBrushless);
-    private static CANSparkMax neo2 = new CANSparkMax(RobotMap.Shooter.BOTTOM_MOTOR_ID, MotorType.kBrushless);
+    private static CANSparkMax neo1 = new CANSparkMax(RobotMap.Shooter.TOP_MOTOR, MotorType.kBrushless);
+    private static CANSparkMax neo2 = new CANSparkMax(RobotMap.Shooter.BOTTOM_MOTOR, MotorType.kBrushless);
     private static SpeedControllerGroup shooter = new SpeedControllerGroup(neo1, neo2);
     private static MasterControls controls = MasterControls.getInstance();
     private Magazine magazine = Magazine.getInstance();
-    private Hood hood = Hood.getInstance();
+    private Hood hood;// = Hood.getInstance();
     private Turret turret = Turret.getInstance();
     private Funnel funnel = Funnel.getInstance();
     private static Vision vision = Vision.getInstance();
@@ -45,23 +45,24 @@ public class Shooter {
     }
 
     public void run() {
-        hood.calculateAdjustment(controls.hoodAdjustment());
-        hood.run(vision.getTargetDistance());
+        //hood.calculateAdjustment(controls.hoodAdjustment());
+        //hood.run(vision.getTargetDistance());
 
-        funnel.run();
         if (readyToShoot) {
-            // speed PID loop            
+            // speed PID loop
+            magazine.feedOneBall();        
             shooter.set(SHOOTER_SPEED + getCorrection());
             SmartDashboard.putNumber("Correction", getCorrection());
             SmartDashboard.putNumber("Actual Velocity", neo1.getEncoder().getVelocity());
         } else {
             shooter.set(0);
-            prepairToShoot();
-            hood.resetAdjustment();
+            //prepairToShoot();
+            magazine.stopLoadToTop();
+            //hood.resetAdjustment();
         }
 
         magazine.run();
-        funnel.run();
+        funnel.run(magazine.isThereABallBottomForShooter());
         //turret.rotateToDegrees(vision.getYaw); //no turret yet
     }
 
