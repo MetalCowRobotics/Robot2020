@@ -2,6 +2,9 @@ package frc.robot;
 
 import java.util.logging.Logger;
 
+import com.revrobotics.ColorMatchResult;
+import com.revrobotics.ColorSensorV3;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -152,6 +155,27 @@ public class RobotDashboard {
 
 	public double getShooterTargetVelocity(double defaultValue) {
 		return SmartDashboard.getNumber("Target Velocity", defaultValue);
+	}
+
+	public void pushTargetColor(String color) {
+		SmartDashboard.putString("FMSTargetColor", color);
+	}
+
+	public void pushCurrentColor(String underMySensor, String underFieldReader) {
+		SmartDashboard.putString("Sensed Color", underMySensor);
+		SmartDashboard.putString("Field Sensor Color", underFieldReader);
+	}
+
+	public void pushColorSensor(ColorSensorV3 sensor) {
+		SmartDashboard.putNumber("red", sensor.getRed());
+        SmartDashboard.putNumber("green", sensor.getGreen());
+        SmartDashboard.putNumber("blue", sensor.getBlue());
+		SmartDashboard.putNumber("proximity", sensor.getProximity());
+	}
+
+	public void pushColorMatch(ColorMatchResult match) {
+        SmartDashboard.putString("color", match.color.toString());
+		SmartDashboard.putNumber("confidence", match.confidence);
 	}
 
 }
