@@ -30,7 +30,7 @@ public class Funnel {
     }
 
     private void runMotors() {
-        //motorA.set(RobotMap.Funnel.motorASpeed);
+        // motorA.set(RobotMap.Funnel.motorASpeed);
         motorM.set(RobotMap.Funnel.motorSpeed);
     }
 }

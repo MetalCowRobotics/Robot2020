@@ -2,11 +2,12 @@ package frc.systems;
 
 import edu.wpi.first.wpilibj.VictorSP;
 import frc.lib14.FC_JE_0149Encoder;
+import frc.lib14.MCR_SRX;
 import frc.robot.RobotMap;
 
 public class Hood {
-    //private static MCR_SRX hood = new MCR_SRX(RobotMap.Hood.HOOD_MOTOR);
-    public static VictorSP hood = new VictorSP(RobotMap.Hood.HOOD_MOTOR);
+    private static MCR_SRX hood = new MCR_SRX(RobotMap.Hood.HOOD_MOTOR);
+    //public static VictorSP hood = new VictorSP(RobotMap.Hood.HOOD_MOTOR);
     public static FC_JE_0149Encoder encoder = new FC_JE_0149Encoder(3,4);
     private static final Hood instance = new Hood();
 
