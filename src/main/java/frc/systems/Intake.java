@@ -26,9 +26,9 @@ public class Intake {
 
     private Intake() {
         raiseLowerIntake.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
-                LimitSwitchNormal.NormallyClosed);
+                LimitSwitchNormal.NormallyOpen);
         raiseLowerIntake.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
-                LimitSwitchNormal.NormallyClosed);
+                LimitSwitchNormal.NormallyOpen);
     }
 
     public static Intake getInstance() {
