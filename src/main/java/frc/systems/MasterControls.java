@@ -80,7 +80,7 @@ public class MasterControls {
 	}
 
 	public boolean intakeOnOff() {
-		return operator.getBumper(Hand.kRight);
+		return operator.getBumperPressed(Hand.kRight);
 	}
 
 	public void changeMode() {

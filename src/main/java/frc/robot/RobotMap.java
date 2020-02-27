@@ -59,8 +59,8 @@ public class RobotMap {
 	}
 
 	public final class Shooter {
-		public static final int TOP_MOTOR = 2;//assign channel
-		public static final int BOTTOM_MOTOR = 4;//assign channel
+		public static final int TOP_MOTOR = 2;
+		public static final int BOTTOM_MOTOR = 4;
 		public static final int TOP_MOTOR_ID = 0;
 		public static final int BOTTOM_MOTOR_ID = 1;
 	}
@@ -74,7 +74,7 @@ public class RobotMap {
 	}
 
 	public final class Turret {
-		public static final int TURRET_MOTOR = 2;//assign channel
+		public static final int TURRET_MOTOR = 2;
 	}
 	public final class Test {
 		public static final int BAG_MOTOR = 2;
@@ -101,8 +101,8 @@ public class RobotMap {
 	}
 
 	public final class Climber {
-		public static final int LEFT_CLIMB_MOTOR = 10;//assign channel
-		public static final int RIGHT_CLIMB_MOTOR = 9;//assign channel
+		public static final int LEFT_CLIMB_MOTOR = 10;
+		public static final int RIGHT_CLIMB_MOTOR = 9;
 		public static final int CAM_IN_LIMITSWITCH = 4;
 		public static final int SERVO = 9;
 	}
@@ -136,11 +136,11 @@ public class RobotMap {
 	}
 
 	public static final class Funnel{
-		public static int Agitator_Motor = 0;
-		public static int Magazine_Funnel_Motor = 15;
-		public static int LIMIT_SWITCH_BOTTOM = 1;
-		public static double motorSpeed = 1;
-		public static double motorASpeed = 1;
+		public static final int Agitator_Motor = 0;
+		public static final int Magazine_Funnel_Motor = 15;
+		public static final int LIMIT_SWITCH_BOTTOM = 1;
+		public static final double motorSpeed = 1;
+		public static final double motorASpeed = 1;
        
 	}
 }
