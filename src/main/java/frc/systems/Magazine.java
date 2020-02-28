@@ -4,11 +4,13 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib14.MCR_SRX;
 import frc.robot.RobotMap;
+import edu.wpi.first.wpilibj.VictorSP;
 
 public class Magazine {
     boolean feedMode = false;
     //private static final DigitalInput topLimit = new DigitalInput(RobotMap.Magazine.LIMIT_SWITCH_TOP);
-    private static MCR_SRX magazineMotor = new MCR_SRX(RobotMap.Magazine.MAGAZINE_MOTOR);
+    // private static MCR_SRX magazineMotor = new MCR_SRX(RobotMap.Magazine.MAGAZINE_MOTOR);
+    private static VictorSP magazineMotor = new VictorSP(0);
     private static final Magazine instance = new Magazine();
     private static DigitalInput isThereABallTop = new DigitalInput(RobotMap.Magazine.IS_THERE_A_BALL_TOP);
     private static DigitalInput isThereABallBottom = new DigitalInput(RobotMap.Magazine.IS_THERE_A_BALL_BOTTOM);
