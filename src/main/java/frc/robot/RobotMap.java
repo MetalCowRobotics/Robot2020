@@ -80,7 +80,7 @@ public class RobotMap {
 		public static final int BAG_MOTOR = 2;
 	}
 	public final class Magazine {
-		public static final int MAGAZINE_MOTOR = 7;
+		public static final int MAGAZINE_MOTOR = 0; //PWM
 		//public static final int LIMIT_SWITCH_TOP = 0;
 		//public static final int RIGHT_MAGAZINE_MOTOR = 0;
 		//public static final int LEFT_MAGAZINE_MOTOR = 1;
