@@ -8,12 +8,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib14.MCR_SRX;
 import frc.robot.RobotMap;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.*;
+
 public class Climber {
 
     private static MCR_SRX rightClimber = new MCR_SRX(RobotMap.Climber.RIGHT_CLIMB_MOTOR);
     private static MCR_SRX leftClimber = new MCR_SRX(RobotMap.Climber.LEFT_CLIMB_MOTOR);
     //private static final SpeedControllerGroup climber = new SpeedControllerGroup(leftClimber);
     private static final SpeedControllerGroup climber = new SpeedControllerGroup(leftClimber, rightClimber);
+	boolean _brake = true;      // false = coast; true = brake
 
     //private static final DigitalInput camIn = new DigitalInput(4);// = new
                                                                   // DigitalInput(RobotMap.Climber.CAM_IN_LIMITSWITCH);
@@ -25,6 +29,10 @@ public class Climber {
     private static final double SERVO_IN = 0.1;
 
     private Climber() {
+        rightClimber.configFactoryDefault();
+        rightClimber.setNeutralMode(NeutralMode.Brake);
+        leftClimber.configFactoryDefault();
+        leftClimber.setNeutralMode(NeutralMode.Brake);
 
     }
 
@@ -33,6 +41,7 @@ public class Climber {
     }
 
     public void run() {
+        
     }
 
     // public void stopClimber() {

@@ -1,5 +1,6 @@
 package frc.systems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
@@ -50,6 +51,8 @@ public class ColorWheel {
         colorWheelMap.put(kGreenTarget, new ColorMatchResult(kYellowTarget, 100));
         colorWheelMap.put(kBlueTarget, new ColorMatchResult(kRedTarget, 100));
         colorWheelMap.put(kYellowTarget, new ColorMatchResult(kGreenTarget, 100));
+        colorWheelMotor.configFactoryDefault();
+		colorWheelMotor.setNeutralMode(NeutralMode.Coast);
     }
 
     public static ColorWheel getInstance() {

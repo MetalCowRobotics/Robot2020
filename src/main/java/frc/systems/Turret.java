@@ -1,5 +1,7 @@
 package frc.systems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib14.MCR_SRX;
 import frc.lib14.UtilityMethods;
@@ -14,7 +16,8 @@ public class Turret {
     
 
     private Turret() {
-        
+        turret.configFactoryDefault();
+		turret.setNeutralMode(NeutralMode.Brake);
     }
 
     public static Turret getInstance() {

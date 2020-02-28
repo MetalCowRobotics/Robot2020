@@ -1,5 +1,7 @@
 package frc.systems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import edu.wpi.first.wpilibj.VictorSP;
 import frc.lib14.FC_JE_0149Encoder;
 import frc.lib14.MCR_SRX;
@@ -18,7 +20,8 @@ public class Hood {
     private double adjustment = 0;
 
     private Hood() {
-
+        hood.configFactoryDefault();
+		hood.setNeutralMode(NeutralMode.Coast);
     }
 
     public static Hood getInstance() {

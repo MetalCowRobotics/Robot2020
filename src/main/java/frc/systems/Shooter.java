@@ -1,8 +1,8 @@
 package frc.systems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib14.PIDController;
@@ -36,6 +36,8 @@ public class Shooter {
     private Shooter() {
         dashboard.pushShooterPIDValues(P, I, D, Iz);
         pidController = new PIDController(0, P, I, D, Iz);
+        neo1.setIdleMode(IdleMode.kCoast);        
+        neo2.setIdleMode(IdleMode.kCoast);
     }
 
     public static Shooter getInstance() {
