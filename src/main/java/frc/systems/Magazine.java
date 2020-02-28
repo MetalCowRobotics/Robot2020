@@ -2,32 +2,23 @@ package frc.systems;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.lib14.MCR_SRX;
 import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.VictorSP;
 
 public class Magazine {
-    boolean feedMode = false;
-    //private static final DigitalInput topLimit = new DigitalInput(RobotMap.Magazine.LIMIT_SWITCH_TOP);
-    // private static MCR_SRX magazineMotor = new MCR_SRX(RobotMap.Magazine.MAGAZINE_MOTOR);
-    private static VictorSP magazineMotor = new VictorSP(0);
+    private static VictorSP magazineMotor = new VictorSP(RobotMap.Magazine.MAGAZINE_MOTOR);
+    private static DigitalInput isBallAtTop = new DigitalInput(RobotMap.Magazine.IS_THERE_A_BALL_TOP);
+    private static DigitalInput isBallAtBottom = new DigitalInput(RobotMap.Magazine.IS_THERE_A_BALL_BOTTOM);
+    private double magazineSpeed = 1;
+    private boolean feedMode = false;
+    private boolean loadToTop = false;
+    private int counted = 0;
+
+    //singleton instance
     private static final Magazine instance = new Magazine();
-    private static DigitalInput isThereABallTop = new DigitalInput(RobotMap.Magazine.IS_THERE_A_BALL_TOP);
-    private static DigitalInput isThereABallBottom = new DigitalInput(RobotMap.Magazine.IS_THERE_A_BALL_BOTTOM);
-    double magazineSpeed = 1;
-    boolean loadToTop = false;
-    int counted = 0;
 
     private Magazine() {
 
-    }
-
-    public boolean isThereABallTopForShooter() {
-        return isThereABallTop.get();
-    }
-
-    public boolean isThereABallBottomForShooter() {
-        return isThereABallBottom.get();
     }
 
     public static Magazine getInstance() {
@@ -48,6 +39,14 @@ public class Magazine {
             maintainMagazine();
             SmartDashboard.putString("mode", "maintain");
         }
+    }
+
+    public boolean isThereABallTopForShooter() {
+        return isBallAtTop.get();
+    }
+
+    public boolean isThereABallBottomForShooter() {
+        return isBallAtBottom.get();
     }
 
     private void advanceBallToTop() {
@@ -82,7 +81,7 @@ public class Magazine {
         // }
     }
 
-    public void runMagazine() {
+    private void runMagazine() {
         if (ballAtBottom() && !ballAtTop()) {
             magazineMotor.set(magazineSpeed);
         } else if (loadToTop) {
@@ -94,6 +93,7 @@ public class Magazine {
 
     public void stopMagazine() {
         magazineMotor.stopMotor();
+        //TODO i do not think this should be here
         feedMode = false;
     }
 
@@ -104,29 +104,21 @@ public class Magazine {
 
     public void feedOneBall() {
         feedMode = true;
-        // if (ballAtTop()) {
-        // SmartDashboard.putBoolean("feeding", true);
-        // feedMode = true;
-        // magazineMotor.set(magazineSpeed);
-        // } else if (!ballAtTop()) {
-        // SmartDashboard.putBoolean("feeding", false);
-        // feedMode = false;
-        // counted++;
-        // stopMagazine();
     }
 
     private boolean ballAtBottom() {
-        return !isThereABallBottom.get();
+        return !isBallAtBottom.get();
     }
 
     private boolean ballAtTop() {
-        return !isThereABallTop.get();
+        return !isBallAtTop.get();
     }
 
     public boolean isReady() {
-        if (isThereABallTop.get()) {
+        if (ballAtTop()) {
             return true;
         }
+        //TODO i do not think this should be here
         runMagazine();
         return false;
     }

@@ -10,21 +10,17 @@ import frc.robot.RobotMap;
 
 public class MasterControls {
 	private static final Logger logger = Logger.getLogger(MasterControls.class.getName());
-	private static final double throttleVariance = .14;
+	private static final XboxControllerMetalCow driver = new XboxControllerMetalCow(RobotMap.DriverController.USB_PORT);
+	private static final XboxControllerMetalCow operator = new XboxControllerMetalCow(RobotMap.OperatorController.USB_PORT);
+	private static final RobotDashboard dashboard = RobotDashboard.getInstance();
 	private static final MasterControls instance = new MasterControls();
 
-	private static final XboxControllerMetalCow driver = new XboxControllerMetalCow(RobotMap.DriverController.USB_PORT);
-	private static final XboxControllerMetalCow operator = new XboxControllerMetalCow(
-			RobotMap.OperatorController.USB_PORT);
 	private boolean fieldMode = true;
-	private static boolean xLast = false;
 
 	private MasterControls() {
 		// Intentionally Blank for Singleton
 		logger.setLevel(RobotMap.LogLevels.masterControlsClass);
 	}
-
-	private static final RobotDashboard dash = RobotDashboard.getInstance();
 
 	public static MasterControls getInstance() {
 		return instance;
@@ -55,28 +51,39 @@ public class MasterControls {
 	}
 
 	public boolean raiseIntake() {
-		if (UtilityMethods.between(operator.getPOV(), 0, 89)) {
-			return true;
-		}
-		if (UtilityMethods.between(operator.getPOV(), 271, 360)) {
-			return true;
-		}
-		return false;
+		return isDpadUpperHalf(operator);
+		// if (UtilityMethods.between(operator.getPOV(), 0, 89)) {
+		// return true;
+		// }
+		// if (UtilityMethods.between(operator.getPOV(), 271, 360)) {
+		// return true;
+		// }
+		// return false;
 	}
 
 	public boolean lowerIntake() {
-		if (UtilityMethods.between(operator.getPOV(), 91, 269)) {
+		return isDpadLowerHalf(operator);
+		// if (UtilityMethods.between(operator.getPOV(), 91, 269)) {
+		// return true;
+		// }
+		// return false;
+	}
+
+	private boolean isDpadUpperHalf(XboxControllerMetalCow controller) {
+		if (UtilityMethods.between(controller.getPOV(), 0, 89)) {
 			return true;
 		}
-
+		if (UtilityMethods.between(controller.getPOV(), 271, 360)) {
+			return true;
+		}
 		return false;
 	}
-	public boolean prepairToShoot (){
-		if (operator.getRT() > .1){
+
+	private boolean isDpadLowerHalf(XboxControllerMetalCow controller) {
+		if (UtilityMethods.between(controller.getPOV(), 91, 269)) {
 			return true;
-		}else {
-			return false;
 		}
+		return false;
 	}
 
 	public boolean intakeOnOff() {
@@ -87,6 +94,7 @@ public class MasterControls {
 		if (operator.getRawButtonPressed(7)) {
 			fieldMode = !fieldMode;
 		}
+		dashboard.pushFieldMode(fieldMode);
 	}
 
 	public boolean getFieldMode() {
@@ -97,13 +105,19 @@ public class MasterControls {
 		if (fieldMode) {
 			return 0;
 		}
-
 		return UtilityMethods.deadZoneCalculation(operator.getLT(), 0.1);
 	}
 
-	public boolean target() {
-		return operator.getYButtonPressed();
+	public boolean prepairToShoot() {
+		if (operator.getRT() > .1) {
+			return true;
+		}
+		return false;
 	}
+
+	// public boolean target() {
+	// return operator.getYButtonPressed();
+	// }
 
 	public boolean shootNow() {
 		return operator.getAButton();
