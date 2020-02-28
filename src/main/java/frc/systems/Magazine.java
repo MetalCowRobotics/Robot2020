@@ -2,11 +2,11 @@ package frc.systems;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.lib14.MCR_SRX;
 import frc.robot.RobotMap;
+import edu.wpi.first.wpilibj.VictorSP;
 
 public class Magazine {
-    private static MCR_SRX magazineMotor = new MCR_SRX(RobotMap.Magazine.MAGAZINE_MOTOR);
+    private static VictorSP magazineMotor = new VictorSP(RobotMap.Magazine.MAGAZINE_MOTOR);
     private static DigitalInput isBallAtTop = new DigitalInput(RobotMap.Magazine.IS_THERE_A_BALL_TOP);
     private static DigitalInput isBallAtBottom = new DigitalInput(RobotMap.Magazine.IS_THERE_A_BALL_BOTTOM);
     private double magazineSpeed = 1;
