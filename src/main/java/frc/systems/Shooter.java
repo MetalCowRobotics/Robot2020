@@ -77,7 +77,7 @@ public class Shooter {
         // setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));//needs velocity
         setTargetSpeed(dashboard.getShooterTargetVelocity(1500));
         //set hood poistion
-        hood.setPosition(5);
+        hood.setPosition(vision.getTargetDistance());
         magazine.loadBallInShootingPosition();
     }
 
