@@ -48,7 +48,7 @@ public class Shooter {
     }
 
     public void run() {
-        hood.run(0);//0 is stop
+        hood.run(5);//0 is stop
 
         if (readyToShoot) {
             // speed PID loop

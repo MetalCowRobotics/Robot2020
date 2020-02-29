@@ -2,14 +2,13 @@ package frc.systems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
-import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib14.FC_JE_0149Encoder;
 import frc.lib14.MCR_SRX;
 import frc.robot.RobotMap;
 
 public class Hood {
     private static MCR_SRX hood = new MCR_SRX(RobotMap.Hood.HOOD_MOTOR);
-    //public static VictorSP hood = new VictorSP(RobotMap.Hood.HOOD_MOTOR);
     public static FC_JE_0149Encoder encoder = new FC_JE_0149Encoder(3,2);
     private static final Hood instance = new Hood();
 
@@ -36,13 +35,15 @@ public class Hood {
     public void run(double distance) {
         setDistance(distance);
         System.out.println("HoodTics:"+encoder.getTics()+"  adjustment: "+adjustment );
+        SmartDashboard.putNumber("Encoder Ticks", encoder.getTics());
+        SmartDashboard.putNumber("Hood Adustment", adjustment);
     }
 
     public void calculateAdjustment(double y) {
         if (y > .1) {
-            adjustment += 1;
+            adjustment -= 3;
         } else if (y < -.1){
-            adjustment -= 1;
+            adjustment += 3;
         }
     }
 
@@ -65,16 +66,6 @@ public class Hood {
             hood.stopMotor();
         }
     }
-
-    //manual set hood position
-    public void setDistance(boolean farShot) {
-        if (farShot) {
-            setFarShot();
-        } else {
-            setSafeZone();
-        }
-    }
-
 
     public void setFarShot() {
         target_inches = 1.4;

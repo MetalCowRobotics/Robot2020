@@ -80,6 +80,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     vision.visionInit();
+    hood.resetAdjustment();
+    hood.resetEncoder();
   }
 
   @Override
