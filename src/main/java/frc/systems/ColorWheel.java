@@ -19,6 +19,7 @@ import frc.lib14.MCR_SRX;
 import frc.robot.RobotMap;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -126,7 +127,45 @@ public class ColorWheel {
                 wheelMotor.stopMotor();
             }
         }
-    
+    private Color getGoalColorWithOffset(Color fmsColor) {
+        //TODO make this hash Color Color
+        return colorWheelMap.get(fmsColor).color;
+    }
+
+    private int getTurnDirection(Color currentColor, Color goalColor) {
+        ArrayList<String> colorWheelValues = new ArrayList<String>();
+        colorWheelValues.add("red");
+        colorWheelValues.add("yellow");
+        colorWheelValues.add("blue");
+        colorWheelValues.add("green");
+        int currentIndex = 999;
+        int goalIndex = 999;
+        currentIndex = colorWheelValues.indexOf(getColorString(currentColor));
+        goalIndex = colorWheelValues.indexOf(getColorString(goalColor));
+        SmartDashboard.putNumber("current Color Index", currentIndex);
+        SmartDashboard.putNumber("Target Color Index", goalIndex);
+        if (Math.abs(currentIndex - goalIndex) == 1 && currentIndex > goalIndex) {
+            return 1;
+        } else {
+            return -1;
+        }
+    }
+
+    private String getColorString(Color color) {
+        if (kRedTarget == color) {
+            return "red";
+        }
+        if (kGreenTarget == color) {
+            return "green";
+        }
+        if (kBlueTarget == color) {
+            return "blue";
+        }
+        if (kYellowTarget == color) {
+            return "yellow";
+        }
+        return "";
+    }
     public void rotate3Times(){
         // rotate = true;
         // targetColor =  colorMatcher.matchClosestColor(sensor.getColor());
