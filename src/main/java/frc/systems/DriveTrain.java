@@ -40,6 +40,15 @@ public class DriveTrain {
 
 	// Singleton
 	protected DriveTrain() {
+		rightFrontMotor.configFactoryDefault();
+		rightFrontMotor.setNeutralMode(NeutralMode.Coast);
+		rightBackMotor.configFactoryDefault();
+		rightBackMotor.setNeutralMode(NeutralMode.Coast);
+		leftFrontMotor.configFactoryDefault();
+		leftFrontMotor.setNeutralMode(NeutralMode.Coast);
+		leftBackMotor.configFactoryDefault();
+		leftBackMotor.setNeutralMode(NeutralMode.Coast);
+
 		// rightFrontMotor.configOpenloopRamp(Drivetrain.RAMP_SPEED);
 		// leftFrontMotor.configOpenloopRamp(Drivetrain.RAMP_SPEED);
 		// rightFrontMotor.setNeutralMode(NeutralMode.Brake);

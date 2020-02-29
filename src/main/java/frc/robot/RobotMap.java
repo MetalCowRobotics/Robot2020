@@ -66,7 +66,7 @@ public class RobotMap {
 	}
 	
 	public final class Hood {
-		public static final int HOOD_MOTOR = 0;
+		public static final int HOOD_MOTOR = 12;
 		// public static final int HOOD_UP = 0;
 		// public static final int HOOD_DOWN = 1;
 		public static final double HOOD_SPEED = .6;
@@ -74,7 +74,7 @@ public class RobotMap {
 	}
 
 	public final class Turret {
-		public static final int TURRET_MOTOR = 2;
+		public static final int TURRET_MOTOR = 7;
 	}
 	public final class Test {
 		public static final int BAG_MOTOR = 2;
@@ -136,7 +136,7 @@ public class RobotMap {
 	}
 
 	public static final class Funnel{
-		public static final int Agitator_Motor = 0;
+		public static final int Agitator_Motor = 5;
 		public static final int Magazine_Funnel_Motor = 15;
 		public static final int LIMIT_SWITCH_BOTTOM = 1;
 		public static final double motorSpeed = 1;

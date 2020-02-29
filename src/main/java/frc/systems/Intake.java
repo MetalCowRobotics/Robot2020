@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.VictorSP;
 
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import frc.lib14.MCR_SRX;
 import frc.robot.RobotMap;
@@ -32,6 +33,8 @@ public class Intake {
                 LimitSwitchNormal.NormallyOpen);
         raiseLowerIntake.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
                 LimitSwitchNormal.NormallyOpen);
+        raiseLowerIntake.configFactoryDefault();
+		raiseLowerIntake.setNeutralMode(NeutralMode.Coast);
     }
 
     public static Intake getInstance() {

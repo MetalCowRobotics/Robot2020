@@ -1,8 +1,8 @@
 package frc.systems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib14.PIDController;
@@ -15,7 +15,7 @@ public class Shooter {
     private static CANSparkMax neo2 = new CANSparkMax(RobotMap.Shooter.BOTTOM_MOTOR, MotorType.kBrushless);
     private static SpeedControllerGroup shooter = new SpeedControllerGroup(neo1, neo2);
     private Magazine magazine = Magazine.getInstance();
-    private Hood hood;// = Hood.getInstance();
+    private Hood hood = Hood.getInstance();
     private Turret turret = Turret.getInstance();
     private Funnel funnel = Funnel.getInstance();
     private static Vision vision = Vision.getInstance();
@@ -25,7 +25,7 @@ public class Shooter {
     private static double D = 0;
     private static double Iz = 400;
     private static PIDController pidController;
-    private static final double SHOOTER_SPEED = .65;
+    private static final double SHOOTER_SPEED = .45;
     private boolean firstTime = true;
     private double targetSpeed = 3000;// RPM's
     private boolean readyToShoot = false;
@@ -36,6 +36,11 @@ public class Shooter {
     private Shooter() {
         dashboard.pushShooterPIDValues(P, I, D, Iz);
         pidController = new PIDController(0, P, I, D, Iz);
+        neo1.restoreFactoryDefaults();
+        neo2.restoreFactoryDefaults();
+        neo1.setIdleMode(IdleMode.kCoast);        
+        neo2.setIdleMode(IdleMode.kCoast);
+        turret.resetTurretEncoder();
     }
 
     public static Shooter getInstance() {
@@ -43,22 +48,20 @@ public class Shooter {
     }
 
     public void run() {
-        //hood.calculateAdjustment(controls.hoodAdjustment());
-        //hood.run(vision.getTargetDistance());
+        hood.run(0);//0 is stop
 
         if (readyToShoot) {
             // speed PID loop
-            magazine.feedOneBall();        
             shooter.set(SHOOTER_SPEED + getCorrection());
         } else {
-            shooter.set(0);
+            shooter.stopMotor();
             magazine.stopLoadToTop();
             //hood.resetAdjustment();
         }
 
         magazine.run();
         funnel.run(magazine.isThereABallBottomForShooter());
-        //turret.rotateToDegrees(vision.getYaw); //no turret yet
+        //turret.rotateTurret(-(int)Math.round(vision.getYawDegrees()));
         dashboard.pushShooterVelocity(targetSpeed, neo1.getEncoder().getVelocity());
     }
 

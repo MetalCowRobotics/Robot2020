@@ -128,6 +128,10 @@ public class MasterControls {
 	}
 
 	public double hoodAdjustment() {
-		return operator.getY();
+		return operator.getLY();
+	}
+
+	public double turretAdjustment() {
+		return operator.getRX();
 	}
 }

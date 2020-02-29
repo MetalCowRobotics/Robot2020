@@ -1,5 +1,7 @@
 package frc.systems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import edu.wpi.first.wpilibj.VictorSP;
 import frc.lib14.FC_JE_0149Encoder;
 import frc.lib14.MCR_SRX;
@@ -8,7 +10,7 @@ import frc.robot.RobotMap;
 public class Hood {
     private static MCR_SRX hood = new MCR_SRX(RobotMap.Hood.HOOD_MOTOR);
     //public static VictorSP hood = new VictorSP(RobotMap.Hood.HOOD_MOTOR);
-    public static FC_JE_0149Encoder encoder = new FC_JE_0149Encoder(3,4);
+    public static FC_JE_0149Encoder encoder = new FC_JE_0149Encoder(3,2);
     private static final Hood instance = new Hood();
 
     private final double TICKS_PER_REV = 44.4;
@@ -18,7 +20,8 @@ public class Hood {
     private double adjustment = 0;
 
     private Hood() {
-
+        hood.configFactoryDefault();
+		hood.setNeutralMode(NeutralMode.Coast);
     }
 
     public static Hood getInstance() {
@@ -32,13 +35,14 @@ public class Hood {
 
     public void run(double distance) {
         setDistance(distance);
+        System.out.println("HoodTics:"+encoder.getTics()+"  adjustment: "+adjustment );
     }
 
     public void calculateAdjustment(double y) {
         if (y > .1) {
-            adjustment += 4;
+            adjustment += 1;
         } else if (y < -.1){
-            adjustment -= 4;
+            adjustment -= 1;
         }
     }
 
@@ -58,7 +62,7 @@ public class Hood {
             calculateTicks();
             setSafeZone();
         } else {
-            hood.set(0);
+            hood.stopMotor();
         }
     }
 

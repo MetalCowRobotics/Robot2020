@@ -150,7 +150,7 @@ public class RobotDashboard {
 
 	public void pushShooterVelocity(double targetVelocity, double actualVelocity) {
 		SmartDashboard.putNumber("Actual Velocity", actualVelocity);
-		SmartDashboard.putNumber("Target Velocity", targetVelocity);
+		//SmartDashboard.putNumber("Target Velocity", targetVelocity);
 	}
 
 	public double getShooterTargetVelocity(double defaultValue) {
