@@ -9,6 +9,7 @@ import frc.lib14.PIDController;
 import frc.lib14.UtilityMethods;
 import frc.robot.RobotDashboard;
 import frc.robot.RobotMap;
+import frc.systems.MasterControls;
 
 public class Shooter {
     private static CANSparkMax neo1 = new CANSparkMax(RobotMap.Shooter.TOP_MOTOR, MotorType.kBrushless);
@@ -29,6 +30,7 @@ public class Shooter {
     private boolean firstTime = true;
     private double targetSpeed = 3000;// RPM's
     private boolean readyToShoot = false;
+    MasterControls controls = MasterControls.getInstance();
 
     // singleton instance
     private static final Shooter instance = new Shooter();
@@ -71,7 +73,17 @@ public class Shooter {
     }
 
     public void prepairToShoot() {
-        readyToShoot = true;
+
+        vision.setTargetMode(true);
+
+        if (controls.shootWhenReady()) {
+            if (vision.yawDegrees > 2) {
+                turret.rotateTurret(vision.yawDegrees);
+              } else {
+                readyToShoot = true;
+              }
+        }
+        
         //get target distance
         //set shooter speed
         // setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));//needs velocity
@@ -81,6 +93,7 @@ public class Shooter {
     }
 
     public void stopShooter() {
+        vision.setTargetMode(false);
         shooter.stopMotor();
         readyToShoot = false;
         magazine.stopLoadToTop();

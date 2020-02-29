@@ -27,8 +27,8 @@ public class Turret {
     }
 
     // 4096tics = 360 degrees 11.25tics = 1 degree
-    public void rotateTurret(int degrees) {
-        int targetTics = 0;
+    public void rotateTurret(double degrees) {
+        double targetTics = 0;
         targetTics = degrees * 11;
         double totalTicsDiff = (targetTics - encoder.getTics()) * .003;
         //double error = UtilityMethods.copySign(totalTicsDiff, UtilityMethods.absMax(totalTicsDiff, .05));

@@ -54,7 +54,7 @@ public class Vision {
         isDriverMode = myCam.getEntry("driverMode");
         width = myCam.getEntry("targetFittedWidth");
         height = myCam.getEntry("targetFittedHeight");
-
+        setTargetMode(false);
     }
 
     // Periodic function
