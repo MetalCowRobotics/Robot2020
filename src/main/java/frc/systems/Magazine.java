@@ -48,7 +48,7 @@ public class Magazine {
         return isBallAtTop.get();
     }
 
-    public boolean isThereABallBottomForShooter() {
+    public boolean isThereABallBottomToLoad() {
         return isBallAtBottom.get();
     }
 
@@ -72,16 +72,8 @@ public class Magazine {
     }
 
     private void feedBallToShooter() {
-        //if (ballAtTop()) {
             SmartDashboard.putBoolean("feeding", true);
             magazineMotor.set(magazineSpeed);
-        //} else if (!ballAtTop()) {
-        //     SmartDashboard.putBoolean("feeding", false);
-        //     feedMode = false;
-        //     counted++;
-        //     stopMagazine();
-        //     loadBallInShootingPosition();
-        // }
     }
 
     private void runMagazine() {

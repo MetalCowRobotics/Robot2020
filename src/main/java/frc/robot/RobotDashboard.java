@@ -148,9 +148,12 @@ public class RobotDashboard {
 		SmartDashboard.putBoolean("Field Mode", Mode);
 	}
 
-	public void pushShooterVelocity(double targetVelocity, double actualVelocity) {
+	public void pushShooterTargetVelocity(double targetVelocity) {
+		SmartDashboard.putNumber("Target Velocity", targetVelocity);
+	}
+
+	public void pushShooterVelocity(double actualVelocity) {
 		SmartDashboard.putNumber("Actual Velocity", actualVelocity);
-		//SmartDashboard.putNumber("Target Velocity", targetVelocity);
 	}
 
 	public double getShooterTargetVelocity(double defaultValue) {

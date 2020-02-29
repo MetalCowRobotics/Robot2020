@@ -16,11 +16,9 @@ import frc.autonomous.ShootAndGo;
 import frc.lib14.MCRCommand;
 import frc.systems.Climber;
 import frc.systems.DriveTrain;
-import frc.systems.Hood;
 import frc.systems.Intake;
 import frc.systems.MasterControls;
 import frc.systems.Shooter;
-import frc.systems.Turret;
 import frc.systems.Vision;
 
 /**
@@ -35,7 +33,6 @@ public class Robot extends TimedRobot {
   Intake intake = Intake.getInstance();
   Shooter shooter = Shooter.getInstance();
   Climber climber = Climber.getInstance();
-  Hood hood = Hood.getInstance();
   MasterControls controls = MasterControls.getInstance();
   RobotDashboard dashboard = RobotDashboard.getInstance();
   Vision vision = Vision.getInstance();
@@ -57,7 +54,7 @@ public class Robot extends TimedRobot {
     driveTrain.calibrateGyro();
     dashboard.pushAuto();
     dashboard.pushTurnPID();
-    SmartDashboard.putNumber("Set Velocity", 1500);
+    dashboard.pushShooterTargetVelocity(1500);
   }
 
   @Override
@@ -81,8 +78,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     vision.visionInit();
-    hood.resetEncoder();
-    hood.setPosition(26);
   }
 
   @Override
@@ -92,19 +87,23 @@ public class Robot extends TimedRobot {
     runSystemsStateMachine();
 
     //testing
-    SmartDashboard.putBoolean("limit deployed", intake.intakeDeployed());
-    SmartDashboard.putBoolean("limit stowed", intake.intakeStowed());
     SmartDashboard.putNumber("distance", vision.getTargetDistance());
     SmartDashboard.putNumber("yaw", vision.getYawDegrees());
-    // if (controls.turretAdjustment() > .1) {
-    //   turret.rotateTurret(10);
-    // } else if (controls.turretAdjustment() < -.1) {
-    //   turret.rotateTurret(-10);
-    // }
   }
 
   private void applyOperatorInputs() {
-    hood.manualAdjustment(controls.hoodAdjustment());
+    // intake
+    if (controls.lowerIntake()) {
+      intake.lowerIntake();
+    } else if (controls.raiseIntake()) {
+      intake.retractIntake();
+    }
+    if (controls.intakeOnOff()) {
+      intake.toggleIntakeState();
+    }
+    //shooter
+    shooter.manualAdjustHood(controls.hoodAdjustment());
+    shooter.rotateTurret(controls.turretAdjustment());
     //check if operator wants to shoot
     if (controls.prepairToShoot()) {
       shooter.prepareToShoot();
@@ -117,19 +116,8 @@ public class Robot extends TimedRobot {
     } else if (controls.shootWhenReady()) {
       shooter.shootBallWhenReady();
     }
-    // intake
-    if (controls.lowerIntake()) {
-      intake.lowerIntake();
-    } else if (controls.raiseIntake()) {
-      intake.retractIntake();
-    }
-    if (controls.intakeOnOff()) {
-      intake.toggleIntakeState();
-    }
     // climber
     climber.raiseClimber(controls.climbSpeed());
-    //turret
-    shooter.rotateTurret(controls.turretAdjustment());
   }
 
   private void runSystemsStateMachine() {
