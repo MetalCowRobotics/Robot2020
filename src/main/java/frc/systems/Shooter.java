@@ -61,7 +61,7 @@ public class Shooter {
 
         magazine.run();
         funnel.run(magazine.isThereABallBottomForShooter());
-        //turret.rotateTurret(-(int)Math.round(vision.getYawDegrees()));
+        turret.run();
         dashboard.pushShooterVelocity(targetSpeed, neo1.getEncoder().getVelocity());
     }
 
@@ -70,8 +70,9 @@ public class Shooter {
         return UtilityMethods.between(Math.abs(neo1.getEncoder().getVelocity()), absTargetSpeed - 50, absTargetSpeed + 50);
     }
 
-    public void prepairToShoot() {
+    public void prepareToShoot() {
         readyToShoot = true;
+        turret.startTargeting();
         //get target distance
         //set shooter speed
         // setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));//needs velocity
@@ -81,9 +82,10 @@ public class Shooter {
     }
 
     public void stopShooter() {
-        shooter.stopMotor();
         readyToShoot = false;
+        shooter.stopMotor();
         magazine.stopLoadToTop();
+        turret.stopTargeting();
     }
 
     public void shootBallWhenReady() {
@@ -170,5 +172,9 @@ public class Shooter {
         SmartDashboard.putNumber("Correction", getCorrection());
         SmartDashboard.putNumber("Actual Velocity", neo1.getEncoder().getVelocity());
     }
+
+	public void rotateTurret(double turretAdjustment) {
+        turret.turnTurret(turretAdjustment);
+	}
 
 }

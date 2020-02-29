@@ -97,7 +97,7 @@ public class Intake {
 
     public boolean intakeStowed() {
         // 1==closed
-        System.out.println("Is intake stowed?" +raiseLowerIntake.isRevLimitSwitchClosed());
+        System.out.println("Is intake stowed?" + raiseLowerIntake.isRevLimitSwitchClosed());
         return 1 == raiseLowerIntake.isRevLimitSwitchClosed();
     }
     public void toggleIntakeState(){
