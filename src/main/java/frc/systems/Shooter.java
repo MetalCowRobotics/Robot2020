@@ -47,7 +47,7 @@ public class Shooter {
     }
 
     public void run() {
-        hood.run(0);//0 is stop
+        hood.run();
 
         if (readyToShoot) {
             // speed PID loop
@@ -77,6 +77,7 @@ public class Shooter {
         // setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));//needs velocity
         setTargetSpeed(dashboard.getShooterTargetVelocity(1500));
         //set hood poistion
+        hood.setPosition(vision.getTargetDistance());
         magazine.loadBallInShootingPosition();
     }
 
