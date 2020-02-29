@@ -74,8 +74,11 @@ public class Shooter {
         turret.startTargeting();
         //get target distance
         //set shooter speed
-        // setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));//needs velocity
-        setTargetSpeed(dashboard.getShooterTargetVelocity(1500));
+        if (vision.getTargetDistance() > 25) {
+            setTargetSpeed(2800);
+        } else if (vision.getTargetDistance() > 1) {
+            setTargetSpeed(2000)
+        }        
         //set hood poistion
         hood.setPosition(vision.getTargetDistance());
         magazine.loadBallInShootingPosition();
