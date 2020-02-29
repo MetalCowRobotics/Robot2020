@@ -5,34 +5,19 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.commands;
+package frc.autonomous;
 
 import frc.lib14.MCRCommand;
-import frc.systems.Intake;
 
-/**
- * Add your docs here.
- */
-public class IntakeDeployRun implements MCRCommand {
-    private Intake intake = Intake.getInstance();
-    private boolean done = false;
-
-    public IntakeDeployRun() {
-    }
+public class NoAuto implements MCRCommand {
 
     @Override
     public void run() {
-        intake.startIntake();
-        if (intake.intakeDeployed()) {
-            done = true;
-        } else {
-            intake.lowerIntake();
-        }
     }
 
     @Override
     public boolean isFinished() {
-        return done;
+        return true;
     }
 
 }
