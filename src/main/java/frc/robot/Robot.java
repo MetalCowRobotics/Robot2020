@@ -101,7 +101,7 @@ public class Robot extends TimedRobot {
   }
 
   private void applyOperatorInputs() {
-    hood.calculateAdjustment(controls.hoodAdjustment());
+    hood.manualAdjustment(controls.hoodAdjustment());
     //check if operator wants to shoot
     if (controls.prepairToShoot()) {
       shooter.prepairToShoot();

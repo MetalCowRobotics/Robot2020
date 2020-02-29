@@ -38,9 +38,9 @@ public class UtilityMethods {
 		double localmaxValue = Math.abs(maxValue);
 
 		if (input > 0) {
-			return Math.min(input, localmaxValue);
+			return Math.max(input, localmaxValue);
 		} else {
-			return Math.max(input, -localmaxValue);
+			return Math.min(input, -localmaxValue);
 		}
 	}
 
@@ -48,9 +48,9 @@ public class UtilityMethods {
 		double localminValue = Math.abs(minValue);
 
 		if (input > 0) {
-			return Math.max(input, localminValue);
+			return Math.min(input, localminValue);
 		} else {
-			return Math.min(input, -localminValue);
+			return Math.max(input, -localminValue);
 		}
 	}
 
