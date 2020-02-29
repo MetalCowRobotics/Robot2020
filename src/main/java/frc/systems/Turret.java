@@ -76,7 +76,7 @@ public class Turret {
         SmartDashboard.putNumber("turret encoder", encoder.getTics());
         SmartDashboard.putNumber("power", power);
         if (!targeting) {
-            if (power<0 && encoder.getTics() < leftBound) {
+            if (power < 0 && encoder.getTics() < leftBound) {
                 turret.set(UtilityMethods.absMin(power, 0.4));    
                 
             } else if (power > 0 && encoder.getTics() > rightBound) {
