@@ -9,7 +9,7 @@ public class Hood {
     public static VictorSP hood = new VictorSP(RobotMap.Hood.HOOD_MOTOR);
     public static FC_JE_0149Encoder encoder = new FC_JE_0149Encoder(3,4);
     private static final Hood instance = new Hood();
-
+    
     private final double TICKS_PER_REV = 44.4;
     private double target_inches = 1;
     private double TOTAL_REVS = target_inches * 10;
