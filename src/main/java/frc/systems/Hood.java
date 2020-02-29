@@ -12,11 +12,12 @@ public class Hood {
     public static FC_JE_0149Encoder encoder = new FC_JE_0149Encoder(3,2);
     private static final Hood instance = new Hood();
 
-    private final double TICKS_PER_REV = 44.4;
+    private final double TICS_PER_REV = 44.4;
     private double target_inches = 1;
     private double TOTAL_REVS = target_inches * 10;
-    private double TARGET_TICKS = TICKS_PER_REV * TOTAL_REVS;
+    private double TARGET_TICS = TICS_PER_REV * TOTAL_REVS;
     private double adjustment = 0;
+    private double currentTics = 1500;
 
     private Hood() {
         hood.configFactoryDefault();
@@ -29,13 +30,14 @@ public class Hood {
 
     public void calculateTicks() {
         TOTAL_REVS = target_inches * 10;
-        TARGET_TICKS = TICKS_PER_REV * TOTAL_REVS + adjustment;
+        TARGET_TICS = TICS_PER_REV * TOTAL_REVS + adjustment;
     }
 
     public void run(double distance) {
         setDistance(distance);
-        System.out.println("HoodTics:"+encoder.getTics()+"  adjustment: "+adjustment );
-        SmartDashboard.putNumber("Encoder Ticks", encoder.getTics());
+        currentTics = encoder.getTics() + 1500;
+        System.out.println("HoodTics:"+currentTics+"  adjustment: "+adjustment );
+        SmartDashboard.putNumber("Encoder Tics", currentTics);
         SmartDashboard.putNumber("Hood Adustment", adjustment);
     }
 
@@ -69,8 +71,8 @@ public class Hood {
 
     public void setFarShot() {
         target_inches = 1.4;
-        System.out.println("EncoderTicks:" + encoder.getTics());
-        double error = ((TARGET_TICKS+3) - encoder.getTics()) / 100;
+        System.out.println("EncoderTics:" + currentTics);
+        double error = ((TARGET_TICS+3) - currentTics) / 100;
         if (error > .5) {
             error = .5;
         }
@@ -82,8 +84,8 @@ public class Hood {
 
     public void setTenFoot() {
         target_inches = 1.8;
-        System.out.println("EncoderTicks:" + encoder.getTics());
-        double error = ((TARGET_TICKS+3) - encoder.getTics()) / 100;
+        System.out.println("EncoderTics:" + currentTics);
+        double error = ((TARGET_TICS+3) - currentTics) / 100;
         if (error > .5) {
             error = .5;
         }
@@ -95,8 +97,8 @@ public class Hood {
 
     public void setSafeZone() {
         target_inches = 3.4;
-        System.out.println("EncoderTicks:" + encoder.getTics());
-        double error = ((TARGET_TICKS+3) - encoder.getTics()) / 100;
+        System.out.println("EncoderTics:" + currentTics);
+        double error = ((TARGET_TICS+3) - currentTics) / 100;
         if (error > .5) {
             error = .5;
         }
