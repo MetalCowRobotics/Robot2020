@@ -7,22 +7,21 @@
 
 package frc.robot;
 
-import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.autonomous.NoAuto;
 import frc.autonomous.ShootAndGather;
 import frc.autonomous.ShootAndGo;
 import frc.lib14.MCRCommand;
-import frc.lib14.XboxControllerMetalCow;
 import frc.systems.Climber;
 import frc.systems.DriveTrain;
+import frc.systems.Hood;
 import frc.systems.Intake;
-import frc.systems.Magazine;
 import frc.systems.MasterControls;
 import frc.systems.Shooter;
+import frc.systems.Turret;
+import frc.systems.Vision;
 
 /**
  * The VM is configured to automatically run this class. If you change the name
@@ -33,24 +32,18 @@ import frc.systems.Shooter;
 public class Robot extends TimedRobot {
   // systems
   DriveTrain driveTrain = DriveTrain.getInstance();
-  Intake intake;// = Intake.getInstance();
+  Intake intake = Intake.getInstance();
   Shooter shooter = Shooter.getInstance();
-  Climber climber;// = Climber.getInstance();
+  Climber climber = Climber.getInstance();
+  Hood hood = Hood.getInstance();
   MasterControls controls = MasterControls.getInstance();
   RobotDashboard dashboard = RobotDashboard.getInstance();
+  Vision vision = Vision.getInstance();
+
+  Turret turret;// = Turret.getInstance();
 
   // class variables
   MCRCommand mission;
-
-  // testing only
-  Magazine magazine = Magazine.getInstance();
-  //  Turret turret = Turret.getInstance();
-  // Hood hood = Hood.getInstance();
-  boolean firstTime = true;
-  XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
-  Vision myVision = new Vision();
-  boolean changeMode = false;
-  double counter = 60;
 
 
   /**
@@ -60,7 +53,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    final UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
+    CameraServer.getInstance().startAutomaticCapture(0);
     driveTrain.calibrateGyro();
     dashboard.pushAuto();
     dashboard.pushTurnPID();
@@ -68,10 +61,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    vision.visionInit();
     if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GO == dashboard.getAutoMission()) {
       mission = new ShootAndGo();
     } else if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GATHER == dashboard.getAutoMission()) {
-      mission = new ShootAndGather();
+      mission = new ShootAndGather(dashboard.getStartingPosition());
     } else {
       mission = new NoAuto();
     }
@@ -80,41 +74,61 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     mission.run();
-    runSystemsState();
+    runSystemsStateMachine();
   }
 
   @Override
   public void teleopInit() {
-    //testing
-    shooter.setTargetSpeed(.65*5874);
+    vision.visionInit();
+    hood.resetAdjustment();
+    hood.resetEncoder();
   }
 
   @Override
   public void teleopPeriodic() {
     controls.changeMode();
-    applyInputs();
-    runSystemsState();
+    applyOperatorInputs();
+    runSystemsStateMachine();
 
     //testing
-    if (firstTime) {
-      shooter.runShooter();
-      firstTime = false;
-    }
-    shooter.run();
+    SmartDashboard.putBoolean("limit deployed", intake.intakeDeployed());
+    SmartDashboard.putBoolean("limit stowed", intake.intakeStowed());
+    // if (controls.turretAdjustment() > .1) {
+    //   turret.rotateTurret(10);
+    // } else if (controls.turretAdjustment() < -.1) {
+    //   turret.rotateTurret(-10);
+    // }
   }
 
-  private void applyInputs() {
-   // if (controls.lowerIntake()) {
-    //  intake.lowerIntake();
-   // } else if (controls.raiseIntake()) {
-   //   intake.retractIntake();
-   // }
-    if (controls.spinUpAndShoot()) {
+  private void applyOperatorInputs() {
+    hood.calculateAdjustment(controls.hoodAdjustment());
+    //check if operator wants to shoot
+    if (controls.prepairToShoot()) {
+      shooter.prepairToShoot();
+    } else {
+      shooter.stopShooter();
+    }
+    // shoot ball
+    if (controls.shootNow()) {
+      shooter.shootBall();
+    } else if (controls.shootWhenReady()) {
       shooter.shootBallWhenReady();
     }
-  } 
+    // intake
+    if (controls.lowerIntake()) {
+      intake.lowerIntake();
+    } else if (controls.raiseIntake()) {
+      intake.retractIntake();
+    }
+    if (controls.intakeOnOff()) {
+      intake.toggleIntakeState();
+    }
+    // climber
+    climber.raiseClimber(controls.climbSpeed());
 
-  private void runSystemsState() {
+  }
+
+  private void runSystemsStateMachine() {
     driveTrain.drive();
    // intake.run();
     shooter.run();

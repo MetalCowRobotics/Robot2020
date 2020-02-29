@@ -2,12 +2,13 @@ package frc.robot;
 
 import java.util.logging.Logger;
 
+import com.revrobotics.ColorMatchResult;
+import com.revrobotics.ColorSensorV3;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
-import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.lib14.PIDController;
 
 public class RobotDashboard {
 	private static final Logger logger = Logger.getLogger(RobotDashboard.class.getName());
@@ -18,23 +19,19 @@ public class RobotDashboard {
 	private PowerDistributionPanel pdp;
 
 	public enum AutoMission {
-		AUTOMODE_NONE, 
-		AUTOMODE_SHOOT_N_GO, 
-		AUTOMODE_SHOOT_N_GATHER
+		AUTOMODE_NONE, AUTOMODE_SHOOT_N_GO, AUTOMODE_SHOOT_N_GATHER
 	}
 
 	public enum AutoPosition {
-		AUTOMODE_LEFT_OF_TARGET, 
-		AUTOMODE_CENTER, 
-		AUTOMODE_RIGHT_OF_TARGET
-	}
-
-	public static RobotDashboard getInstance() {
-		return ourInstance;
+		AUTOMODE_LEFT_OF_TARGET, AUTOMODE_CENTER, AUTOMODE_RIGHT_OF_TARGET
 	}
 
 	private RobotDashboard() {
 		logger.setLevel(RobotMap.LogLevels.robotDashboardClass);
+	}
+
+	public static RobotDashboard getInstance() {
+		return ourInstance;
 	}
 
 	public void initializeDashboard() {
@@ -55,7 +52,7 @@ public class RobotDashboard {
 		startingPosition.addOption("left position", AutoPosition.AUTOMODE_LEFT_OF_TARGET);
 		startingPosition.addOption("right position", AutoPosition.AUTOMODE_RIGHT_OF_TARGET);
 		SmartDashboard.putData("missions", autonomousAction);
-		SmartDashboard.putData("starting Position", startingPosition);		
+		SmartDashboard.putData("starting Position", startingPosition);
 	}
 
 	public AutoMission getAutoMission() {
@@ -73,13 +70,47 @@ public class RobotDashboard {
 		SmartDashboard.putNumber("SIz", Iz);
 	}
 
-	public void pushGyro(double angle) {
-		SmartDashboard.putNumber("Gyro Reading", angle);
+	public double getShooterP(double defaultVal) {
+		return SmartDashboard.getNumber("SkP", defaultVal);
 	}
 
-	public double getIntakeEjectSpeed() {
-		// return SmartDashboard.getNumber("IntakeEjectSpeed", 0);
-		return 0;
+	public double getShooterI(double defaultVal) {
+		return SmartDashboard.getNumber("SkI", defaultVal);
+	}
+
+	public double getShooterD(double defaultVal) {
+		return SmartDashboard.getNumber("SkD", defaultVal);
+	}
+
+	public double getShooterIz(double defaultVal) {
+		return SmartDashboard.getNumber("SIz", defaultVal);
+	}
+
+	// public void pushDrivePIDValues(double P, double I, double D, double Iz) {
+	// 	SmartDashboard.putNumber("DkP", P);
+	// 	SmartDashboard.putNumber("DkI", I);
+	// 	SmartDashboard.putNumber("DkD", D);
+	// 	SmartDashboard.putNumber("DIz", Iz);
+	// }
+
+	// public double getDriveP(double defaultVal) {
+	// 	return SmartDashboard.getNumber("DkP", defaultVal);
+	// }
+
+	// public double getDriveI(double defaultVal) {
+	// 	return SmartDashboard.getNumber("DkI", defaultVal);
+	// }
+
+	// public double getDriveD(double defaultVal) {
+	// 	return SmartDashboard.getNumber("SDkD", defaultVal);
+	// }
+
+	// public double getDriveIz(double defaultVal) {
+	// 	return SmartDashboard.getNumber("DIz", defaultVal);
+	// }
+
+	public void pushGyro(double angle) {
+		SmartDashboard.putNumber("Gyro Reading", angle);
 	}
 
 	public void pushLeftEncoder(double leftTics) {
@@ -90,13 +121,6 @@ public class RobotDashboard {
 		SmartDashboard.putNumber("driveRight", rightTics);
 	}
 
-	public void pushSpeed() {
-		// SmartDashboard.putNumber("crawlSpeed", RobotMap.Drivetrain.CRAWL_SPEED);
-		// SmartDashboard.putNumber("sprintSpeed", RobotMap.Drivetrain.SPRINT_SPEED);
-		// SmartDashboard.putNumber("normalSpeed", RobotMap.Drivetrain.NORMAL_SPEED);
-	}
-
-	// Turn commands
 	public void pushTurnPID() {
 		SmartDashboard.putNumber("TkP", RobotMap.TurnDegrees.kP);
 		SmartDashboard.putNumber("TkI", RobotMap.TurnDegrees.kI);
@@ -116,8 +140,42 @@ public class RobotDashboard {
 		return SmartDashboard.getNumber("TkD", RobotMap.TurnDegrees.kD);
 	}
 
+	public double getTurnIz() {
+		return SmartDashboard.getNumber("TIz", RobotMap.TurnDegrees.Iz);
+	}
+
 	public void pushFieldMode(Boolean Mode) {
 		SmartDashboard.putBoolean("Field Mode", Mode);
+	}
+
+	public void pushShooterVelocity(double targetVelocity, double actualVelocity) {
+		SmartDashboard.putNumber("Actual Velocity", actualVelocity);
+		//SmartDashboard.putNumber("Target Velocity", targetVelocity);
+	}
+
+	public double getShooterTargetVelocity(double defaultValue) {
+		return SmartDashboard.getNumber("Target Velocity", defaultValue);
+	}
+
+	public void pushTargetColor(String color) {
+		SmartDashboard.putString("FMSTargetColor", color);
+	}
+
+	public void pushCurrentColor(String underMySensor, String underFieldReader) {
+		SmartDashboard.putString("Sensed Color", underMySensor);
+		SmartDashboard.putString("Field Sensor Color", underFieldReader);
+	}
+
+	public void pushColorSensor(ColorSensorV3 sensor) {
+		SmartDashboard.putNumber("red", sensor.getRed());
+        SmartDashboard.putNumber("green", sensor.getGreen());
+        SmartDashboard.putNumber("blue", sensor.getBlue());
+		SmartDashboard.putNumber("proximity", sensor.getProximity());
+	}
+
+	public void pushColorMatch(ColorMatchResult match) {
+        SmartDashboard.putString("color", match.color.toString());
+		SmartDashboard.putNumber("confidence", match.confidence);
 	}
 
 }
