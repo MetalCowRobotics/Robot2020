@@ -61,12 +61,12 @@ public class Hood {
 
     public void manualAdjustment(double y) {
         if (y > .1) {
-            if (targetTics > (LOWER_BOUND + 3)) {
-                targetTics -= 3;
+            if (targetTics > (LOWER_BOUND + 2)) {
+                targetTics -= 2;
             }
         } else if (y < -.1) {
-            if (targetTics < ( UPPER_BOUND - 3)) {
-                targetTics += 3;
+            if (targetTics < ( UPPER_BOUND - 2)) {
+                targetTics += 2;
             }
         }
     }
@@ -83,42 +83,15 @@ public class Hood {
     }
 
     public void setFarShot() {
-        calculateTicks(4.5);
-        // System.out.println("EncoderTics:" + currentTics);
-        // double error = ((TARGET_TICS+3) - currentTics) / 100;
-        // if (error > .5) {
-        // error = .5;
-        // }
-        // if (error < -.5) {
-        // error = -.5;
-        // }
-        // hood.set(error);
+        calculateTicks(3.9);
     }
 
     public void setTenFoot() {
-        calculateTicks(4.1);
-        // System.out.println("EncoderTics:" + currentTics);
-        // double error = ((TARGET_TICS+3) - currentTics) / 100;
-        // if (error > .5) {
-        // error = .5;
-        // }
-        // if (error < -.5) {
-        // error = -.5;
-        // }
-        // hood.set(error);
+        calculateTicks(3.5);
     }
 
     public void setSafeZone() {
-        calculateTicks(3.4);
-        // System.out.println("EncoderTics:" + currentTics);
-        // double error = ((TARGET_TICS+3) - currentTics) / 100;
-        // if (error > .5) {
-        // error = .5;
-        // }
-        // if (error < -.5) {
-        // error = -.5;
-        // }
-        // hood.set(error);
+        calculateTicks(2.8);
     }
 
     public void resetEncoder() {

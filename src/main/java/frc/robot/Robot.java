@@ -57,6 +57,7 @@ public class Robot extends TimedRobot {
     driveTrain.calibrateGyro();
     dashboard.pushAuto();
     dashboard.pushTurnPID();
+    SmartDashboard.putNumber("Set Velocity", 1500);
   }
 
   @Override
@@ -93,6 +94,8 @@ public class Robot extends TimedRobot {
     //testing
     SmartDashboard.putBoolean("limit deployed", intake.intakeDeployed());
     SmartDashboard.putBoolean("limit stowed", intake.intakeStowed());
+    SmartDashboard.putNumber("distance", vision.getTargetDistance());
+    SmartDashboard.putNumber("yaw", vision.getYawDegrees());
     // if (controls.turretAdjustment() > .1) {
     //   turret.rotateTurret(10);
     // } else if (controls.turretAdjustment() < -.1) {

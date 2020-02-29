@@ -35,32 +35,53 @@ public class Turret {
     }
 
     public void run() {
-        if (targeting) {
-            //rotateTurret(vision.getYawDegrees());
+        /*if (targeting) {
+
             double totalTicsDiff = targetTics - encoder.getTics();
             if (Math.abs(totalTicsDiff) < deadZone) {
                 turret.stopMotor();
                 onTarget = true;
             } else {
                 onTarget = false;
-                if (totalTicsDiff > 0) {
+                if (totalTicsDiff < 0) {
                     turret.set(-turretSpeed);
                 }
-                if (totalTicsDiff < 0) {
+                if (totalTicsDiff > 0) {
                     turret.set(turretSpeed);
                 }
             }
             System.out.println("Target" + targetTics + "; encoder Tics " + encoder.getTics());
-        }
+        }*/
         // turret.stopMotor();
+        double yaw = vision.getYawDegrees();
+        if (targeting) {
+            
+            if (UtilityMethods.between(yaw, -4, 4)) {
+                turret.stopMotor();
+            } else {
+                if (yaw > 0 && encoder.getTics() > -50) { //left
+                    turret.set(0.2); 
+                } else if (yaw< 0 && encoder.getTics() < 50){ //right
+                    turret.set(-0.2);
+                } else {
+                    turret.stopMotor();
+                }
+            }
+            // SmartDashboard.putNumber("turret encoder", encoder.getTics());
+            
+        }
+        SmartDashboard.putNumber("turret encoder", encoder.getTics());
+        SmartDashboard.putNumber("yaw", yaw);
     }
-
+    
     public boolean onTarget() {
         return onTarget;
     }
 
     public void startTargeting() {
         targeting = true;
+        // rotateTurret(vision.getYawDegrees());
+        // SmartDashboard.putNumber("target tics", targetTics);
     }
 
     public void stopTargeting() {
@@ -69,11 +90,11 @@ public class Turret {
 
     // 4096tics = 360 degrees 11.25tics = 1 degree
     public void rotateTurret(double degrees) { // for vision
-        setTargetTics((int) (encoder.getTics() + (degrees * 11)));
+        setTargetTics((int) (encoder.getTics() + (degrees * 1.4)));
     }
 
     public void turnTurret(double power) { // for human control
-        SmartDashboard.putNumber("turret encoder", encoder.getTics());
+       
         SmartDashboard.putNumber("power", power);
         if (!targeting) {
             if (power < 0 && encoder.getTics() < leftBound) {
