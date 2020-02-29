@@ -31,6 +31,10 @@ public class Magazine {
         if (feedMode) {
             feedBallToShooter();
             SmartDashboard.putString("mode", "feed");
+            if (!isThereABallTopForShooter()) {
+                feedMode=false;
+                loadToTop=true;
+            }
         } else if (loadToTop) { //need to get out of load mode after shooting all balls
             advanceBallToTop();
             SmartDashboard.putString("mode", "loadtotop");
@@ -53,7 +57,7 @@ public class Magazine {
             magazineMotor.set(magazineSpeed);
         } else {
             magazineMotor.stopMotor();
-            loadToTop = false; // how do i get out of load mode?
+            // loadToTop = false; // how do i get out of load mode?
         }
     }
 
@@ -124,13 +128,6 @@ public class Magazine {
 
     public void loadBallInShootingPosition() {
         loadToTop = true;
-        // if (!ballAtTop()) {
-        // magazineMotor.set(magazineSpeed);
-        // loadToTop = true;
-        // } else {
-        // magazineMotor.stopMotor();
-        // loadToTop = false;
-        // }
     }
 
     public int getCounted() {
