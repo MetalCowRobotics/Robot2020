@@ -10,8 +10,10 @@ import frc.robot.RobotMap;
 
 public class Hood {
 
-    private static final int STARTING_POS = 1500;
-    private static final int REVS_PER_INCH = 10;
+    private static final int STARTING_POS = 2156;
+    private static final double REVS_PER_INCH = 11.8;
+    private static final int UPPER_BOUND = 2465;
+    private static final int LOWER_BOUND = 0;
     private static MCR_SRX hood = new MCR_SRX(RobotMap.Hood.HOOD_MOTOR);
     public static FC_JE_0149Encoder encoder = new FC_JE_0149Encoder(3, 2);
 
@@ -34,6 +36,8 @@ public class Hood {
     private void calculateTicks(double inches) {
         totalRevs = inches * REVS_PER_INCH;
         targetTics = TICS_PER_REV * totalRevs;
+        targetTics = UtilityMethods.absMax(targetTics, LOWER_BOUND);
+        targetTics = UtilityMethods.absMin(targetTics, UPPER_BOUND);
     }
 
     public void run() {
@@ -41,26 +45,30 @@ public class Hood {
         System.out.println("EncoderTics:" + currentTics);
         double error = ((targetTics + 3) - currentTics) / 100;
         error = UtilityMethods.absMin(error, .5);
-        if (Math.abs((targetTics + 3) - currentTics) < 20) {
+        if (Math.abs((targetTics + 3) - currentTics) < 5) {
+            SmartDashboard.putBoolean("in Deadzone", true);
             hood.stopMotor();
         } else {
+            SmartDashboard.putBoolean("in Deadzone", true);
             hood.set(error);
         }
 
         System.out.println("HoodTics:" + currentTics);
-        SmartDashboard.putNumber("Encoder Tics", currentTics);
+        SmartDashboard.putNumber("Current Tics", currentTics);
+        SmartDashboard.putNumber("Encoder Tics", encoder.getTics());
+
     }
 
     public void manualAdjustment(double y) {
         if (y > .1) {
-            targetTics -= 3;
+            if (targetTics > (LOWER_BOUND + 3)) {
+                targetTics -= 3;
+            }
         } else if (y < -.1) {
-            targetTics += 3;
+            if (targetTics < ( UPPER_BOUND - 3)) {
+                targetTics += 3;
+            }
         }
-    }
-
-    public void resetAdjustment() {
-        adjustmentTics = 0;
     }
 
     // automated set hood position
@@ -75,7 +83,7 @@ public class Hood {
     }
 
     public void setFarShot() {
-        calculateTicks(1.4);
+        calculateTicks(4.5);
         // System.out.println("EncoderTics:" + currentTics);
         // double error = ((TARGET_TICS+3) - currentTics) / 100;
         // if (error > .5) {
@@ -88,7 +96,7 @@ public class Hood {
     }
 
     public void setTenFoot() {
-        calculateTicks(1.8);
+        calculateTicks(4.1);
         // System.out.println("EncoderTics:" + currentTics);
         // double error = ((TARGET_TICS+3) - currentTics) / 100;
         // if (error > .5) {
