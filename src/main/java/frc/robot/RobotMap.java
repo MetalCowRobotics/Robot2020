@@ -41,12 +41,12 @@ public class RobotMap {
 
 	public final class TurnDegrees {
 		public static final double kP = .04; 
-		public static final double kI = .001; 
-		public static final double kD = .0; 
+		public static final double kI = .008; 
+		public static final double kD = .001; 
 		public static final double TOP_SPEED = 0;
 		public static final double VARIANCE = 1; //.25
 		public static final double MAX_ADJUSTMENT = .6;
-		public static final double SLOW_VARIANCE = 20; //10
+		public static final double SLOW_VARIANCE = 15; //10
 		public static final double SLOW_ADJUSTMENT = .4;
 	}
 

@@ -22,13 +22,13 @@ import frc.lib14.MCRCommand;
 import frc.lib14.XboxControllerMetalCow;
 import frc.systems.Climber;
 import frc.systems.DriveTrain;
-import frc.systems.Hood;
-import frc.systems.Intake;
+//import frc.systems.Hood;
+//import frc.systems.Intake;
 import frc.systems.Magazine;
 import frc.systems.MasterControls;
 import frc.systems.Shooter;
 import frc.systems.Turret;
-
+import frc.systems.Vision;
 /**
  * The VM is configured to automatically run this class. If you change the name
  * of this class or the package after creating this project, you must also
@@ -38,7 +38,7 @@ import frc.systems.Turret;
 public class Robot extends TimedRobot {
   // systems
   DriveTrain driveTrain = DriveTrain.getInstance();
-  Intake intake = Intake.getInstance();
+ // Intake intake = Intake.getInstance();
   Shooter shooter = Shooter.getInstance();
   Climber climber = Climber.getInstance();
   MasterControls controls = MasterControls.getInstance();
@@ -50,8 +50,11 @@ public class Robot extends TimedRobot {
   // testing only
   Magazine magazine = Magazine.getInstance();
   Turret turret = Turret.getInstance();
-  Hood hood = Hood.getInstance();
+  //Hood hood = Hood.getInstance();
   XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
+  Vision myVision = new Vision();
+  boolean changeMode = false;
+  double counter = 60;
 
   String shootAndGo = "shoot and go";
   String shootAndGather = "shoot and gather";
@@ -81,6 +84,8 @@ public class Robot extends TimedRobot {
     dashboard.pushStartingPosition(startingPosition);
     dashboard.pushAutonomousAction(autonomousAction);
     dashboard.pushAuto();
+   myVision.visionInit();
+
   }
 
   @Override
@@ -114,11 +119,11 @@ public class Robot extends TimedRobot {
   }
 
   private void applyInputs() {
-    if (controls.lowerIntake()) {
-      intake.lowerIntake();
-    } else if (controls.raiseIntake()) {
-      intake.retractIntake();
-    }
+   // if (controls.lowerIntake()) {
+    //  intake.lowerIntake();
+   // } else if (controls.raiseIntake()) {
+   //   intake.retractIntake();
+   // }
     if (controls.spinUpAndShoot()) {
       shooter.shootBallWhenReady();
     }
@@ -130,7 +135,7 @@ public class Robot extends TimedRobot {
     controls.changeMode();
     applyInputs();
     driveTrain.drive();
-    intake.run();
+   // intake.run();
     shooter.run();
     climber.run();
     //
@@ -151,6 +156,15 @@ public class Robot extends TimedRobot {
     } else if (result.color == kYellowTarget) {
       SmartDashboard.putString("color", "yellow");
     }
+    if (counter < 0) {
+      System.out.println("   targetMode:" + myVision.getTargetMode() + "   distance:" + myVision.getTargetDistance() + "   Degrees:" + myVision.getYawDegrees());
+      counter = 60;
+      myVision.setTargetMode(changeMode);
+      changeMode = !changeMode;
+    }
+    counter --;
+
+    //myVision.teleopPeriodic();
     // drive train testing
     // driveTrain.arcadeDrive(-controller.getRY(), -controller.getX());
     //

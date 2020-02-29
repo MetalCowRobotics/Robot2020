@@ -33,7 +33,13 @@ public class TurnDegrees implements MCRCommand {
 
 	}
 
+	public void updateDegrees(double degrees){
+		this.degrees = degrees;
+	}
+
 	public void run() {
+		
+
 		switch (currentState) {
 
 		case IDLE:
