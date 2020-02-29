@@ -24,7 +24,7 @@ public class ShootBall implements MCRCommand{
     public void run() {
         if(firstTime){
             firstTime = false;
-            shooter.prepairToShoot();
+            shooter.prepareToShoot();
         }
         if(shooter.isReady()){
             shooter.shootBallWhenReady();

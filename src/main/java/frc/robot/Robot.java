@@ -40,7 +40,7 @@ public class Robot extends TimedRobot {
   RobotDashboard dashboard = RobotDashboard.getInstance();
   Vision vision = Vision.getInstance();
 
-  Turret turret;// = Turret.getInstance();
+  // Turret turret;// = Turret.getInstance();
 
   // class variables
   MCRCommand mission;
@@ -104,7 +104,7 @@ public class Robot extends TimedRobot {
     hood.manualAdjustment(controls.hoodAdjustment());
     //check if operator wants to shoot
     if (controls.prepairToShoot()) {
-      shooter.prepairToShoot();
+      shooter.prepareToShoot();
     } else {
       shooter.stopShooter();
     }
@@ -125,7 +125,8 @@ public class Robot extends TimedRobot {
     }
     // climber
     climber.raiseClimber(controls.climbSpeed());
-
+    //turret
+    shooter.rotateTurret(controls.turretAdjustment());
   }
 
   private void runSystemsStateMachine() {

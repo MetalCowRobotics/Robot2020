@@ -132,6 +132,6 @@ public class MasterControls {
 	}
 
 	public double turretAdjustment() {
-		return operator.getRX();
+		return UtilityMethods.deadZoneCalculation(operator.getRX(), 0.15);
 	}
 }
