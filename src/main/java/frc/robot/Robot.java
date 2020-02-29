@@ -40,7 +40,7 @@ public class Robot extends TimedRobot {
   RobotDashboard dashboard = RobotDashboard.getInstance();
   Vision vision = Vision.getInstance();
 
-  Turret turret;// = Turret.getInstance();
+  // Turret turret;// = Turret.getInstance();
 
   // class variables
   MCRCommand mission;

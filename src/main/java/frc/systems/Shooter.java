@@ -40,7 +40,6 @@ public class Shooter {
         neo2.restoreFactoryDefaults();
         neo1.setIdleMode(IdleMode.kCoast);        
         neo2.setIdleMode(IdleMode.kCoast);
-        turret.resetTurretEncoder();
     }
 
     public static Shooter getInstance() {
@@ -174,6 +173,7 @@ public class Shooter {
     }
 
 	public void rotateTurret(double turretAdjustment) {
+        System.out.println("turretadjustment:"+turretAdjustment);
         turret.turnTurret(turretAdjustment);
 	}
 

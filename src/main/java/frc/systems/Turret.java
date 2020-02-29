@@ -14,8 +14,8 @@ public class Turret {
     private static final Vision vision = Vision.getInstance();
     private static final Turret instance = new Turret();
     final double turretSpeed = .4;
-    final int leftBound = -90*11; //not final num
-    final int rightBound = 180*11; //not final num
+    final int leftBound = 127; // not final num
+    final int rightBound = -273; // not final num
     int deadZone = 30;
     int startPos = 0;
     boolean targeting = false;
@@ -26,14 +26,17 @@ public class Turret {
         turret.configFactoryDefault();
         turret.setNeutralMode(NeutralMode.Brake);
         resetTurretEncoder();
+        targetTics = startPos;
+        stopTurret();
     }
 
     public static Turret getInstance() {
         return instance;
     }
+
     public void run() {
         if (targeting) {
-            rotateTurret(vision.getYawDegrees());
+            //rotateTurret(vision.getYawDegrees());
             double totalTicsDiff = targetTics - encoder.getTics();
             if (Math.abs(totalTicsDiff) < deadZone) {
                 turret.stopMotor();
@@ -51,23 +54,43 @@ public class Turret {
         }
         // turret.stopMotor();
     }
+
     public boolean onTarget() {
         return onTarget;
     }
+
     public void startTargeting() {
         targeting = true;
     }
+
     public void stopTargeting() {
         targeting = false;
     }
+
     // 4096tics = 360 degrees 11.25tics = 1 degree
-    public void rotateTurret(double degrees) {
-        setTargetTics( (int) (encoder.getTics() + (degrees * 11)));
+    public void rotateTurret(double degrees) { // for vision
+        setTargetTics((int) (encoder.getTics() + (degrees * 11)));
     }
 
-    public void turnTurret(double power) {
+    public void turnTurret(double power) { // for human control
+        SmartDashboard.putNumber("turret encoder", encoder.getTics());
+        SmartDashboard.putNumber("power", power);
         if (!targeting) {
-            turret.set(UtilityMethods.absMin(power, 0.4));
+            if (power<0 && encoder.getTics() < leftBound) {
+                turret.set(UtilityMethods.absMin(power, 0.4));    
+                
+            } else if (power > 0 && encoder.getTics() > rightBound) {
+                turret.set(UtilityMethods.absMin(power, 0.4));
+            
+            } else {
+                turret.stopMotor();
+            }
+                // if (UtilityMethods.between(encoder.getTics(), rightBound, leftBound)) {
+                //     turret.set(UtilityMethods.absMin(power, 0.4));
+                // }
+                // else {
+                //     turret.stopMotor();
+                // }
         }
     }
 
@@ -79,6 +102,7 @@ public class Turret {
         encoder.reset();
         startPos = encoder.getTics();
     }
+
     private void setTargetTics(int tics) {
         if (tics < 0) {
             targetTics = Math.min(tics, leftBound);
