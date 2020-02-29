@@ -10,7 +10,7 @@ import frc.robot.RobotMap;
 
 public class Hood {
 
-    private static final int STARTING_POS = 2156;
+    private static final int STARTING_POS = 2112;
     private static final double REVS_PER_INCH = 11.8;
     private static final int UPPER_BOUND = 2465;
     private static final int LOWER_BOUND = 0;

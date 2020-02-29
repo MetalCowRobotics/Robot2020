@@ -72,12 +72,11 @@ public class Shooter {
     public void prepareToShoot() {
         readyToShoot = true;
         turret.startTargeting();
-        //get target distance
         //set shooter speed
         if (vision.getTargetDistance() > 25) {
             setTargetSpeed(2800);
         } else if (vision.getTargetDistance() > 1) {
-            setTargetSpeed(2000)
+            setTargetSpeed(2000);
         }        
         //set hood poistion
         hood.setPosition(vision.getTargetDistance());
