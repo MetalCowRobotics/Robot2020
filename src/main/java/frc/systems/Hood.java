@@ -2,22 +2,22 @@ package frc.systems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
-import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib14.FC_JE_0149Encoder;
 import frc.lib14.MCR_SRX;
 import frc.robot.RobotMap;
 
 public class Hood {
     private static MCR_SRX hood = new MCR_SRX(RobotMap.Hood.HOOD_MOTOR);
-    //public static VictorSP hood = new VictorSP(RobotMap.Hood.HOOD_MOTOR);
     public static FC_JE_0149Encoder encoder = new FC_JE_0149Encoder(3,2);
     private static final Hood instance = new Hood();
 
-    private final double TICKS_PER_REV = 44.4;
+    private final double TICS_PER_REV = 44.4;
     private double target_inches = 1;
     private double TOTAL_REVS = target_inches * 10;
-    private double TARGET_TICKS = TICKS_PER_REV * TOTAL_REVS;
+    private double TARGET_TICS = TICS_PER_REV * TOTAL_REVS;
     private double adjustment = 0;
+    private double currentTics = 1500;
 
     private Hood() {
         hood.configFactoryDefault();
@@ -30,19 +30,22 @@ public class Hood {
 
     public void calculateTicks() {
         TOTAL_REVS = target_inches * 10;
-        TARGET_TICKS = TICKS_PER_REV * TOTAL_REVS + adjustment;
+        TARGET_TICS = TICS_PER_REV * TOTAL_REVS + adjustment;
     }
 
     public void run(double distance) {
         setDistance(distance);
-        System.out.println("HoodTics:"+encoder.getTics()+"  adjustment: "+adjustment );
+        currentTics = encoder.getTics() + 1500;
+        System.out.println("HoodTics:"+currentTics+"  adjustment: "+adjustment );
+        SmartDashboard.putNumber("Encoder Tics", currentTics);
+        SmartDashboard.putNumber("Hood Adustment", adjustment);
     }
 
     public void calculateAdjustment(double y) {
         if (y > .1) {
-            adjustment += 1;
+            adjustment -= 3;
         } else if (y < -.1){
-            adjustment -= 1;
+            adjustment += 3;
         }
     }
 
@@ -66,20 +69,10 @@ public class Hood {
         }
     }
 
-    //manual set hood position
-    public void setDistance(boolean farShot) {
-        if (farShot) {
-            setFarShot();
-        } else {
-            setSafeZone();
-        }
-    }
-
-
     public void setFarShot() {
         target_inches = 1.4;
-        System.out.println("EncoderTicks:" + encoder.getTics());
-        double error = ((TARGET_TICKS+3) - encoder.getTics()) / 100;
+        System.out.println("EncoderTics:" + currentTics);
+        double error = ((TARGET_TICS+3) - currentTics) / 100;
         if (error > .5) {
             error = .5;
         }
@@ -91,8 +84,8 @@ public class Hood {
 
     public void setTenFoot() {
         target_inches = 1.8;
-        System.out.println("EncoderTicks:" + encoder.getTics());
-        double error = ((TARGET_TICKS+3) - encoder.getTics()) / 100;
+        System.out.println("EncoderTics:" + currentTics);
+        double error = ((TARGET_TICS+3) - currentTics) / 100;
         if (error > .5) {
             error = .5;
         }
@@ -104,8 +97,8 @@ public class Hood {
 
     public void setSafeZone() {
         target_inches = 3.4;
-        System.out.println("EncoderTicks:" + encoder.getTics());
-        double error = ((TARGET_TICKS+3) - encoder.getTics()) / 100;
+        System.out.println("EncoderTics:" + currentTics);
+        double error = ((TARGET_TICS+3) - currentTics) / 100;
         if (error > .5) {
             error = .5;
         }
