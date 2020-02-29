@@ -26,6 +26,7 @@ public class Hood {
     private Hood() {
         hood.configFactoryDefault();
         hood.setNeutralMode(NeutralMode.Coast);
+        resetEncoder();
         targetTics = getCurrentTics();
     }
 
