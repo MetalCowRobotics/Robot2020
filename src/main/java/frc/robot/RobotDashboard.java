@@ -5,8 +5,6 @@ import java.util.logging.Logger;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -15,8 +13,6 @@ public class RobotDashboard {
 	private static final RobotDashboard ourInstance = new RobotDashboard();
 	private SendableChooser<AutoMission> autonomousAction = new SendableChooser<>();
 	private SendableChooser<AutoPosition> startingPosition = new SendableChooser<>();
-	private DriverStation driverStation;
-	private PowerDistributionPanel pdp;
 
 	public enum AutoMission {
 		AUTOMODE_NONE, AUTOMODE_SHOOT_N_GO, AUTOMODE_SHOOT_N_GATHER
@@ -32,16 +28,6 @@ public class RobotDashboard {
 
 	public static RobotDashboard getInstance() {
 		return ourInstance;
-	}
-
-	public void initializeDashboard() {
-		// driverStation = edu.wpi.first.wpilibj.DriverStation.getInstance();
-		// // boolean isFMSAttached = driverStation.isFMSAttached();
-		// if (!isFMSAttached) {
-		// pdp = new PowerDistributionPanel();
-		// pdp.resetTotalEnergy();
-		// }
-		// pushElevatorPID();
 	}
 
 	public void pushAuto() {
@@ -87,26 +73,26 @@ public class RobotDashboard {
 	}
 
 	// public void pushDrivePIDValues(double P, double I, double D, double Iz) {
-	// 	SmartDashboard.putNumber("DkP", P);
-	// 	SmartDashboard.putNumber("DkI", I);
-	// 	SmartDashboard.putNumber("DkD", D);
-	// 	SmartDashboard.putNumber("DIz", Iz);
+	// SmartDashboard.putNumber("DkP", P);
+	// SmartDashboard.putNumber("DkI", I);
+	// SmartDashboard.putNumber("DkD", D);
+	// SmartDashboard.putNumber("DIz", Iz);
 	// }
 
 	// public double getDriveP(double defaultVal) {
-	// 	return SmartDashboard.getNumber("DkP", defaultVal);
+	// return SmartDashboard.getNumber("DkP", defaultVal);
 	// }
 
 	// public double getDriveI(double defaultVal) {
-	// 	return SmartDashboard.getNumber("DkI", defaultVal);
+	// return SmartDashboard.getNumber("DkI", defaultVal);
 	// }
 
 	// public double getDriveD(double defaultVal) {
-	// 	return SmartDashboard.getNumber("SDkD", defaultVal);
+	// return SmartDashboard.getNumber("SDkD", defaultVal);
 	// }
 
 	// public double getDriveIz(double defaultVal) {
-	// 	return SmartDashboard.getNumber("DIz", defaultVal);
+	// return SmartDashboard.getNumber("DIz", defaultVal);
 	// }
 
 	public void pushGyro(double angle) {
@@ -171,13 +157,13 @@ public class RobotDashboard {
 
 	public void pushColorSensor(ColorSensorV3 sensor) {
 		SmartDashboard.putNumber("red", sensor.getRed());
-        SmartDashboard.putNumber("green", sensor.getGreen());
-        SmartDashboard.putNumber("blue", sensor.getBlue());
+		SmartDashboard.putNumber("green", sensor.getGreen());
+		SmartDashboard.putNumber("blue", sensor.getBlue());
 		SmartDashboard.putNumber("proximity", sensor.getProximity());
 	}
 
 	public void pushColorMatch(ColorMatchResult match) {
-        SmartDashboard.putString("color", match.color.toString());
+		SmartDashboard.putString("color", match.color.toString());
 		SmartDashboard.putNumber("confidence", match.confidence);
 	}
 
