@@ -12,7 +12,6 @@ public class Turret {
     private static MCR_SRX turret = new MCR_SRX(RobotMap.Turret.TURRET_MOTOR);
     private static FC_JE_0149Encoder encoder = new FC_JE_0149Encoder(5, 4);
     private static final Vision vision = Vision.getInstance();
-    private static final Turret instance = new Turret();
     final double turretSpeed = .4;
     final int leftBound = 127; // not final num
     final int rightBound = -273; // not final num
@@ -21,6 +20,9 @@ public class Turret {
     boolean targeting = false;
     int targetTics = 0;
     boolean onTarget = false;
+
+    //singletom
+    private static final Turret instance = new Turret();
 
     private Turret() {
         turret.configFactoryDefault();
@@ -35,53 +37,38 @@ public class Turret {
     }
 
     public void run() {
-        /*if (targeting) {
-
-            double totalTicsDiff = targetTics - encoder.getTics();
-            if (Math.abs(totalTicsDiff) < deadZone) {
-                turret.stopMotor();
-                onTarget = true;
-            } else {
-                onTarget = false;
-                if (totalTicsDiff < 0) {
-                    turret.set(-turretSpeed);
-                }
-                if (totalTicsDiff > 0) {
-                    turret.set(turretSpeed);
-                }
-            }
-            System.out.println("Target" + targetTics + "; encoder Tics " + encoder.getTics());
-        }*/
-        // turret.stopMotor();
         double yaw = vision.getYawDegrees();
         if (targeting) {
-            
             if (UtilityMethods.between(yaw, -4, 4)) {
                 turret.stopMotor();
             } else {
-                if (yaw > 0 && encoder.getTics() > -50) { //left
-                    turret.set(0.2); 
-                } else if (yaw< 0 && encoder.getTics() < 50){ //right
-                    turret.set(-0.2);
+                // if (yaw > 0 && encoder.getTics() > -50) { //left
+                // turret.set(0.2);
+                // } else if (yaw< 0 && encoder.getTics() < 50){ //right
+                // turret.set(-0.2);
+                // } else {
+                // stopTurret();
+                // }
+                // set turrent power can deal with the limits
+                if (yaw > 0) {
+                    setTurretPower(.2);
+                } else if (yaw < 0) {
+                    setTurretPower(-.2);
                 } else {
-                    turret.stopMotor();
+                    stopTurret();
                 }
             }
-            // SmartDashboard.putNumber("turret encoder", encoder.getTics());
-            
         }
         SmartDashboard.putNumber("turret encoder", encoder.getTics());
         SmartDashboard.putNumber("yaw", yaw);
     }
-    
+
     public boolean onTarget() {
         return onTarget;
     }
 
     public void startTargeting() {
         targeting = true;
-        // rotateTurret(vision.getYawDegrees());
-        // SmartDashboard.putNumber("target tics", targetTics);
     }
 
     public void stopTargeting() {
@@ -94,24 +81,19 @@ public class Turret {
     }
 
     public void turnTurret(double power) { // for human control
-       
         SmartDashboard.putNumber("power", power);
         if (!targeting) {
-            if (power < 0 && encoder.getTics() < leftBound) {
-                turret.set(UtilityMethods.absMin(power, 0.4));    
-                
-            } else if (power > 0 && encoder.getTics() > rightBound) {
-                turret.set(UtilityMethods.absMin(power, 0.4));
-            
-            } else {
-                turret.stopMotor();
-            }
-                // if (UtilityMethods.between(encoder.getTics(), rightBound, leftBound)) {
-                //     turret.set(UtilityMethods.absMin(power, 0.4));
-                // }
-                // else {
-                //     turret.stopMotor();
-                // }
+            setTurretPower(power);
+        }
+    }
+
+    private void setTurretPower(double power) {
+        if (power < 0 && encoder.getTics() < leftBound) {
+            turret.set(UtilityMethods.absMin(power, turretSpeed));
+        } else if (power > 0 && encoder.getTics() > rightBound) {
+            turret.set(UtilityMethods.absMin(power, turretSpeed));
+        } else {
+            stopTurret();
         }
     }
 
