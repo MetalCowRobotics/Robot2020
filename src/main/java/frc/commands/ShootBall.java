@@ -8,15 +8,10 @@
 package frc.commands;
 
 import frc.lib14.MCRCommand;
-import frc.systems.Magazine;
 import frc.systems.Shooter;
 
-/**
- * Add your docs here.
- */
 public class ShootBall implements MCRCommand{ 
     Shooter shooter = Shooter.getInstance();
-    Magazine magazine = Magazine.getInstance();
     boolean firstTime = true;
     boolean done = false;
 
@@ -28,7 +23,8 @@ public class ShootBall implements MCRCommand{
         }
         if(shooter.isReady()){
             shooter.shootBallWhenReady();
-            done = true;
+            //TODO how will we know when we are done
+            // done = true;
         }
     }
 
