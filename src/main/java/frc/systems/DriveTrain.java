@@ -1,6 +1,6 @@
 package frc.systems;
 
-import java.util.logging.Logger;
+// import java.util.logging.Logger;
 
 import com.analog.adis16470.frc.ADIS16470_IMU;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -15,7 +15,7 @@ import frc.robot.RobotMap;
 import frc.robot.RobotMap.Drivetrain;
 
 public class DriveTrain {
-	private static final Logger logger = Logger.getLogger(DriveTrain.class.getName());
+	// private static final Logger logger = Logger.getLogger(DriveTrain.class.getName());
 	public static final ADIS16470_IMU GYRO = new ADIS16470_IMU();
 	private static MCR_SRX rightFrontMotor = new MCR_SRX(RobotMap.Drivetrain.RIGHT_MOTOR);
 	private static MCR_SRX rightBackMotor = new MCR_SRX(Drivetrain.RIGHT_MOTOR_NO_ENCODER); 

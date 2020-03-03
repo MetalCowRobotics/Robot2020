@@ -7,19 +7,12 @@
 
 package frc.autonomous;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.commands.DriveBackwardsStraight;
-import frc.commands.DriveStraightInches;
 import frc.commands.ShootBall;
-import frc.commands.TurnDegrees;
-import frc.lib14.CommandPause;
 import frc.lib14.MCRCommand;
 import frc.lib14.SequentialCommands;
 import frc.lib14.TimedCommandSet;
 
-/**
- * Add your docs here.
- */
 public class ShootAndGo implements MCRCommand {
     MCRCommand mission;
 
@@ -31,7 +24,6 @@ public class ShootAndGo implements MCRCommand {
     @Override
     public void run() {
         mission.run();
-
     }
 
     @Override

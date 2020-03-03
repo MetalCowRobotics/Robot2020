@@ -52,21 +52,10 @@ public class MasterControls {
 
 	public boolean raiseIntake() {
 		return isDpadUpperHalf(operator);
-		// if (UtilityMethods.between(operator.getPOV(), 0, 89)) {
-		// return true;
-		// }
-		// if (UtilityMethods.between(operator.getPOV(), 271, 360)) {
-		// return true;
-		// }
-		// return false;
 	}
 
 	public boolean lowerIntake() {
 		return isDpadLowerHalf(operator);
-		// if (UtilityMethods.between(operator.getPOV(), 91, 269)) {
-		// return true;
-		// }
-		// return false;
 	}
 
 	private boolean isDpadUpperHalf(XboxControllerMetalCow controller) {
@@ -115,10 +104,6 @@ public class MasterControls {
 		return false;
 	}
 
-	// public boolean target() {
-	// return operator.getYButtonPressed();
-	// }
-
 	public boolean shootNow() {
 		return operator.getAButton();
 	}
@@ -132,6 +117,6 @@ public class MasterControls {
 	}
 
 	public double turretAdjustment() {
-		return operator.getRX();
+		return UtilityMethods.deadZoneCalculation(operator.getRX(), 0.15);
 	}
 }
