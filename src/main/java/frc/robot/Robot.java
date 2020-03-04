@@ -7,13 +7,17 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.Util;
+
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.autonomous.NoAuto;
 import frc.autonomous.ShootAndGather;
 import frc.autonomous.ShootAndGo;
 import frc.lib14.MCRCommand;
+import frc.lib14.UtilityMethods;
 import frc.systems.Climber;
 import frc.systems.DriveTrain;
 import frc.systems.Intake;
@@ -127,11 +131,14 @@ public class Robot extends TimedRobot {
     climber.run();
   }
 
+  final AnalogPotentiometer pot = new AnalogPotentiometer(0, 180, -39.9);
   @Override
   public void testInit() {
   }
 
   @Override
   public void testPeriodic() {
+    // SmartDashboard.putNumber("potentiometer", pot.get());
+    System.out.println("pot: " + UtilityMethods.round(pot.get(), 5));
   }
 }

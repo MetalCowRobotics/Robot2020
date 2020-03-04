@@ -3,6 +3,8 @@ package frc.systems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib14.PIDController;
@@ -29,6 +31,7 @@ public class Shooter {
     private boolean firstTime = true;
     private double targetSpeed = 3000;// RPM's
     private boolean readyToShoot = false;
+
 
     // singleton instance
     private static final Shooter instance = new Shooter();
