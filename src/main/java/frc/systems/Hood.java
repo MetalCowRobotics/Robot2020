@@ -18,6 +18,7 @@ public class Hood {
     private static MCR_SRX hood = new MCR_SRX(RobotMap.Hood.HOOD_MOTOR);
     public static FC_JE_0149Encoder encoder = new FC_JE_0149Encoder(3, 2);
 
+    private static double adjustment = 0;
     private static double totalRevs = 0;
     private static double targetTics = 0;
 
@@ -36,7 +37,7 @@ public class Hood {
 
     private void calculateTicks(double inches) {
         totalRevs = inches * REVS_PER_INCH;
-        targetTics = TICS_PER_REV * totalRevs;
+        targetTics = TICS_PER_REV * totalRevs + adjustment;
         targetTics = UtilityMethods.absMax(targetTics, LOWER_BOUND);
         targetTics = UtilityMethods.absMin(targetTics, UPPER_BOUND);
     }
@@ -61,11 +62,11 @@ public class Hood {
     public void manualAdjustment(double y) {
         if (y > .1) {
             if (targetTics > (LOWER_BOUND + 2)) {
-                targetTics -= 2;
+                adjustment -= 2;
             }
         } else if (y < -.1) {
             if (targetTics < ( UPPER_BOUND - 2)) {
-                targetTics += 2;
+                adjustment += 2;
             }
         }
     }
@@ -99,5 +100,9 @@ public class Hood {
 
     private int getCurrentTics() {
         return encoder.getTics() + STARTING_POS;
+    }
+
+    public void resetAdjustment() {
+        adjustment = 0;
     }
 }

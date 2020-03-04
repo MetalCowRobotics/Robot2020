@@ -13,7 +13,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.autonomous.NoAuto;
 import frc.autonomous.ShootAndGather;
 import frc.autonomous.ShootAndGo;
+import frc.commands.DriveBackwardsStraight;
+import frc.commands.ShootBall;
 import frc.lib14.MCRCommand;
+import frc.lib14.SequentialCommands;
 import frc.systems.Climber;
 import frc.systems.DriveTrain;
 import frc.systems.Intake;
@@ -67,6 +70,7 @@ public class Robot extends TimedRobot {
     } else {
       mission = new NoAuto();
     }
+    mission = new SequentialCommands(new ShootBall(), new ShootBall(), new ShootBall());
   }
 
   @Override
