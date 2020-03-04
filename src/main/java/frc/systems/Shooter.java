@@ -62,21 +62,22 @@ public class Shooter {
 
     public boolean atSpeed() {
         double absTargetSpeed = Math.abs(targetSpeed);
-        return UtilityMethods.between(Math.abs(neo1.getEncoder().getVelocity()), absTargetSpeed - 50,
-                absTargetSpeed + 50);
+        return UtilityMethods.between(Math.abs(neo1.getEncoder().getVelocity()), absTargetSpeed - 20, absTargetSpeed + 20);
     }
 
     public void prepareToShoot() {
-        readyToShoot = true;
-        turret.startTargeting();
-        // get target distance
-        // set shooter speed
-        // setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));//needs
-        // velocity
-        setTargetSpeed(dashboard.getShooterTargetVelocity(1500));
-        // set hood poistion
-        hood.setPosition(vision.getTargetDistance());
-        magazine.loadBallInShootingPosition();
+        if (!readyToShoot) {
+            readyToShoot = true;
+            turret.startTargeting();
+            // get target distance
+            // set shooter speed
+            // setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));//needs
+            // velocity
+            setTargetSpeed(dashboard.getShooterTargetVelocity(1500));
+            // set hood poistion
+            hood.setPosition(vision.getTargetDistance());
+            magazine.loadBallInShootingPosition();
+        }
     }
 
     public void stopShooter() {
@@ -103,17 +104,12 @@ public class Shooter {
     }
 
     public double getCorrection() {
-        // if (P!=dashboard.getShooterP(P)) {
-        // P = dashboard.getShooterP(P);
-        // pidController.set_kP(P);
-        // }
         pidController.set_kP(getP());
         pidController.set_kI(getI());
         pidController.set_kD(getD());
         pidController.set_Iz(getIz());
         double correction = pidController.calculateAdjustment(neo1.getEncoder().getVelocity());
-        System.out.println("target V:" + targetSpeed + "   actual V:" + neo1.getEncoder().getVelocity()
-                + "   correction:" + correction);
+        System.out.println("target V:"+targetSpeed+"   actual V:"+neo1.getEncoder().getVelocity()+"   correction:"+correction);
         return correction;
     }
 
@@ -154,7 +150,6 @@ public class Shooter {
     public void setupShooter() {
         setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));// needs velocity
         firstTime = false;
-        // shooter.set(SmartDashboard.getNumber("Set Velocity", 1500));
         readyToShoot = true;
     }
 
@@ -163,7 +158,6 @@ public class Shooter {
             setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));// needs velocity
             firstTime = false;
         }
-        // shooter.set(SmartDashboard.getNumber("Set Velocity", 1500));
         shooter.set(SHOOTER_SPEED + getCorrection());
         SmartDashboard.putNumber("Correction", getCorrection());
         SmartDashboard.putNumber("Actual Velocity", neo1.getEncoder().getVelocity());

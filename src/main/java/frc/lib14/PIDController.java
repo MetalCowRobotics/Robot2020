@@ -102,7 +102,7 @@ public class PIDController {
 
 	public void reset() {
 		previousError = 0;
-		//accumulatedError = 0;
+		accumulatedError = 0;
 		IzStarted = false;
 	}
 
