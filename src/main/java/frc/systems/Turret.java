@@ -39,6 +39,7 @@ public class Turret {
     public void run() {
         double yaw = vision.getYawDegrees();
         if (targeting) {
+            vision.setTargetMode(true);
             if (UtilityMethods.between(yaw, -4, 4)) {
                 turret.stopMotor();
             } else {
@@ -58,7 +59,11 @@ public class Turret {
                     stopTurret();
                 }
             }
-        }
+        } else {
+            vision.setTargetMode(false);
+        } 
+            
+        
         SmartDashboard.putNumber("turret encoder", encoder.getTics());
         SmartDashboard.putNumber("yaw", yaw);
     }
@@ -84,6 +89,7 @@ public class Turret {
         SmartDashboard.putNumber("power", power);
         if (!targeting) {
             setTurretPower(power);
+           
         }
     }
 
