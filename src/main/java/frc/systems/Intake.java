@@ -13,7 +13,7 @@ public class Intake {
     private static VictorSP intake = new VictorSP(1);
     private static MCR_SRX raiseLowerIntake = new MCR_SRX(RobotMap.Intake.RAISE_LOWER_INTAKE_MOTOR);
 
-    private final double TOP_SPEED = .75;
+    private final double TOP_SPEED = 1.0;
     private final double LOWER_SPEED = .5;
     private final double RETRACT_SPEED = -.5;
 

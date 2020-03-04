@@ -10,14 +10,14 @@ import frc.robot.RobotMap;
 
 public class Hood {
 
-    private static final int STARTING_POS = 2156;
+    private static final int STARTING_POS = 1833;
     private static final double REVS_PER_INCH = 11.8;
+    private static final double TICS_PER_REV = 44.4;
     private static final int UPPER_BOUND = 2465;
     private static final int LOWER_BOUND = 0;
     private static MCR_SRX hood = new MCR_SRX(RobotMap.Hood.HOOD_MOTOR);
     public static FC_JE_0149Encoder encoder = new FC_JE_0149Encoder(3, 2);
 
-    private static final double TICS_PER_REV = 44.4;
     private static double totalRevs = 0;
     private static double targetTics = 0;
 
@@ -47,10 +47,8 @@ public class Hood {
         double error = ((targetTics + 3) - currentTics) / 100;
         error = UtilityMethods.absMin(error, .5);
         if (Math.abs((targetTics + 3) - currentTics) < 5) {
-            SmartDashboard.putBoolean("in Deadzone", true);
             hood.stopMotor();
         } else {
-            SmartDashboard.putBoolean("in Deadzone", true);
             hood.set(error);
         }
 
