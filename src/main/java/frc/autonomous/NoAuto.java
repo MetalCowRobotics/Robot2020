@@ -5,31 +5,19 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.commands;
+package frc.autonomous;
 
 import frc.lib14.MCRCommand;
-import frc.systems.Shooter;
 
-public class ShootBall implements MCRCommand{ 
-    Shooter shooter = Shooter.getInstance();
-    boolean firstTime = true;
-    boolean done = false;
+public class NoAuto implements MCRCommand {
 
     @Override
     public void run() {
-        if(firstTime){
-            firstTime = false;
-            shooter.prepareToShoot();
-        }
-        if(shooter.isReady()){
-            shooter.shootBallWhenReady();
-            //TODO how will we know when we are done
-            // done = true;
-        }
     }
 
     @Override
     public boolean isFinished() {
-        return done;
+        return true;
     }
+
 }

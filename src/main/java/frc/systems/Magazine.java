@@ -2,35 +2,22 @@ package frc.systems;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.lib14.MCR_SRX;
-import frc.lib14.XboxControllerMetalCow;
 import frc.robot.RobotMap;
+import edu.wpi.first.wpilibj.VictorSP;
 
 public class Magazine {
-    private static MCR_SRX motor1 = new MCR_SRX(RobotMap.Magazine.LEFT_MAGAZINE_MOTOR);
-    private static MCR_SRX motor2 = new MCR_SRX(RobotMap.Magazine.RIGHT_MAGAZINE_MOTOR);
-    private static final DigitalInput topLimit = new DigitalInput(RobotMap.Magazine.LIMIT_SWITCH_TOP);
-    private static final DigitalInput bottomLimit = new DigitalInput(RobotMap.Magazine.LIMIT_SWITCH_BOTTOM);
-    boolean feedMode = false;
-    XboxControllerMetalCow controller = new XboxControllerMetalCow(0);
-    private static MCR_SRX magazineMotor = new MCR_SRX(RobotMap.Magazine.MAGAZINE_MOTOR);
+    private static VictorSP magazineMotor = new VictorSP(RobotMap.Magazine.MAGAZINE_MOTOR);
+    private static DigitalInput isBallAtTop = new DigitalInput(RobotMap.Magazine.IS_THERE_A_BALL_TOP);
+    private static DigitalInput isBallAtBottom = new DigitalInput(RobotMap.Magazine.IS_THERE_A_BALL_BOTTOM);
+    private double magazineSpeed = 1;
+    private boolean feedMode = false;
+    private boolean loadToTop = false;
+    private int counted = 0;
+
+    //singleton instance
     private static final Magazine instance = new Magazine();
-    private static DigitalInput isThereABallTop = new DigitalInput(RobotMap.Magazine.IS_THERE_A_BALL_TOP);
-    private static DigitalInput isThereABallBottom = new DigitalInput(RobotMap.Magazine.IS_THERE_A_BALL_BOTTOM);
-    double magazineSpeed = .5;
-    boolean loadToTop = false;
-    int counted = 0;
 
     private Magazine() {
-
-    }
-
-    public boolean isThereABallTopForShooter() {
-        return isThereABallTop.get();
-    }
-
-    public boolean isThereABallBottomForShooter() {
-        return isThereABallBottom.get();
     }
 
     public static Magazine getInstance() {
@@ -43,11 +30,26 @@ public class Magazine {
     public void run() {
         if (feedMode) {
             feedBallToShooter();
+            SmartDashboard.putString("mode", "feed");
+            if (!isThereABallTopForShooter()) {
+                feedMode=false;
+                loadToTop=true;
+            }
         } else if (loadToTop) { //need to get out of load mode after shooting all balls
             advanceBallToTop();
+            SmartDashboard.putString("mode", "loadtotop");
         } else {
             maintainMagazine();
+            SmartDashboard.putString("mode", "maintain");
         }
+    }
+
+    public boolean isThereABallTopForShooter() {
+        return isBallAtTop.get();
+    }
+
+    public boolean isThereABallBottomToLoad() {
+        return isBallAtBottom.get();
     }
 
     private void advanceBallToTop() {
@@ -55,32 +57,26 @@ public class Magazine {
             magazineMotor.set(magazineSpeed);
         } else {
             magazineMotor.stopMotor();
-            loadToTop = false; // how do i get out of load mode?
+            // loadToTop = false; // how do i get out of load mode?
         }
     }
 
     private void maintainMagazine() {
         if (ballAtBottom() && !ballAtTop()) {
             magazineMotor.set(magazineSpeed);
+            SmartDashboard.putString("Magazine", "running");
         } else {
             stopMagazine();
+            SmartDashboard.putString("Magazine", "stopped");
         }
     }
 
     private void feedBallToShooter() {
-        if (ballAtTop()) {
             SmartDashboard.putBoolean("feeding", true);
             magazineMotor.set(magazineSpeed);
-        } else if (!ballAtTop()) {
-            SmartDashboard.putBoolean("feeding", false);
-            feedMode = false;
-            counted++;
-            stopMagazine();
-            loadBallInShootingPosition();
-        }
     }
 
-    public void runMagazine() {
+    private void runMagazine() {
         if (ballAtBottom() && !ballAtTop()) {
             magazineMotor.set(magazineSpeed);
         } else if (loadToTop) {
@@ -92,6 +88,7 @@ public class Magazine {
 
     public void stopMagazine() {
         magazineMotor.stopMotor();
+        //TODO i do not think this should be here
         feedMode = false;
     }
 
@@ -102,42 +99,27 @@ public class Magazine {
 
     public void feedOneBall() {
         feedMode = true;
-        // if (ballAtTop()) {
-        // SmartDashboard.putBoolean("feeding", true);
-        // feedMode = true;
-        // magazineMotor.set(magazineSpeed);
-        // } else if (!ballAtTop()) {
-        // SmartDashboard.putBoolean("feeding", false);
-        // feedMode = false;
-        // counted++;
-        // stopMagazine();
     }
 
     private boolean ballAtBottom() {
-        return !isThereABallBottom.get();
+        return !isBallAtBottom.get();
     }
 
     private boolean ballAtTop() {
-        return !isThereABallTop.get();
+        return !isBallAtTop.get();
     }
 
     public boolean isReady() {
-        if (isThereABallTop.get()) {
+        if (ballAtTop()) {
             return true;
         }
+        //TODO i do not think this should be here
         runMagazine();
         return false;
     }
 
     public void loadBallInShootingPosition() {
         loadToTop = true;
-        // if (!ballAtTop()) {
-        // magazineMotor.set(magazineSpeed);
-        // loadToTop = true;
-        // } else {
-        // magazineMotor.stopMotor();
-        // loadToTop = false;
-        // }
     }
 
     public int getCounted() {
@@ -146,6 +128,7 @@ public class Magazine {
 
 	public void stopLoadToTop() {
         loadToTop = false;
+        feedMode = false;
 	}
 
 }

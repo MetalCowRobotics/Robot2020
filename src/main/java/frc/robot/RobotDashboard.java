@@ -2,110 +2,101 @@ package frc.robot;
 
 import java.util.logging.Logger;
 
-import frc.lib14.PIDController;
-import frc.systems.DriveTrain;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
-import edu.wpi.first.wpilibj.Sendable;
+import com.revrobotics.ColorMatchResult;
+import com.revrobotics.ColorSensorV3;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class RobotDashboard {
 	private static final Logger logger = Logger.getLogger(RobotDashboard.class.getName());
-	private static final frc.robot.RobotDashboard ourInstance = new RobotDashboard();
-	private DriverStation driverStation;
-	private PowerDistributionPanel pdp;
+	private static final RobotDashboard ourInstance = new RobotDashboard();
+	private SendableChooser<AutoMission> autonomousAction = new SendableChooser<>();
+	private SendableChooser<AutoPosition> startingPosition = new SendableChooser<>();
 
-	double yaw = 0;
+	public enum AutoMission {
+		AUTOMODE_NONE, AUTOMODE_SHOOT_N_GO, AUTOMODE_SHOOT_N_GATHER
+	}
 
-	public static frc.robot.RobotDashboard getInstance() {
-		return ourInstance;
+	public enum AutoPosition {
+		AUTOMODE_LEFT_OF_TARGET, AUTOMODE_CENTER, AUTOMODE_RIGHT_OF_TARGET
 	}
 
 	private RobotDashboard() {
 		logger.setLevel(RobotMap.LogLevels.robotDashboardClass);
 	}
 
-	public void initializeDashboard() {
-		// driverStation = edu.wpi.first.wpilibj.DriverStation.getInstance();
-		// // boolean isFMSAttached = driverStation.isFMSAttached();
-		// if (!isFMSAttached) {
-		// pdp = new PowerDistributionPanel();
-		// pdp.resetTotalEnergy();
-		// }
-		// pushElevatorPID();
-		
+	public static RobotDashboard getInstance() {
+		return ourInstance;
 	}
 
-	public void pushElevatorPIDValues() {
-		// SmartDashboard.putNumber("EkP", RobotMap.Elevator.kP);
-		// SmartDashboard.putNumber("EkI", RobotMap.Elevator.kI);
-		// SmartDashboard.putNumber("EkD", RobotMap.Elevator.kD);
+	public void pushAuto() {
+		autonomousAction.setDefaultOption("shoot and go", AutoMission.AUTOMODE_SHOOT_N_GO);
+		autonomousAction.addOption("shoot and gather", AutoMission.AUTOMODE_SHOOT_N_GATHER);
+		autonomousAction.addOption("no autonomous", AutoMission.AUTOMODE_NONE);
+		startingPosition.setDefaultOption("center position", AutoPosition.AUTOMODE_CENTER);
+		startingPosition.addOption("left position", AutoPosition.AUTOMODE_LEFT_OF_TARGET);
+		startingPosition.addOption("right position", AutoPosition.AUTOMODE_RIGHT_OF_TARGET);
+		SmartDashboard.putData("missions", autonomousAction);
+		SmartDashboard.putData("starting Position", startingPosition);
 	}
 
-	// public double getElevatorTolerance() {
-	// return SmartDashboard.getNumber("Etolerance", RobotMap.Elevator.tolerance);
-	// }
-
-	// public double getElevatorOutputMin() {
-	// return SmartDashboard.getNumber("Emin output", RobotMap.Elevator.outputMin);
-	// }
-
-	// public double getElevatorOutputMax() {
-	// return SmartDashboard.getNumber("Emax output", RobotMap.Elevator.outputMax);
-	// }
-
-	public void pushElevatorPID(PIDController pid) {
-		// if (null == pid)
-		// return;
-		// SmartDashboard.putNumber("PIDsetPoint", pid.getSetPoint());
-		// SmartDashboard.putNumber("PIDerror", pid.getError());
-		// SmartDashboard.putNumber("Elevator Encoder Tics: ",
-		// Elevator.getInstance().getEncoderTics());
+	public AutoMission getAutoMission() {
+		return autonomousAction.getSelected();
 	}
+
+	public AutoPosition getStartingPosition() {
+		return startingPosition.getSelected();
+	}
+
+	public void pushShooterPIDValues(double P, double I, double D, double Iz) {
+		SmartDashboard.putNumber("SkP", P);
+		SmartDashboard.putNumber("SkI", I);
+		SmartDashboard.putNumber("SkD", D);
+		SmartDashboard.putNumber("SIz", Iz);
+	}
+
+	public double getShooterP(double defaultVal) {
+		return SmartDashboard.getNumber("SkP", defaultVal);
+	}
+
+	public double getShooterI(double defaultVal) {
+		return SmartDashboard.getNumber("SkI", defaultVal);
+	}
+
+	public double getShooterD(double defaultVal) {
+		return SmartDashboard.getNumber("SkD", defaultVal);
+	}
+
+	public double getShooterIz(double defaultVal) {
+		return SmartDashboard.getNumber("SIz", defaultVal);
+	}
+
+	// public void pushDrivePIDValues(double P, double I, double D, double Iz) {
+	// SmartDashboard.putNumber("DkP", P);
+	// SmartDashboard.putNumber("DkI", I);
+	// SmartDashboard.putNumber("DkD", D);
+	// SmartDashboard.putNumber("DIz", Iz);
+	// }
+
+	// public double getDriveP(double defaultVal) {
+	// return SmartDashboard.getNumber("DkP", defaultVal);
+	// }
+
+	// public double getDriveI(double defaultVal) {
+	// return SmartDashboard.getNumber("DkI", defaultVal);
+	// }
+
+	// public double getDriveD(double defaultVal) {
+	// return SmartDashboard.getNumber("SDkD", defaultVal);
+	// }
+
+	// public double getDriveIz(double defaultVal) {
+	// return SmartDashboard.getNumber("DIz", defaultVal);
+	// }
 
 	public void pushGyro(double angle) {
 		SmartDashboard.putNumber("Gyro Reading", angle);
-	}
-
-	public void pushElevatorLimits(boolean upper, boolean lower) {
-		SmartDashboard.putBoolean("elevatorUpperLimit", upper);
-		SmartDashboard.putBoolean("elevatorLowerLimit", lower);
-	}
-
-	public void pushElevatorEncoder(double elevatorEncoderTics) {
-		SmartDashboard.putNumber("elevatorEncoderValue", elevatorEncoderTics);
-	}
-
-	// public void pushEncoder(double encoderTics){
-	// SmartDashboard.putNumber("encoderValue", encoderTics);
-
-	// }
-
-	public void pushElevatorTarget(double setPoint) {
-		// SmartDashboard.putNumber("elevatorSetPoint", setPoint);
-	}
-
-	public void pushElevatorCurPosition(double curPosition) {
-		// SmartDashboard.putNumber("elevatorEncoder", curPosition);
-	}
-
-	public double getElevatorTarget() {
-		// return SmartDashboard.getNumber("elevatorSetPoint", 0);
-		return 0;
-	}
-
-	public double getIntakeEjectSpeed() {
-		// return SmartDashboard.getNumber("IntakeEjectSpeed", 0);
-		return 0;
-	}
-
-	public void pushElevatorBottom(double bottomTics) {
-		SmartDashboard.putNumber("elevatorBottomTics", bottomTics);
-	}
-
-	public void pushElevatorTop(double topTics) {
-		SmartDashboard.putNumber("elevatorTopTics", topTics);
 	}
 
 	public void pushLeftEncoder(double leftTics) {
@@ -116,55 +107,64 @@ public class RobotDashboard {
 		SmartDashboard.putNumber("driveRight", rightTics);
 	}
 
-	public void pushSpeed() {
-		// SmartDashboard.putNumber("crawlSpeed", RobotMap.Drivetrain.CRAWL_SPEED);
-		// SmartDashboard.putNumber("sprintSpeed", RobotMap.Drivetrain.SPRINT_SPEED);
-		// SmartDashboard.putNumber("normalSpeed", RobotMap.Drivetrain.NORMAL_SPEED);
-	}
-
-	// Turn commands
 	public void pushTurnPID() {
 		SmartDashboard.putNumber("TkP", RobotMap.TurnDegrees.kP);
 		SmartDashboard.putNumber("TkI", RobotMap.TurnDegrees.kI);
 		SmartDashboard.putNumber("TkD", RobotMap.TurnDegrees.kD);
+		SmartDashboard.putNumber("TIz", RobotMap.TurnDegrees.Iz);
 	}
 
-	public void pushEdgeSensor(Boolean sensor) {
-		// SmartDashboard.putBoolean("EdgeSensor", sensor);
-	}
-
-	public void pushFieldMode(Boolean Mode) {
-		SmartDashboard.putBoolean("Field Mode", Mode);
-
-	}
-
-	public void pushAuto() {
-		SmartDashboard.putBoolean("Exit Level 2", true);
-	}
-
-	public boolean getAuto() {
-		return SmartDashboard.getBoolean("Exit Level 2", false);
-	}
-
-	public void pushStartingPosition(Sendable startingPosition) {
-		SmartDashboard.putData(startingPosition);
-		
-	}
-	public void pushAutonomousAction(Sendable autonomousAction) {
-		SmartDashboard.putData(autonomousAction);
-	}
-		
 	public double getTurnKP() {
 		return SmartDashboard.getNumber("TkP", RobotMap.TurnDegrees.kP);
 	}
 
 	public double getTurnKI() {
 		return SmartDashboard.getNumber("TkI", RobotMap.TurnDegrees.kI);
-
 	}
 
 	public double getTurnKD() {
 		return SmartDashboard.getNumber("TkD", RobotMap.TurnDegrees.kD);
-
 	}
+
+	public double getTurnIz() {
+		return SmartDashboard.getNumber("TIz", RobotMap.TurnDegrees.Iz);
+	}
+
+	public void pushFieldMode(Boolean Mode) {
+		SmartDashboard.putBoolean("Field Mode", Mode);
+	}
+
+	public void pushShooterTargetVelocity(double targetVelocity) {
+		SmartDashboard.putNumber("Target Velocity", targetVelocity);
+	}
+
+	public void pushShooterVelocity(double actualVelocity) {
+		SmartDashboard.putNumber("Actual Velocity", actualVelocity);
+	}
+
+	public double getShooterTargetVelocity(double defaultValue) {
+		return SmartDashboard.getNumber("Target Velocity", defaultValue);
+	}
+
+	public void pushTargetColor(String color) {
+		SmartDashboard.putString("FMSTargetColor", color);
+	}
+
+	public void pushCurrentColor(String underMySensor, String underFieldReader) {
+		SmartDashboard.putString("Sensed Color", underMySensor);
+		SmartDashboard.putString("Field Sensor Color", underFieldReader);
+	}
+
+	public void pushColorSensor(ColorSensorV3 sensor) {
+		SmartDashboard.putNumber("red", sensor.getRed());
+		SmartDashboard.putNumber("green", sensor.getGreen());
+		SmartDashboard.putNumber("blue", sensor.getBlue());
+		SmartDashboard.putNumber("proximity", sensor.getProximity());
+	}
+
+	public void pushColorMatch(ColorMatchResult match) {
+		SmartDashboard.putString("color", match.color.toString());
+		SmartDashboard.putNumber("confidence", match.confidence);
+	}
+
 }

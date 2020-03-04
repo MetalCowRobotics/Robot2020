@@ -1,19 +1,11 @@
 package frc.commands;
 
 import frc.lib14.MCRCommand;
-import frc.lib14.PDController;
 import frc.lib14.PIDController;
 import frc.lib14.UtilityMethods;
 import frc.robot.RobotDashboard;
 import frc.robot.RobotMap;
 import frc.systems.DriveTrain;
-
-import java.lang.annotation.Target;
-import java.sql.DriverPropertyInfo;
-import java.util.logging.Logger;
-
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TurnDegrees implements MCRCommand {
 	private double degrees;
@@ -41,8 +33,7 @@ public class TurnDegrees implements MCRCommand {
 			driveTrain.resetGyro();
 			setPoint = driveTrain.getAngle() + degrees;
 			System.out.println(("TurnDegrees SetPoint:" + setPoint));
-			driveController = new PIDController(setPoint, RobotMap.TurnDegrees.kP, RobotMap.TurnDegrees.kI,
-					RobotMap.TurnDegrees.kD);
+			driveController = new PIDController(setPoint, RobotMap.TurnDegrees.kP, RobotMap.TurnDegrees.kI,	RobotMap.TurnDegrees.kD, RobotMap.TurnDegrees.Iz);
 			System.out.println("Before line 35  " + driveController.calculateAdjustment(setPoint));
 			// driveTrain.arcadeDrive(RobotMap.TurnDegrees.TOP_SPEED,
 			// driveController.calculateAdjustment(setPoint));

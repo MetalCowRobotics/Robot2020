@@ -1,50 +1,45 @@
 package frc.systems;
 
-import frc.robot.RobotMap;
-
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.lib14.MCR_SRX;
+import frc.lib14.PIDController;
 import frc.lib14.UtilityMethods;
-import frc.lib14.XboxControllerMetalCow;
-import frc.systems.Magazine;
+import frc.robot.RobotDashboard;
+import frc.robot.RobotMap;
 
 public class Shooter {
+    private static CANSparkMax neo1 = new CANSparkMax(RobotMap.Shooter.TOP_MOTOR, MotorType.kBrushless);
+    private static CANSparkMax neo2 = new CANSparkMax(RobotMap.Shooter.BOTTOM_MOTOR, MotorType.kBrushless);
+    private static SpeedControllerGroup shooter = new SpeedControllerGroup(neo1, neo2);
+    private Magazine magazine = Magazine.getInstance();
+    private Hood hood = Hood.getInstance();
+    private Turret turret = Turret.getInstance();
+    private Funnel funnel = Funnel.getInstance();
+    private static Vision vision = Vision.getInstance();
+    private static RobotDashboard dashboard = RobotDashboard.getInstance();
+    private static double P = .00003;
+    private static double I = .000025;
+    private static double D = 0;
+    private static double Iz = 400;
+    private static PIDController pidController;
+    private static final double SHOOTER_SPEED = .45;
+    private boolean firstTime = true;
+    private double targetSpeed = 3000;// RPM's
+    private boolean readyToShoot = false;
 
-    // private static MCR_SRX topShooter = new MCR_SRX(RobotMap.Shooter.TOP_MOTOR);
-    // private static MCR_SRX bottomShooter = new
-    // MCR_SRX(RobotMap.Shooter.BOTTOM_MOTOR);
-    // private static final SpeedControllerGroup shooter = new
-    // SpeedControllerGroup(topShooter, bottomShooter);
-    private static final XboxControllerMetalCow operator = new XboxControllerMetalCow(1);
-    private CANSparkMax neo1;
-    private CANSparkMax neo2;
-    private double targetSpeed;// RPM's
-    Magazine magazine = Magazine.getInstance();
-    boolean maintainSpeed = false;
-
-    // private CANSparkMax neo3;
-    // private CANSparkMax neo4;
-    private static SpeedControllerGroup shooter;
-    // private static SpeedControllerGroup leftShooter;
+    // singleton instance
     private static final Shooter instance = new Shooter();
 
     private Shooter() {
-        neo1 = new CANSparkMax(RobotMap.Shooter.TOP_MOTOR_ID, MotorType.kBrushless);
-        neo2 = new CANSparkMax(RobotMap.Shooter.BOTTOM_MOTOR_ID, MotorType.kBrushless);
-        // neo3 = new CANSparkMax(2, MotorType.kBrushless);
-        // neo4 = new CANSparkMax(3, MotorType.kBrushless);
-        shooter = new SpeedControllerGroup(neo1, neo2);
-        // leftShooter = new SpeedControllerGroup(neo3, neo4);
-        // neoTwo.follow(neoOne);
-        // newOne.getEncoder
-        // newTwo.clone()
-        // neoOne.set(speed);
-        // SpeedControllerGroup shooterR = new SpeedControllerGroup(neoOne, neoTwo);
-        // shooterL.follow(shooterR);
+        dashboard.pushShooterPIDValues(P, I, D, Iz);
+        pidController = new PIDController(0, P, I, D, Iz);
+        neo1.restoreFactoryDefaults();
+        neo2.restoreFactoryDefaults();
+        neo1.setIdleMode(IdleMode.kCoast);
+        neo2.setIdleMode(IdleMode.kCoast);
     }
 
     public static Shooter getInstance() {
@@ -52,45 +47,90 @@ public class Shooter {
     }
 
     public void run() {
-        magazine.run();
-        if (maintainSpeed) {
-            // speed PID loop
+        if (readyToShoot) {
+            shooter.set(SHOOTER_SPEED + getCorrection());
+        } else {
+            shooter.stopMotor();
+            magazine.stopLoadToTop();
         }
+        hood.run();
+        turret.run();
+        magazine.run();
+        funnel.run(magazine.isThereABallBottomToLoad());
+        dashboard.pushShooterVelocity(neo1.getEncoder().getVelocity());
     }
 
     public boolean atSpeed() {
-        if (UtilityMethods.between(neo1.getEncoder().getVelocity(), targetSpeed - 50, targetSpeed + 50)) {
-            return true;
-        } else {
-            return false;
+        double absTargetSpeed = Math.abs(targetSpeed);
+        return UtilityMethods.between(Math.abs(neo1.getEncoder().getVelocity()), absTargetSpeed - 50,
+                absTargetSpeed + 50);
+    }
+
+    public void prepareToShoot() {
+        readyToShoot = true;
+        turret.startTargeting();
+        // get target distance
+        // set shooter speed
+        // setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));//needs
+        // velocity
+        setTargetSpeed(dashboard.getShooterTargetVelocity(1500));
+        // set hood poistion
+        hood.setPosition(vision.getTargetDistance());
+        magazine.loadBallInShootingPosition();
+    }
+
+    public void stopShooter() {
+        readyToShoot = false;
+        shooter.stopMotor();
+        magazine.stopLoadToTop();
+        turret.stopTargeting();
+    }
+
+    public void shootBallWhenReady() {
+        if (readyToShoot && isReady()) {
+            magazine.feedOneBall();
         }
     }
 
-    public void prepairToShoot() {
-        runShooter();
-        magazine.loadBallInShootingPosition();
+    public void shootBall() {
+        if (readyToShoot) {
+            magazine.feedOneBall();
+        }
     }
 
     public int ballShots() {
         return magazine.getCounted();
     }
 
-    public void runShooter() {
-        double speed = .65;
-        shooter.set(speed);
-        maintainSpeed = true;
-
+    public double getCorrection() {
+        // if (P!=dashboard.getShooterP(P)) {
+        // P = dashboard.getShooterP(P);
+        // pidController.set_kP(P);
+        // }
+        pidController.set_kP(getP());
+        pidController.set_kI(getI());
+        pidController.set_kD(getD());
+        pidController.set_Iz(getIz());
+        double correction = pidController.calculateAdjustment(neo1.getEncoder().getVelocity());
+        System.out.println("target V:" + targetSpeed + "   actual V:" + neo1.getEncoder().getVelocity()
+                + "   correction:" + correction);
+        return correction;
     }
 
-    public void stopShooter() {
-        shooter.stopMotor();
-        magazine.stopLoadToTop();
-        maintainSpeed = false;
+    private double getP() {
+        return dashboard.getShooterP(P);
     }
 
-    public void checkSpeed() {
-        SmartDashboard.putNumber("Shooter Speed", neo1.getEncoder().getVelocity());// RPM
+    private double getI() {
+        return dashboard.getShooterI(I);
+    }
 
+    private double getD() {
+        return dashboard.getShooterD(D);
+    }
+
+    private double getIz() {
+        return dashboard.getShooterIz(Iz);
     }
 
     public void unload() {
@@ -98,20 +138,43 @@ public class Shooter {
     }
 
     public boolean isReady() {
-        if (magazine.isThereABallTopForShooter() && atSpeed()) {
+        if (atSpeed() && magazine.isThereABallTopForShooter()) {
             return true;
         }
         return false;
     }
 
-    public void shootBallWhenReady() {
-        if (isReady()) {
-            magazine.feedOneBall();
-        }
+    public void setTargetSpeed(double targetSpeed) {
+        this.targetSpeed = targetSpeed;
+        pidController.setSetPoint(targetSpeed);
+        dashboard.pushShooterTargetVelocity(targetSpeed);
     }
 
-    public void shootBall() {
-        magazine.feedOneBall();
+    // testing
+    public void setupShooter() {
+        setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));// needs velocity
+        firstTime = false;
+        // shooter.set(SmartDashboard.getNumber("Set Velocity", 1500));
+        readyToShoot = true;
+    }
+
+    public void shooterTest() {
+        if (firstTime) {
+            setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));// needs velocity
+            firstTime = false;
+        }
+        // shooter.set(SmartDashboard.getNumber("Set Velocity", 1500));
+        shooter.set(SHOOTER_SPEED + getCorrection());
+        SmartDashboard.putNumber("Correction", getCorrection());
+        SmartDashboard.putNumber("Actual Velocity", neo1.getEncoder().getVelocity());
+    }
+
+    public void rotateTurret(double turretAdjustment) {
+        turret.turnTurret(turretAdjustment);
+    }
+
+    public void manualAdjustHood(double hoodAdjustment) {
+        hood.manualAdjustment(hoodAdjustment);
     }
 
 }
