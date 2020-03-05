@@ -149,6 +149,7 @@ public class Shooter {
     // testing
     public void setupShooter() {
         setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));// needs velocity
+        // setSpeed();
         firstTime = false;
         readyToShoot = true;
     }
@@ -156,6 +157,7 @@ public class Shooter {
     public void shooterTest() {
         if (firstTime) {
             setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));// needs velocity
+            // setSpeed();
             firstTime = false;
         }
         shooter.set(SHOOTER_SPEED + getCorrection());
@@ -169,6 +171,14 @@ public class Shooter {
 
     public void manualAdjustHood(double hoodAdjustment) {
         hood.manualAdjustment(hoodAdjustment);
+    }
+
+    public void setSpeed() {
+        if (vision.getTargetDistance() > 5) {
+            setTargetSpeed(3000);
+        } else {
+            setTargetSpeed(2700);
+        }
     }
 
 }
