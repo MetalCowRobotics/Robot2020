@@ -29,6 +29,7 @@ public class Shooter {
     private boolean firstTime = true;
     private double targetSpeed = 3000;// RPM's
     private boolean readyToShoot = false;
+    private boolean prepDrum = false;
 
     // singleton instance
     private static final Shooter instance = new Shooter();
@@ -43,7 +44,8 @@ public class Shooter {
         neo2.setIdleMode(IdleMode.kCoast);
 
         // sets motors to ramp
-        // neo1.
+        neo1.setOpenLoopRampRate(.25);
+        neo2.setOpenLoopRampRate(.25);
     }
 
     public static Shooter getInstance() {
@@ -51,7 +53,7 @@ public class Shooter {
     }
 
     public void run() {
-        if (readyToShoot) {
+        if (readyToShoot || prepDrum) {
             shooter.set(SHOOTER_SPEED + getCorrection());
         } else {
             shooter.stopMotor();
@@ -71,6 +73,7 @@ public class Shooter {
 
     public void prepareToShoot() {
         if (!readyToShoot) {
+            prepDrum = false;
             readyToShoot = true;
             turret.startTargeting();
             // get target distance
@@ -82,6 +85,15 @@ public class Shooter {
             hood.setPosition(2);
             magazine.loadBallInShootingPosition();
         }
+    }
+
+    public void beginTargetting() {
+        turret.startTargeting();
+        hood.setPosition(2);
+    }
+
+    public void runDrum() {
+        prepDrum = true;
     }
 
     public void stopShooter() {
