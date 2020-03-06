@@ -8,12 +8,17 @@
 package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.autonomous.NoAuto;
 import frc.autonomous.ShootAndGather;
 import frc.autonomous.ShootAndGo;
+import frc.commands.DriveBackwardsStraight;
+import frc.commands.ShootBall;
 import frc.lib14.MCRCommand;
+import frc.lib14.SequentialCommands;
+import frc.lib14.UtilityMethods;
 import frc.systems.Climber;
 import frc.systems.DriveTrain;
 import frc.systems.Intake;
@@ -67,6 +72,7 @@ public class Robot extends TimedRobot {
     } else {
       mission = new NoAuto();
     }
+    mission = new SequentialCommands(new ShootBall(), new ShootBall(), new ShootBall());
   }
 
   @Override
@@ -82,6 +88,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+    // System.out.println("Pot: " + UtilityMethods.round(pot.get(), 5));
     controls.changeMode();
     applyOperatorInputs();
     runSystemsStateMachine();
@@ -130,8 +137,11 @@ public class Robot extends TimedRobot {
   @Override
   public void testInit() {
   }
+  // public static AnalogPotentiometer pot = new AnalogPotentiometer(0, 10000, -2378);
 
   @Override
   public void testPeriodic() {
+    // shooter.manualAdjustHood(controls.hoodAdjustment());
+    // System.out.println("Pot: " + UtilityMethods.round(pot.get(), 6));
   }
 }

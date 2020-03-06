@@ -21,11 +21,11 @@ public class ShootBall implements MCRCommand{
             firstTime = false;
             shooter.prepareToShoot();
         }
-        if(shooter.isReady()){
-            shooter.shootBallWhenReady();
+        //if(shooter.isReady()){
+            shooter.shootBall();//was when ready
             //TODO how will we know when we are done
             // done = true;
-        }
+        //}
     }
 
     @Override
