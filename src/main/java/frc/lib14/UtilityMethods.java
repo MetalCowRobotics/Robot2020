@@ -1,7 +1,5 @@
 package frc.lib14;
 
-import edu.wpi.first.wpilibj.AnalogPotentiometer;
-
 public class UtilityMethods {
 	public static double copySign(final double source, final double target) {
 		if (0 < source)
@@ -54,6 +52,10 @@ public class UtilityMethods {
 		} else {
 			return Math.max(input, -localminValue);
 		}
+	}
+
+	public static double map(double x, double in_min, double in_max, double out_min, double out_max) {
+  		return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 	}
 
 }

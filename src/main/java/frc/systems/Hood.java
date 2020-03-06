@@ -79,6 +79,24 @@ public class Hood {
         // System.out.println("adjustment" + adjustment);
     }
 
+    private void setHoodSpeed(double speed) {
+        if (speed > 0) {
+            if (targetTics + adjustment + dashboard.hoodCorrection() > (LOWER_BOUND)) {
+                hood.set(speed);
+            } else {
+                hood.stopMotor();
+            }
+        } else if (speed < 0) {
+            if (targetTics + adjustment + dashboard.hoodCorrection() < (UPPER_BOUND)) {
+                hood.set(speed);
+            } else {
+                hood.stopMotor();
+            }
+        } else {
+            hood.stopMotor();
+        }
+    }
+
     // automated set hood position
     public void setPosition(double distance) {
         if (distance > 25) {
