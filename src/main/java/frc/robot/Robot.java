@@ -70,8 +70,8 @@ public class Robot extends TimedRobot {
     } else {
       mission = new NoAuto();
     }
-    // mission = new ShootAndGo();
-    mission = new DriveBackwardsStraight(36);
+    mission = new ShootAndGo();
+    // mission = new DriveBackwardsStraight(36);
     // mission = new SequentialCommands(new ShootBall(), new ShootBall(), new ShootBall());
   }
 

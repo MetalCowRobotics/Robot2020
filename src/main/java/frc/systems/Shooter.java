@@ -66,7 +66,7 @@ public class Shooter {
 
     public boolean atSpeed() {
         double absTargetSpeed = Math.abs(targetSpeed);
-        return UtilityMethods.between(Math.abs(neo1.getEncoder().getVelocity()), absTargetSpeed - 10, absTargetSpeed + 10);
+        return UtilityMethods.between(Math.abs(neo1.getEncoder().getVelocity()), absTargetSpeed - 20, absTargetSpeed + 20);
     }
 
     public void prepareToShoot() {
