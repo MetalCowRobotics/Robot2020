@@ -7,16 +7,12 @@
 
 package frc.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib14.MCRCommand;
-import frc.systems.Magazine;
 import frc.systems.Shooter;
 
-/**
- * Add your docs here.
- */
 public class ShootBall implements MCRCommand{ 
     Shooter shooter = Shooter.getInstance();
-    Magazine magazine = Magazine.getInstance();
     boolean firstTime = true;
     boolean done = false;
 
@@ -24,11 +20,13 @@ public class ShootBall implements MCRCommand{
     public void run() {
         if(firstTime){
             firstTime = false;
-            shooter.runShooter();
+            shooter.prepareToShoot();
+            SmartDashboard.putBoolean("First time", firstTime);
         }
         if(shooter.atSpeed()){
-            magazine.feedOneBall();
-            done = true;
+            shooter.shootBall();
+            //TODO how will we know when we are done
+            // done = true;
         }
     }
 

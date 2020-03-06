@@ -1,19 +1,11 @@
 package frc.commands;
 
 import frc.lib14.MCRCommand;
-import frc.lib14.PDController;
 import frc.lib14.PIDController;
 import frc.lib14.UtilityMethods;
 import frc.robot.RobotDashboard;
 import frc.robot.RobotMap;
 import frc.systems.DriveTrain;
-
-import java.lang.annotation.Target;
-import java.sql.DriverPropertyInfo;
-import java.util.logging.Logger;
-
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TurnDegrees implements MCRCommand {
 	private double degrees;
@@ -26,6 +18,7 @@ public class TurnDegrees implements MCRCommand {
 	private final int ACTIVE = 1;
 	private final int DONE = 2;
 	private int numMatches = 0;
+	private int count = 0;
 
 	public TurnDegrees(double degrees) {
 		super();
@@ -40,8 +33,7 @@ public class TurnDegrees implements MCRCommand {
 			driveTrain.resetGyro();
 			setPoint = driveTrain.getAngle() + degrees;
 			System.out.println(("TurnDegrees SetPoint:" + setPoint));
-			driveController = new PIDController(setPoint, RobotMap.TurnDegrees.kP, RobotMap.TurnDegrees.kI,
-					RobotMap.TurnDegrees.kD);
+			driveController = new PIDController(setPoint, RobotMap.TurnDegrees.kP, RobotMap.TurnDegrees.kI,	RobotMap.TurnDegrees.kD, RobotMap.TurnDegrees.Iz);
 			System.out.println("Before line 35  " + driveController.calculateAdjustment(setPoint));
 			// driveTrain.arcadeDrive(RobotMap.TurnDegrees.TOP_SPEED,
 			// driveController.calculateAdjustment(setPoint));
@@ -54,8 +46,8 @@ public class TurnDegrees implements MCRCommand {
 			driveController.set_kD(dashboard.getTurnKD());
 
 			double currentAngle = driveTrain.getAngle();
-			// if (Math.abs(currentAngle) >= Math.abs(.95 * degrees)) {
-			if (Math.abs(currentAngle) >= Math.abs(degrees)) {
+			if (Math.abs(currentAngle) >= Math.abs(.95 * degrees)) {
+			//if (Math.abs(currentAngle) >= Math.abs(degrees)) {
 
 				driveController.set_kI(dashboard.getTurnKI());
 			} else {
@@ -85,7 +77,7 @@ public class TurnDegrees implements MCRCommand {
 			// limitCorrection(correction, RobotMap.TurnDegrees.SLOW_ADJUSTMENT));
 			// // logger.info("Turn Degrees Slow");
 			// } else {
-			if (numMatches > 2) {
+			if (numMatches > 5) {
 				driveTrain.stop();
 				currentState = DONE;
 			} else {

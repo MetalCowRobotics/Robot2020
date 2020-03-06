@@ -1,66 +1,116 @@
 package frc.systems;
 
-import java.util.function.DoubleToIntFunction;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.lib14.FC_JE_0149Encoder;
 import frc.lib14.MCR_SRX;
-import frc.lib14.PIDController;
 import frc.lib14.UtilityMethods;
 import frc.robot.RobotMap;
-import frc.lib14.UtilityMethods;
 
 public class Turret {
-    private PIDController holdPID;
     private static MCR_SRX turret = new MCR_SRX(RobotMap.Turret.TURRET_MOTOR);
-    private static final Turret instance = new Turret();
-    double turretSpeed = .4;
+    private static FC_JE_0149Encoder encoder = new FC_JE_0149Encoder(5, 4);
+    private static final Vision vision = Vision.getInstance();
+    final double turretSpeed = .4;
+    final int leftBound = 127; // not final num
+    final int rightBound = -273; // not final num
     int deadZone = 30;
     int startPos = 0;
+    boolean targeting = false;
+    int targetTics = 0;
+    boolean onTarget = false;
+
+    //singletom
+    private static final Turret instance = new Turret();
 
     private Turret() {
+        turret.configFactoryDefault();
+        turret.setNeutralMode(NeutralMode.Brake);
+        resetTurretEncoder();
+        targetTics = startPos;
+        stopTurret();
     }
 
     public static Turret getInstance() {
         return instance;
     }
 
-    // 4096tics = 360 degrees 11.25tics = 1 degree
-    public void rotateTurret(int degrees) {
-        int targetTics = 0;
-        targetTics = degrees * 11;
-        double totalTicsDiff = (targetTics - turret.getSelectedSensorPosition()) * .003;
-        // if (error < .2){
-        // error = .2;
-        // }
-        // error = UtilityMethods.copySign(error, UtilityMethods.absMin(error, .2));
-        double error = UtilityMethods.copySign(totalTicsDiff, UtilityMethods.absMax(totalTicsDiff, .05));
-        error = UtilityMethods.copySign(totalTicsDiff, UtilityMethods.absMin(error, .4));
-        System.out.println("Target" + targetTics + "; current " + turret.getSelectedSensorPosition() + "; error" + error
-                + ": TotalTics" + totalTicsDiff);
-        if (Math.abs(targetTics - turret.getSelectedSensorPosition()) < deadZone) {
-            turret.stopMotor();
-        } else {
-            turret.set(error);
+    public void run() {
+        double yaw = vision.getYawDegrees();
+        if (targeting) {
+            if (UtilityMethods.between(yaw, -4, 4)) {
+                turret.stopMotor();
+            } else {
+                // if (yaw > 0 && encoder.getTics() > -50) { //left
+                // turret.set(0.2);
+                // } else if (yaw< 0 && encoder.getTics() < 50){ //right
+                // turret.set(-0.2);
+                // } else {
+                // stopTurret();
+                // }
+                // set turrent power can deal with the limits
+                if (yaw > 0) {
+                    setTurretPower(.2);
+                } else if (yaw < 0) {
+                    setTurretPower(-.2);
+                } else {
+                    stopTurret();
+                }
+            }
         }
-        // if(turret.getSelectedSensorPosition() < targetTics - deadZone){
-        // turret.set(error);
-        // System.out.println("Turret Increasing" + targetTics + "; " +
-        // turret.getSelectedSensorPosition());
-        // }else if(turret.getSelectedSensorPosition() > targetTics + deadZone){
-        // turret.set(error);
-        // System.out.println("Turret decreasing" + turret.getSelectedSensorPosition());
-        // }else{
-        // turret.stopMotor();
-        // System.out.println("Stoping turret" + turret.getSelectedSensorPosition());
-        // }
+        SmartDashboard.putNumber("turret encoder", encoder.getTics());
+        SmartDashboard.putNumber("yaw", yaw);
+    }
 
-        SmartDashboard.putNumber("Encoder Tics", turret.getSelectedSensorPosition());
+    public boolean onTarget() {
+        return onTarget;
+    }
+
+    public void startTargeting() {
+        targeting = true;
+    }
+
+    public void stopTargeting() {
+        targeting = false;
+    }
+
+    // 4096tics = 360 degrees 11.25tics = 1 degree
+    public void rotateTurret(double degrees) { // for vision
+        setTargetTics((int) (encoder.getTics() + (degrees * 1.4)));
+    }
+
+    public void turnTurret(double power) { // for human control
+        SmartDashboard.putNumber("power", power);
+        if (!targeting) {
+            setTurretPower(power);
+        }
+    }
+
+    private void setTurretPower(double power) {
+        if (power < 0 && encoder.getTics() < leftBound) {
+            turret.set(UtilityMethods.absMin(power, turretSpeed));
+        } else if (power > 0 && encoder.getTics() > rightBound) {
+            turret.set(UtilityMethods.absMin(power, turretSpeed));
+        } else {
+            stopTurret();
+        }
+    }
+
+    public void stopTurret() {
+        turret.stopMotor();
     }
 
     public void resetTurretEncoder() {
-        turret.setSelectedSensorPosition(0);
-        // turret.getSensorCollection().setQuadraturePosition(0, 10);
-        startPos = turret.getSelectedSensorPosition();
+        encoder.reset();
+        startPos = encoder.getTics();
+    }
+
+    private void setTargetTics(int tics) {
+        if (tics < 0) {
+            targetTics = Math.min(tics, leftBound);
+        } else {
+            targetTics = Math.min(tics, rightBound);
+        }
     }
 }
