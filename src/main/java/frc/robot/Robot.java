@@ -8,16 +8,12 @@
 package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.autonomous.NoAuto;
 import frc.autonomous.ShootAndGather;
 import frc.autonomous.ShootAndGo;
-import frc.commands.DriveBackwardsStraight;
 import frc.lib14.MCRCommand;
-import frc.lib14.SequentialCommands;
-import frc.lib14.UtilityMethods;
 import frc.systems.Climber;
 import frc.systems.DriveTrain;
 import frc.systems.Intake;
@@ -40,8 +36,6 @@ public class Robot extends TimedRobot {
   MasterControls controls = MasterControls.getInstance();
   RobotDashboard dashboard = RobotDashboard.getInstance();
   Vision vision = Vision.getInstance();
-
-  // Turret turret;// = Turret.getInstance();
 
   // class variables
   MCRCommand mission;
@@ -141,11 +135,8 @@ public class Robot extends TimedRobot {
   @Override
   public void testInit() {
   }
-  // public static AnalogPotentiometer pot = new AnalogPotentiometer(0, 10000, -2378);
 
   @Override
   public void testPeriodic() {
-    // shooter.manualAdjustHood(controls.hoodAdjustment());
-    // System.out.println("Pot: " + UtilityMethods.round(pot.get(), 6));
   }
 }

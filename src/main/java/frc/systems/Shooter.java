@@ -37,7 +37,7 @@ public class Shooter {
     private Shooter() {
         dashboard.pushShooterPIDValues(P, I, D, Iz);
         pidController = new PIDController(0, P, I, D, Iz);
-        // sets motors t ocoast
+        // sets motors to ccoast
         neo1.restoreFactoryDefaults();
         neo2.restoreFactoryDefaults();
         neo1.setIdleMode(IdleMode.kCoast);
@@ -80,9 +80,10 @@ public class Shooter {
             // set shooter speed
             // setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));//needs
             // velocity
-            setTargetSpeed(dashboard.getShooterTargetVelocity(1500));
+            // setTargetSpeed(dashboard.getShooterTargetVelocity(2800));
+            setSpeed();
             // set hood poistion
-            hood.setPosition(2);
+            hood.setPosition(10);
             magazine.loadBallInShootingPosition();
         }
     }
@@ -92,7 +93,9 @@ public class Shooter {
         hood.setPosition(2);
     }
 
-    public void runDrum() {
+    public void runDrum(double speed) {
+        setTargetSpeed(speed);
+        // setSpeed();
         prepDrum = true;
     }
 
@@ -189,12 +192,22 @@ public class Shooter {
         hood.manualAdjustment(hoodAdjustment);
     }
 
-    public void setSpeed() {
+    private void setSpeed() {
         if (vision.getTargetDistance() > 5) {
             setTargetSpeed(3000);
         } else {
             setTargetSpeed(2700);
         }
+    }
+
+    private double determineSpeedFromDistance(double distance) {
+        double adjustment = (3050 - 2700) / (22 - 5);
+        return Math.min((distance - 5) * adjustment, 3500);
+        // if (distance > 5) {
+        //     return 3000;
+        // } else {
+        //     return 2700;
+        // }
     }
 
 }
