@@ -99,6 +99,7 @@ public class Magazine {
 
     public void feedOneBall() {
         feedMode = true;
+        counted++;
     }
 
     private boolean ballAtBottom() {

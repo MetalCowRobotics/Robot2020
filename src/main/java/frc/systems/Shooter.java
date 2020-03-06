@@ -36,10 +36,14 @@ public class Shooter {
     private Shooter() {
         dashboard.pushShooterPIDValues(P, I, D, Iz);
         pidController = new PIDController(0, P, I, D, Iz);
+        // sets motors t ocoast
         neo1.restoreFactoryDefaults();
         neo2.restoreFactoryDefaults();
         neo1.setIdleMode(IdleMode.kCoast);
         neo2.setIdleMode(IdleMode.kCoast);
+
+        // sets motors to ramp
+        // neo1.
     }
 
     public static Shooter getInstance() {
@@ -62,7 +66,7 @@ public class Shooter {
 
     public boolean atSpeed() {
         double absTargetSpeed = Math.abs(targetSpeed);
-        return UtilityMethods.between(Math.abs(neo1.getEncoder().getVelocity()), absTargetSpeed - 10, absTargetSpeed + 10);
+        return UtilityMethods.between(Math.abs(neo1.getEncoder().getVelocity()), absTargetSpeed - 20, absTargetSpeed + 20);
     }
 
     public void prepareToShoot() {

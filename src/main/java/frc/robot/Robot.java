@@ -15,7 +15,6 @@ import frc.autonomous.NoAuto;
 import frc.autonomous.ShootAndGather;
 import frc.autonomous.ShootAndGo;
 import frc.commands.DriveBackwardsStraight;
-import frc.commands.ShootBall;
 import frc.lib14.MCRCommand;
 import frc.lib14.SequentialCommands;
 import frc.lib14.UtilityMethods;
@@ -47,7 +46,6 @@ public class Robot extends TimedRobot {
   // class variables
   MCRCommand mission;
 
-
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
@@ -72,12 +70,16 @@ public class Robot extends TimedRobot {
     } else {
       mission = new NoAuto();
     }
-    mission = new SequentialCommands(new ShootBall(), new ShootBall(), new ShootBall());
+    mission = new ShootAndGo();
+    // mission = new DriveBackwardsStraight(36);
+    // mission = new SequentialCommands(new ShootBall(), new ShootBall(), new ShootBall());
   }
 
   @Override
   public void autonomousPeriodic() {
+    SmartDashboard.putBoolean("is ready", shooter.isReady());
     mission.run();
+    SmartDashboard.putNumber("shots", shooter.ballShots());
     runSystemsStateMachine();
   }
 
@@ -88,14 +90,15 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    // System.out.println("Pot: " + UtilityMethods.round(pot.get(), 5));
+    SmartDashboard.putBoolean("is ready", shooter.isReady());
+    SmartDashboard.putNumber("shots", shooter.ballShots());
     controls.changeMode();
     applyOperatorInputs();
     runSystemsStateMachine();
 
     //testing
     SmartDashboard.putNumber("distance", vision.getTargetDistance());
-    SmartDashboard.putNumber("yaw", vision.getYawDegrees());
+    SmartDashboard.putNumber("yaw", vision.getYawDegrees());                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
   }
 
   private void applyOperatorInputs() {

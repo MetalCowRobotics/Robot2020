@@ -77,7 +77,7 @@ public class TurnDegrees implements MCRCommand {
 			// limitCorrection(correction, RobotMap.TurnDegrees.SLOW_ADJUSTMENT));
 			// // logger.info("Turn Degrees Slow");
 			// } else {
-			if (numMatches > 200) {
+			if (numMatches > 5) {
 				driveTrain.stop();
 				currentState = DONE;
 			} else {

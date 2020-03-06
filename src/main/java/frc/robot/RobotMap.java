@@ -2,6 +2,8 @@ package frc.robot;
 
 import java.util.logging.Level;
 
+import edu.wpi.first.wpilibj.MotorSafety;
+
 public class RobotMap {
 
 	public final class DriverController {
@@ -50,6 +52,7 @@ public class RobotMap {
 		public static final double SLOW_VARIANCE = 15; //10
 		public static final double SLOW_ADJUSTMENT = .4;
 	}
+	
 
 	public final class DriveStraightTime {
 		public static final double TOP_SPEED = 1;
