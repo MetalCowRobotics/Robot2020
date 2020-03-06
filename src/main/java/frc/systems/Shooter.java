@@ -20,10 +20,10 @@ public class Shooter {
     private Funnel funnel = Funnel.getInstance();
     private static Vision vision = Vision.getInstance();
     private static RobotDashboard dashboard = RobotDashboard.getInstance();
-    private static double P = .00003;
-    private static double I = .000025;
-    private static double D = 0;
-    private static double Iz = 400;
+    private static double P = .00008;
+    private static double I = .00001;
+    private static double D = .0001;
+    private static double Iz = 450;
     private static PIDController pidController;
     private static final double SHOOTER_SPEED = .45;
     private boolean firstTime = true;
@@ -62,7 +62,7 @@ public class Shooter {
 
     public boolean atSpeed() {
         double absTargetSpeed = Math.abs(targetSpeed);
-        return UtilityMethods.between(Math.abs(neo1.getEncoder().getVelocity()), absTargetSpeed - 20, absTargetSpeed + 20);
+        return UtilityMethods.between(Math.abs(neo1.getEncoder().getVelocity()), absTargetSpeed - 10, absTargetSpeed + 10);
     }
 
     public void prepareToShoot() {
@@ -75,7 +75,7 @@ public class Shooter {
             // velocity
             setTargetSpeed(dashboard.getShooterTargetVelocity(1500));
             // set hood poistion
-            hood.setPosition(vision.getTargetDistance());
+            hood.setPosition(26);
             magazine.loadBallInShootingPosition();
         }
     }
@@ -88,7 +88,7 @@ public class Shooter {
     }
 
     public void shootBallWhenReady() {
-        if (readyToShoot && isReady()) {
+        if (readyToShoot && atSpeed()) {
             magazine.feedOneBall();
         }
     }
