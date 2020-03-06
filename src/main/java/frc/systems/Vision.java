@@ -69,7 +69,7 @@ public class Vision {
 
     public double getYawDegrees() {
         yawDegrees = cameraFOV * 0.5 / maxYaw * yaw.getDouble(0.0);
-        return yawDegrees;
+        return yawDegrees; 
     }
 
     public void setTargetMode(boolean cameraMode) {

@@ -8,12 +8,16 @@
 package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.autonomous.NoAuto;
 import frc.autonomous.ShootAndGather;
 import frc.autonomous.ShootAndGo;
+import frc.commands.DriveBackwardsStraight;
 import frc.lib14.MCRCommand;
+import frc.lib14.SequentialCommands;
+import frc.lib14.UtilityMethods;
 import frc.systems.Climber;
 import frc.systems.DriveTrain;
 import frc.systems.Intake;
@@ -42,7 +46,6 @@ public class Robot extends TimedRobot {
   // class variables
   MCRCommand mission;
 
-
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
@@ -54,7 +57,8 @@ public class Robot extends TimedRobot {
     driveTrain.calibrateGyro();
     dashboard.pushAuto();
     dashboard.pushTurnPID();
-    dashboard.pushShooterTargetVelocity(1500);
+    dashboard.pushShooterTargetVelocity(2700);
+    dashboard.pushTargetingTuning();
   }
 
   @Override
@@ -67,11 +71,16 @@ public class Robot extends TimedRobot {
     } else {
       mission = new NoAuto();
     }
+    mission = new ShootAndGo();
+    // mission = new DriveBackwardsStraight(36);
+    // mission = new SequentialCommands(new ShootBall(), new ShootBall(), new ShootBall());
   }
 
   @Override
   public void autonomousPeriodic() {
+    SmartDashboard.putBoolean("is ready", shooter.isReady());
     mission.run();
+    SmartDashboard.putNumber("shots", shooter.ballShots());
     runSystemsStateMachine();
   }
 
@@ -82,13 +91,15 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+    SmartDashboard.putBoolean("is ready", shooter.isReady());
+    SmartDashboard.putNumber("shots", shooter.ballShots());
     controls.changeMode();
     applyOperatorInputs();
     runSystemsStateMachine();
 
     //testing
     SmartDashboard.putNumber("distance", vision.getTargetDistance());
-    SmartDashboard.putNumber("yaw", vision.getYawDegrees());
+    SmartDashboard.putNumber("yaw", vision.getYawDegrees());                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
   }
 
   private void applyOperatorInputs() {
@@ -130,8 +141,11 @@ public class Robot extends TimedRobot {
   @Override
   public void testInit() {
   }
+  // public static AnalogPotentiometer pot = new AnalogPotentiometer(0, 10000, -2378);
 
   @Override
   public void testPeriodic() {
+    // shooter.manualAdjustHood(controls.hoodAdjustment());
+    // System.out.println("Pot: " + UtilityMethods.round(pot.get(), 6));
   }
 }

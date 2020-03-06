@@ -2,6 +2,8 @@ package frc.robot;
 
 import java.util.logging.Level;
 
+import edu.wpi.first.wpilibj.MotorSafety;
+
 public class RobotMap {
 
 	public final class DriverController {
@@ -13,8 +15,8 @@ public class RobotMap {
 	}
 
 	public static final class Drivetrain {
-		public static final int LEFT_MOTOR = 13;
-		public static final int LEFT_MOTOR_NO_ENCODER = 8;
+		public static final int LEFT_MOTOR = 8;
+		public static final int LEFT_MOTOR_NO_ENCODER = 13;
 		public static final int RIGHT_MOTOR = 14;
 		public static final int RIGHT_MOTOR_NO_ENCODER = 11;
 		public static final int WHEEL_DIAMETER = 6;
@@ -50,6 +52,7 @@ public class RobotMap {
 		public static final double SLOW_VARIANCE = 15; //10
 		public static final double SLOW_ADJUSTMENT = .4;
 	}
+	
 
 	public final class DriveStraightTime {
 		public static final double TOP_SPEED = 1;

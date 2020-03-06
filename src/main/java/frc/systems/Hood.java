@@ -2,74 +2,81 @@ package frc.systems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib14.FC_JE_0149Encoder;
 import frc.lib14.MCR_SRX;
 import frc.lib14.UtilityMethods;
+import frc.robot.RobotDashboard;
 import frc.robot.RobotMap;
 
 public class Hood {
-
-    private static final int STARTING_POS = 2156;
-    private static final double REVS_PER_INCH = 11.8;
-    private static final int UPPER_BOUND = 2465;
-    private static final int LOWER_BOUND = 0;
     private static MCR_SRX hood = new MCR_SRX(RobotMap.Hood.HOOD_MOTOR);
-    public static FC_JE_0149Encoder encoder = new FC_JE_0149Encoder(3, 2);
+    private static AnalogPotentiometer pot = new AnalogPotentiometer(0, 10000, -2378);
+    private static FC_JE_0149Encoder encoder = new FC_JE_0149Encoder(3, 2);
+    private static RobotDashboard dashboard = RobotDashboard.getInstance();
 
+    private static final double REVS_PER_INCH = 11.8;
     private static final double TICS_PER_REV = 44.4;
-    private static double totalRevs = 0;
+    private static final double VOLTS_PER_INCH = 211.5;
+    private static final int UPPER_BOUND = 1015;
+    private static final int LOWER_BOUND = 0;
+
+    private static double adjustment = 0;
     private static double targetTics = 0;
 
+    private double startingPosition = 0;
+
+    // Singleton
     private static final Hood instance = new Hood();
 
     private Hood() {
         hood.configFactoryDefault();
         hood.setNeutralMode(NeutralMode.Coast);
-        resetEncoder();
-        targetTics = getCurrentTics();
+        startingPosition = (pot.get() / VOLTS_PER_INCH) * REVS_PER_INCH * TICS_PER_REV;
+        targetTics = startingPosition;
     }
 
     public static Hood getInstance() {
         return instance;
     }
 
-    private void calculateTicks(double inches) {
-        totalRevs = inches * REVS_PER_INCH;
-        targetTics = TICS_PER_REV * totalRevs;
-        targetTics = UtilityMethods.absMax(targetTics, LOWER_BOUND);
-        targetTics = UtilityMethods.absMin(targetTics, UPPER_BOUND);
-    }
-
     public void run() {
-        int currentTics = getCurrentTics();
-        System.out.println("EncoderTics:" + currentTics);
-        double error = ((targetTics + 3) - currentTics) / 100;
+        pushPosition();
+        //TODO what is pushHoodPosition trying to do
+        dashboard.pushHoodPositionText(1); 
+        double currentTics = getCurrentTics();
+        double target = targetTics + adjustment + dashboard.hoodCorrection();
+        double error = (target - currentTics) / 100;
         error = UtilityMethods.absMin(error, .5);
-        if (Math.abs((targetTics + 3) - currentTics) < 5) {
-            SmartDashboard.putBoolean("in Deadzone", true);
+        if (Math.abs(target - currentTics) < 5) {
             hood.stopMotor();
         } else {
-            SmartDashboard.putBoolean("in Deadzone", true);
+            //TODO check upper and lower bounds
             hood.set(error);
         }
 
-        System.out.println("HoodTics:" + currentTics);
         SmartDashboard.putNumber("Current Tics", currentTics);
-        SmartDashboard.putNumber("Encoder Tics", encoder.getTics());
+        SmartDashboard.putNumber("Pot Tics", pot.get());
+    }
+
+    private double inchesToTics(double inches) {
+        return inches * REVS_PER_INCH * TICS_PER_REV;
 
     }
 
     public void manualAdjustment(double y) {
         if (y > .1) {
-            if (targetTics > (LOWER_BOUND + 2)) {
-                targetTics -= 2;
+            if (targetTics + adjustment + dashboard.hoodCorrection() -1 > (LOWER_BOUND)) {
+                adjustment -= 1;
             }
         } else if (y < -.1) {
-            if (targetTics < ( UPPER_BOUND - 2)) {
-                targetTics += 2;
+            if (targetTics + adjustment + dashboard.hoodCorrection() + 1 < (UPPER_BOUND)) {
+                adjustment += 1;
             }
         }
+        // System.out.println("targetTics" + targetTics);
+        // System.out.println("adjustment" + adjustment);
     }
 
     // automated set hood position
@@ -81,25 +88,37 @@ public class Hood {
         } else {
             setSafeZone();
         }
+        resetAdjustment();
     }
 
     public void setFarShot() {
-        calculateTicks(3.9);
+        targetTics = inchesToTics(3.9);
     }
 
     public void setTenFoot() {
-        calculateTicks(3.5);
+        targetTics = inchesToTics(3.8);
     }
 
     public void setSafeZone() {
-        calculateTicks(2.8);
-    }
-
-    public void resetEncoder() {
-        encoder.reset();
+        targetTics = inchesToTics(2.8);
     }
 
     private int getCurrentTics() {
-        return encoder.getTics() + STARTING_POS;
+        return (int) (encoder.getTics() + startingPosition);
+    }
+
+    private void resetAdjustment() {
+        adjustment = 0;
+    }
+
+    private void pushPosition() {
+        double currentTics = getCurrentTics();
+        if (currentTics - 2043 < currentTics - 1990) {
+            SmartDashboard.putString("Hood Position", String.valueOf(currentTics) + " away from Long Shot");
+        } else if (currentTics - 1990 < currentTics - 1466) {
+            SmartDashboard.putString("Hood Position", String.valueOf(currentTics) + " away from 10 Foot Shot");
+        } else {
+            SmartDashboard.putString("Hood Position", String.valueOf(currentTics) + " away from Safe Zone Shot");
+        }
     }
 }
