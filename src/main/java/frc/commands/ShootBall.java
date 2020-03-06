@@ -7,6 +7,7 @@
 
 package frc.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib14.MCRCommand;
 import frc.systems.Shooter;
 
@@ -20,13 +21,14 @@ public class ShootBall implements MCRCommand{
         if(firstTime){
             firstTime = false;
             shooter.prepareToShoot();
+            SmartDashboard.putBoolean("First time", firstTime);
         }
         if(shooter.atSpeed()){
             shooter.shootBall();
+        }
             //TODO how will we know when we are done
             // done = true;
-        }
-        shooter.stopShooter();
+        //}
     }
 
     @Override

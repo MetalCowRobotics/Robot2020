@@ -20,8 +20,8 @@ public class Funnel {
         return instance;
     }
 
-    public void run(boolean bottomLimit) {
-        if (bottomLimit) {
+    public void run(boolean roomAtBottom) {
+        if (roomAtBottom) {
             runMotors();
         } else {
             stopMotors();

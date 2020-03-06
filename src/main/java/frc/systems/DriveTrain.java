@@ -40,6 +40,7 @@ public class DriveTrain {
 
 	// Singleton
 	protected DriveTrain() {
+		// set to coast
 		rightFrontMotor.configFactoryDefault();
 		rightFrontMotor.setNeutralMode(NeutralMode.Coast);
 		rightBackMotor.configFactoryDefault();
@@ -48,6 +49,16 @@ public class DriveTrain {
 		leftFrontMotor.setNeutralMode(NeutralMode.Coast);
 		leftBackMotor.configFactoryDefault();
 		leftBackMotor.setNeutralMode(NeutralMode.Coast);
+		leftFrontMotor.setSensorPhase(true);
+
+		leftFrontMotor.setSelectedSensorPosition(0);
+		rightFrontMotor.setSelectedSensorPosition(0);
+
+		// set to ramp
+		rightBackMotor.configOpenloopRamp(.25);
+		rightFrontMotor.configOpenloopRamp(.25);
+		leftBackMotor.configOpenloopRamp(.25);
+		leftFrontMotor.configOpenloopRamp(.25);
 
 		// rightFrontMotor.configOpenloopRamp(Drivetrain.RAMP_SPEED);
 		// leftFrontMotor.configOpenloopRamp(Drivetrain.RAMP_SPEED);
@@ -141,7 +152,7 @@ public class DriveTrain {
 	public double getEncoderTics() {
 		// return (getRightEncoderTics() + getLeftEncoderTics()) / 2;
 		// return getRightEncoderTics();
-		return -getLeftEncoderTics();
+		return getLeftEncoderTics();
 	}
 
 }

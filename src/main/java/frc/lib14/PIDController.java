@@ -12,7 +12,7 @@ public class PIDController {
 	private double kP = 0;
 	private double kI = 0;
 	private double kD = 0;
-	private double Iz = 10000;
+	private double Iz = 0;
 
 	// control variables
 	private double setPoint;
@@ -43,10 +43,20 @@ public class PIDController {
 		// if (Math.abs(kI) > 0){
 		// 	accumulatedError = accumulatedError + error;
 		// }
-		if (IzStarted || Math.abs(setPoint - curPosition) < Iz) {
-			accumulatedError += error;
-			IzStarted = true;
+		System.out.println("Iz:"+Iz+"accumulated:"+accumulatedError);
+		if (0 != Iz) {
+			if (Math.abs(setPoint - curPosition) < Iz) {
+				accumulatedError += error;	
+				System.out.println("Accumulate IZ");
+			} else {
+				accumulatedError = 0;
+				System.out.println("reset accumulated IZ");
+			}
 		}
+		// if (IzStarted || Math.abs(setPoint - curPosition) < Iz) {
+		// 	accumulatedError += error;
+		// 	IzStarted = true;
+		// }
 		return motorAdjustment;
 		
 	}

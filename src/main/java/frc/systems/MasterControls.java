@@ -39,12 +39,19 @@ public class MasterControls {
 	}
 
 	public double forwardSpeed() {
-		return driver.getRT();
+		if (driver.getRT() > 0) {
+			return 0.5 + (driver.getRT() / 2);
+		} else {
+			return 0;
+		}
 	}
 
 	public double reverseSpeed() {
-		return driver.getLT();
-	}
+		if (driver.getLT() > 0) {
+			return 0.5 + (driver.getLT() / 2);
+		} else {
+			return 0;
+		}	}
 
 	public double direction() {
 		return driver.getLX();
