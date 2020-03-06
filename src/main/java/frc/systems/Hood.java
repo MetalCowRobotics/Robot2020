@@ -31,6 +31,7 @@ public class Hood {
         hood.configFactoryDefault();
         hood.setNeutralMode(NeutralMode.Coast);
         startingPosition = (getStartingTics()/211.5)*REVS_PER_INCH*TICS_PER_REV;
+        targetTics = startingPosition;
     }
 
     public static Hood getInstance() {

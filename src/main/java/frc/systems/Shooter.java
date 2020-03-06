@@ -75,7 +75,7 @@ public class Shooter {
             // velocity
             setTargetSpeed(dashboard.getShooterTargetVelocity(1500));
             // set hood poistion
-            hood.setPosition(26);
+            hood.setPosition(2);
             magazine.loadBallInShootingPosition();
         }
     }
