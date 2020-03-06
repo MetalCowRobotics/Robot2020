@@ -190,8 +190,14 @@ public class RobotDashboard {
 		return SmartDashboard.getNumber("SpeedCorrection", 0);
 	}
 
-	public void pushHoodPositionText(int tics) {
-
+	public void pushHoodPositionText(double currentTics) {
+        if (currentTics - 2043 < currentTics - 1990) {
+            SmartDashboard.putString("Hood Position", String.valueOf(currentTics) + " away from Long Shot");
+        } else if (currentTics - 1990 < currentTics - 1466) {
+            SmartDashboard.putString("Hood Position", String.valueOf(currentTics) + " away from 10 Foot Shot");
+        } else {
+            SmartDashboard.putString("Hood Position", String.valueOf(currentTics) + " away from Safe Zone Shot");
+        }
 	}
 
 }

@@ -42,17 +42,17 @@ public class Hood {
     }
 
     public void run() {
+        double currentTics = getCurrentTics();
         pushPosition();
         //TODO what is pushHoodPosition trying to do
-        dashboard.pushHoodPositionText(1); 
-        double currentTics = getCurrentTics();
+        dashboard.pushHoodPositionText(currentTics);
         double target = targetTics + adjustment + dashboard.hoodCorrection();
         double error = (target - currentTics) / 100;
         error = UtilityMethods.absMin(error, .5);
         if (Math.abs(target - currentTics) < 5) {
             hood.stopMotor();
         } else {
-            //TODO check upper and lower bounds
+            //TODO check upper and lower bounds see setHoodSpeed()
             hood.set(error);
         }
 
@@ -130,13 +130,13 @@ public class Hood {
     }
 
     private void pushPosition() {
-        double currentTics = getCurrentTics();
-        if (currentTics - 2043 < currentTics - 1990) {
-            SmartDashboard.putString("Hood Position", String.valueOf(currentTics) + " away from Long Shot");
-        } else if (currentTics - 1990 < currentTics - 1466) {
-            SmartDashboard.putString("Hood Position", String.valueOf(currentTics) + " away from 10 Foot Shot");
-        } else {
-            SmartDashboard.putString("Hood Position", String.valueOf(currentTics) + " away from Safe Zone Shot");
-        }
+        // double currentTics = getCurrentTics();
+        // if (currentTics - 2043 < currentTics - 1990) {
+        //     SmartDashboard.putString("Hood Position", String.valueOf(currentTics) + " away from Long Shot");
+        // } else if (currentTics - 1990 < currentTics - 1466) {
+        //     SmartDashboard.putString("Hood Position", String.valueOf(currentTics) + " away from 10 Foot Shot");
+        // } else {
+        //     SmartDashboard.putString("Hood Position", String.valueOf(currentTics) + " away from Safe Zone Shot");
+        // }
     }
 }
