@@ -167,4 +167,31 @@ public class RobotDashboard {
 		SmartDashboard.putNumber("confidence", match.confidence);
 	}
 
+	public void pushTargetingTuning() {
+		SmartDashboard.putBoolean("AutoTarget", true);
+		SmartDashboard.putNumber("HoodCorrection", 0);
+		SmartDashboard.putNumber("YawCorrection", 0);
+		SmartDashboard.putNumber("SpeedCorrection", 0);
+	}
+
+	public boolean isAutoTargeting() {
+		return SmartDashboard.getBoolean("AutoTarget", true);
+	}
+
+	public int hoodCorrection() {
+		return (int) SmartDashboard.getNumber("HoodCorrection", 0);
+	}
+
+	public double yawCorrection() {
+		return SmartDashboard.getNumber("YawCorrection", 0);
+	}
+
+	public double speedCorrection() {
+		return SmartDashboard.getNumber("SpeedCorrection", 0);
+	}
+
+	public void pushHoodPositionText(int tics) {
+
+	}
+
 }

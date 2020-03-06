@@ -157,7 +157,7 @@ public class Shooter {
     }
 
     public void setTargetSpeed(double targetSpeed) {
-        this.targetSpeed = targetSpeed;
+        this.targetSpeed = targetSpeed + dashboard.speedCorrection();
         pidController.setSetPoint(targetSpeed);
         dashboard.pushShooterTargetVelocity(targetSpeed);
     }
