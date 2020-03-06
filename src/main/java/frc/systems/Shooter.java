@@ -36,10 +36,14 @@ public class Shooter {
     private Shooter() {
         dashboard.pushShooterPIDValues(P, I, D, Iz);
         pidController = new PIDController(0, P, I, D, Iz);
+        // sets motors t ocoast
         neo1.restoreFactoryDefaults();
         neo2.restoreFactoryDefaults();
         neo1.setIdleMode(IdleMode.kCoast);
         neo2.setIdleMode(IdleMode.kCoast);
+
+        // sets motors to ramp
+        // neo1.
     }
 
     public static Shooter getInstance() {
@@ -73,7 +77,7 @@ public class Shooter {
         // set shooter speed
         // setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));//needs
         // velocity
-        setTargetSpeed(dashboard.getShooterTargetVelocity(1500));
+        setTargetSpeed(dashboard.getShooterTargetVelocity(2900));
         // set hood poistion
         hood.setPosition(vision.getTargetDistance());
         magazine.loadBallInShootingPosition();

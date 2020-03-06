@@ -23,8 +23,8 @@ public class ShootAndGather implements MCRCommand {
     public ShootAndGather(AutoPosition position) {
 
         if(position.equals(RobotDashboard.AutoPosition.AUTOMODE_RIGHT_OF_TARGET)) {
-            
-             MCRCommand commandSet = new SequentialCommands(new ShootBall(), new ShootBall(), new ShootBall());
+            ShootBall shoot = new ShootBall();
+             MCRCommand commandSet = new SequentialCommands(shoot, shoot, shoot);
            MCRCommand driveSet = new SequentialCommands(new TimedCommandSet(new TurnDegrees(170), 5),
                     new CommandPause(.02), new DriveStraightInches(90, 4), new TimedCommandSet(new TurnDegrees(18), 4),
                     new CommandPause(.02), new DriveStraightInches(75, 4));
