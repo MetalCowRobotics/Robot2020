@@ -49,6 +49,10 @@ public class DriveTrain {
 		leftFrontMotor.setNeutralMode(NeutralMode.Coast);
 		leftBackMotor.configFactoryDefault();
 		leftBackMotor.setNeutralMode(NeutralMode.Coast);
+		leftFrontMotor.setSensorPhase(true);
+
+		leftFrontMotor.setSelectedSensorPosition(0);
+		rightFrontMotor.setSelectedSensorPosition(0);
 
 		// set to ramp
 
@@ -145,7 +149,7 @@ public class DriveTrain {
 	public double getEncoderTics() {
 		// return (getRightEncoderTics() + getLeftEncoderTics()) / 2;
 		// return getRightEncoderTics();
-		return -getLeftEncoderTics();
+		return getLeftEncoderTics();
 	}
 
 }

@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.autonomous.NoAuto;
@@ -15,6 +16,8 @@ import frc.autonomous.ShootAndGather;
 import frc.autonomous.ShootAndGo;
 import frc.commands.DriveBackwardsStraight;
 import frc.lib14.MCRCommand;
+import frc.lib14.SequentialCommands;
+import frc.lib14.UtilityMethods;
 import frc.systems.Climber;
 import frc.systems.DriveTrain;
 import frc.systems.Intake;
@@ -59,7 +62,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    /*
     vision.visionInit();
     if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GO == dashboard.getAutoMission()) {
       mission = new ShootAndGo();
@@ -68,20 +70,17 @@ public class Robot extends TimedRobot {
     } else {
       mission = new NoAuto();
     }
-    mission = new ShootAndGo();
-    */
-    DriveBackwardsStraight driveBack = new DriveBackwardsStraight(36);
-    driveBack.run();
+    // mission = new ShootAndGo();
+    mission = new DriveBackwardsStraight(36);
+    // mission = new SequentialCommands(new ShootBall(), new ShootBall(), new ShootBall());
   }
 
   @Override
   public void autonomousPeriodic() {
-    /*
     SmartDashboard.putBoolean("is ready", shooter.isReady());
     mission.run();
     SmartDashboard.putNumber("shots", shooter.ballShots());
     runSystemsStateMachine();
-    */
   }
 
   @Override
@@ -141,8 +140,11 @@ public class Robot extends TimedRobot {
   @Override
   public void testInit() {
   }
+  // public static AnalogPotentiometer pot = new AnalogPotentiometer(0, 10000, -2378);
 
   @Override
   public void testPeriodic() {
+    // shooter.manualAdjustHood(controls.hoodAdjustment());
+    // System.out.println("Pot: " + UtilityMethods.round(pot.get(), 6));
   }
 }

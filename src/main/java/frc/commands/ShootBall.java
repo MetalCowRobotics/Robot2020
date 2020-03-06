@@ -25,9 +25,10 @@ public class ShootBall implements MCRCommand{
         }
         if(shooter.atSpeed()){
             shooter.shootBall();
+        }
             //TODO how will we know when we are done
             // done = true;
-        }
+        //}
     }
 
     @Override
