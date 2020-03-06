@@ -113,4 +113,8 @@ public class Turret {
             targetTics = Math.min(tics, rightBound);
         }
     }
+
+    public int getTurretPosition() {
+        return encoder.getTics();
+    }
 }
