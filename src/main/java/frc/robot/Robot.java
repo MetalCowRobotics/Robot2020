@@ -57,7 +57,8 @@ public class Robot extends TimedRobot {
     driveTrain.calibrateGyro();
     dashboard.pushAuto();
     dashboard.pushTurnPID();
-    dashboard.pushShooterTargetVelocity(1500);
+    dashboard.pushShooterTargetVelocity(2700);
+    dashboard.pushTargetingTuning();
   }
 
   @Override
