@@ -10,6 +10,7 @@ public class TurnTurret implements MCRCommand {
     private int targetTics;
     private boolean done = false;
     
+    //positive numbers turn left, negative number turn right
     public TurnTurret (int tics) {
         moveTics = tics;
     }

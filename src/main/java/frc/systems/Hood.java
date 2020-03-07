@@ -12,14 +12,14 @@ import frc.robot.RobotMap;
 
 public class Hood {
     private static MCR_SRX hood = new MCR_SRX(RobotMap.Hood.HOOD_MOTOR);
-    private static AnalogPotentiometer pot = new AnalogPotentiometer(0, 10000, -2378);
+    private static AnalogPotentiometer pot = new AnalogPotentiometer(0, 10000, -2200);
     private static FC_JE_0149Encoder encoder = new FC_JE_0149Encoder(3, 2);
     private static RobotDashboard dashboard = RobotDashboard.getInstance();
 
     private static final double REVS_PER_INCH = 11.8;
     private static final double TICS_PER_REV = 44.4;
     private static final double VOLTS_PER_INCH = 211.5;
-    private static final int UPPER_BOUND = 1015;
+    private static final int UPPER_BOUND = 2223;
     private static final int LOWER_BOUND = 0;
 
     private static double adjustment = 0;
@@ -33,7 +33,7 @@ public class Hood {
     private Hood() {
         hood.configFactoryDefault();
         hood.setNeutralMode(NeutralMode.Coast);
-        startingPosition = (pot.get() / VOLTS_PER_INCH) * REVS_PER_INCH * TICS_PER_REV;
+        startingPosition = (pot.get() * 1.95);
         targetTics = startingPosition;
     }
 
@@ -42,10 +42,8 @@ public class Hood {
     }
 
     public void run() {
-        pushPosition();
-        //TODO what is pushHoodPosition trying to do
-        dashboard.pushHoodPositionText(1); 
         double currentTics = getCurrentTics();
+        dashboard.pushHoodPositionText((int) currentTics); 
         double target = targetTics + adjustment + dashboard.hoodCorrection();
         double error = (target - currentTics) / 100;
         error = UtilityMethods.absMin(error, .5);
@@ -56,7 +54,7 @@ public class Hood {
             hood.set(error);
         }
 
-        SmartDashboard.putNumber("Current Tics", currentTics);
+        SmartDashboard.putNumber("Current Tics", encoder.getTics());
         SmartDashboard.putNumber("Pot Tics", pot.get());
     }
 
@@ -99,9 +97,9 @@ public class Hood {
 
     // automated set hood position
     public void setPosition(double distance) {
-        if (distance > 25) {
+        if (distance > 20) {
             setFarShot();
-        } else if (distance > 5) {
+        } else if (distance > 7) {
             setTenFoot();
         } else {
             setSafeZone();
@@ -110,15 +108,15 @@ public class Hood {
     }
 
     public void setFarShot() {
-        targetTics = inchesToTics(3.9);
+        targetTics = inchesToTics(3.9) - startingPosition;
     }
 
     public void setTenFoot() {
-        targetTics = inchesToTics(3.8);
+        targetTics = inchesToTics(3.8) - startingPosition;
     }
 
     public void setSafeZone() {
-        targetTics = inchesToTics(2.8);
+        targetTics = inchesToTics(2.8)- startingPosition;
     }
 
     private int getCurrentTics() {
@@ -129,14 +127,4 @@ public class Hood {
         adjustment = 0;
     }
 
-    private void pushPosition() {
-        double currentTics = getCurrentTics();
-        if (currentTics - 2043 < currentTics - 1990) {
-            SmartDashboard.putString("Hood Position", String.valueOf(currentTics) + " away from Long Shot");
-        } else if (currentTics - 1990 < currentTics - 1466) {
-            SmartDashboard.putString("Hood Position", String.valueOf(currentTics) + " away from 10 Foot Shot");
-        } else {
-            SmartDashboard.putString("Hood Position", String.valueOf(currentTics) + " away from Safe Zone Shot");
-        }
-    }
 }

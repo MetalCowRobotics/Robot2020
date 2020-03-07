@@ -13,6 +13,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.autonomous.NoAuto;
 import frc.autonomous.ShootAndGather;
 import frc.autonomous.ShootAndGo;
+import frc.commands.DriveBackwardsStraight;
+import frc.commands.DriveStraightInches;
+import frc.commands.TurnTurret;
 import frc.lib14.MCRCommand;
 import frc.systems.Climber;
 import frc.systems.DriveTrain;
@@ -65,7 +68,10 @@ public class Robot extends TimedRobot {
     } else {
       mission = new NoAuto();
     }
-    mission = new ShootAndGo();
+    // mission = new ShootAndGo();
+    // mission = new DriveBackwardsStraight(36, 4);
+    mission = new DriveStraightInches(DriveStraightInches.DRIVE_DIRECTION.backward, 36);
+    // mission = new TurnTurret(45);
     // mission = new DriveBackwardsStraight(36);
     // mission = new SequentialCommands(new ShootBall(), new ShootBall(), new ShootBall());
   }
@@ -112,6 +118,8 @@ public class Robot extends TimedRobot {
     //check if operator wants to shoot
     if (controls.prepairToShoot()) {
       shooter.prepareToShoot();
+    } else if (controls.target()) {
+        shooter.beginTargetting();
     } else {
       shooter.stopShooter();
     }

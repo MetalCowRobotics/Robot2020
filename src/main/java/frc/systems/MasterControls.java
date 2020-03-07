@@ -126,4 +126,8 @@ public class MasterControls {
 	public double turretAdjustment() {
 		return UtilityMethods.deadZoneCalculation(operator.getRX(), 0.15);
 	}
+
+	public boolean target() {
+		return operator.getXButton();
+	}
 }
