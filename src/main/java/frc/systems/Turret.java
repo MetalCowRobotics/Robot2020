@@ -41,7 +41,7 @@ public class Turret {
     public void run() {
         double yaw = vision.getYawDegrees() + dashboard.yawCorrection();
         if (targeting) {
-            if (UtilityMethods.between(yaw, -4, 4)) {
+            if (UtilityMethods.between(yaw, -2, 2)) {
                 turret.stopMotor();
             } else {
                 if (yaw > 0) {

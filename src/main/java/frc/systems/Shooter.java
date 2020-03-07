@@ -193,10 +193,12 @@ public class Shooter {
     }
 
     private void setSpeed() {
-        if (vision.getTargetDistance() > 5) {
+        if (vision.getTargetDistance() > 20) {
             setTargetSpeed(3000);
+        } else if (vision.getTargetDistance() > 5) {
+            setTargetSpeed(2500);
         } else {
-            setTargetSpeed(2700);
+            setTargetSpeed(1750);
         }
     }
 

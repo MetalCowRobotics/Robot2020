@@ -1,5 +1,6 @@
 package frc.systems;
 
+import com.ctre.phoenix.Util;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
@@ -16,12 +17,11 @@ public class Hood {
     private static FC_JE_0149Encoder encoder = new FC_JE_0149Encoder(3, 2);
     private static RobotDashboard dashboard = RobotDashboard.getInstance();
 
-    private static final double REVS_PER_INCH = 11.8;
+    private static final double REVS_PER_INCH = 12.7;//11.8;
     private static final double TICS_PER_REV = 44.4;
-    private static final double VOLTS_PER_INCH = 211.5;
-    private static final int UPPER_BOUND = 1015;
+    // private static final double VOLTS_PER_INCH = 211.5;
+    private static final int UPPER_BOUND = (int) (4.2*REVS_PER_INCH*TICS_PER_REV);
     private static final int LOWER_BOUND = 0;
-
     private static double adjustment = 0;
     private static double targetTics = 0;
 
@@ -33,7 +33,7 @@ public class Hood {
     private Hood() {
         hood.configFactoryDefault();
         hood.setNeutralMode(NeutralMode.Coast);
-        startingPosition = (pot.get() / VOLTS_PER_INCH) * REVS_PER_INCH * TICS_PER_REV;
+        startingPosition = (pot.get() * 1.64);//1.95
         targetTics = startingPosition;
     }
 
@@ -53,26 +53,28 @@ public class Hood {
             hood.stopMotor();
         } else {
             //TODO check upper and lower bounds
-            hood.set(error);
+            hood.set(UtilityMethods.copySign(error, .4));
         }
 
-        SmartDashboard.putNumber("Current Tics", currentTics);
-        SmartDashboard.putNumber("Pot Tics", pot.get());
+        SmartDashboard.putNumber("Current Tics", encoder.getTics());
+        SmartDashboard.putNumber("Encoder Tics with Starting Position", encoder.getTics() + startingPosition);
+        SmartDashboard.putNumber("PotTics", pot.get());
+        SmartDashboard.putNumber("Target Tics", targetTics);
     }
 
     private double inchesToTics(double inches) {
-        return inches * REVS_PER_INCH * TICS_PER_REV;
+        return (inches - 1) * REVS_PER_INCH * TICS_PER_REV;
 
     }
 
     public void manualAdjustment(double y) {
         if (y > .1) {
             if (targetTics + adjustment + dashboard.hoodCorrection() -1 > (LOWER_BOUND)) {
-                adjustment -= 1;
+                adjustment -= 2;
             }
         } else if (y < -.1) {
             if (targetTics + adjustment + dashboard.hoodCorrection() + 1 < (UPPER_BOUND)) {
-                adjustment += 1;
+                adjustment += 2;
             }
         }
         // System.out.println("targetTics" + targetTics);
@@ -110,15 +112,15 @@ public class Hood {
     }
 
     public void setFarShot() {
-        targetTics = inchesToTics(3.9);
+        targetTics = inchesToTics(4);
     }
 
     public void setTenFoot() {
-        targetTics = inchesToTics(3.8);
+        targetTics = inchesToTics(3.5);
     }
 
     public void setSafeZone() {
-        targetTics = inchesToTics(2.8);
+        targetTics = inchesToTics(1);
     }
 
     private int getCurrentTics() {

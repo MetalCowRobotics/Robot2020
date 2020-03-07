@@ -76,6 +76,7 @@ public class Robot extends TimedRobot {
     mission.run();
     SmartDashboard.putNumber("shots", shooter.ballShots());
     runSystemsStateMachine();
+    SmartDashboard.putNumber("Gyro", driveTrain.getAngle());
   }
 
   @Override
