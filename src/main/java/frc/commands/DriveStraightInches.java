@@ -51,7 +51,7 @@ public class DriveStraightInches extends TimedCommand implements MCRCommand {
     private void setTarget(double targetInches) {
         targetTics = (targetInches / RobotMap.DriveWithEncoder.INCHES_PER_ROTATION)
                 * RobotMap.DriveWithEncoder.TICS_PER_ROTATION;
-      //  logger.info("target for encoder drive: <<" + targetTics + ">>");
+       logger.info("target for encoder drive: <<" + targetTics + ">>");
     }
 
     public void run() {
@@ -63,12 +63,13 @@ public class DriveStraightInches extends TimedCommand implements MCRCommand {
             startTics = driveTrain.getEncoderTics();
         }
 
-        if (ticsTravelled() < targetTics) {
-            driveTrain.arcadeDrive(calculateSpeed(), getCorrection() * dir);
-        } else {
-            end();
-        }
-      //  System.out.println("gyro:"+driveTrain.getAngle()+"  |  tics:" + driveTrain.getEncoderTics() + "  |  startTics:" + startTics+ "  |  correction:" + getCorrection());
+        // if (ticsTravelled() < targetTics) {
+            //driveTrain.arcadeDrive(calculateSpeed(), getCorrection() * dir);
+            driveTrain.arcadeDrive(calculateSpeed(), .7);
+        // } else {
+            // end();
+        // }
+       System.out.println("gyro:"+driveTrain.getAngle()+"  |  tics:" + driveTrain.getEncoderTics() + "  |  startTics:" + startTics+ "  |  correction:" + getCorrection());
     }
 
     private void end() {
@@ -78,13 +79,13 @@ public class DriveStraightInches extends TimedCommand implements MCRCommand {
     }
 
     private double ticsTravelled() {
-       // logger.info("Drivetrain tics travelled: " + (driveTrain.getEncoderTics() - startTics));
+       logger.info("Drivetrain tics travelled: " + (driveTrain.getEncoderTics() - startTics));
         return Math.abs(driveTrain.getEncoderTics() - startTics);
     }
 
     private double calculateSpeed() {
-        if (targetTics - RobotMap.DriveWithEncoder.SLOW_DOWN_DISTANCE < ticsTravelled())
-            return RobotMap.DriveWithEncoder.BOTTOM_SPEED * dir;
+        // if (targetTics - RobotMap.DriveWithEncoder.SLOW_DOWN_DISTANCE < ticsTravelled())
+            // return RobotMap.DriveWithEncoder.BOTTOM_SPEED * dir;
         return RobotMap.DriveWithEncoder.TOP_SPEED * dir;
     }
 
