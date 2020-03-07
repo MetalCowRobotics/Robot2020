@@ -20,6 +20,8 @@ public class RobotMap {
 		public static final int RIGHT_MOTOR = 14;
 		public static final int RIGHT_MOTOR_NO_ENCODER = 11;
 		public static final int WHEEL_DIAMETER = 6;
+		public static final int TICS_PER_ROTATION = 4096; 
+		public static final double INCHES_PER_ROTATION = Math.PI * RobotMap.Drivetrain.WHEEL_DIAMETER;		
 		public static final double RAMP_SPEED = .6;
 	}
 

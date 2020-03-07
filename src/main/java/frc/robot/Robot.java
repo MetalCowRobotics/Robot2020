@@ -14,6 +14,7 @@ import frc.autonomous.NoAuto;
 import frc.autonomous.ShootAndGather;
 import frc.autonomous.ShootAndGo;
 import frc.commands.DriveBackwardsStraight;
+import frc.commands.DriveInches;
 import frc.commands.DriveStraightInches;
 import frc.commands.TurnTurret;
 import frc.lib14.MCRCommand;
@@ -68,9 +69,10 @@ public class Robot extends TimedRobot {
     } else {
       mission = new NoAuto();
     }
-    // mission = new ShootAndGo();
+    // mission = new TurnTurret(-85);
     // mission = new DriveBackwardsStraight(36, 4);
-    mission = new DriveStraightInches(DriveStraightInches.DRIVE_DIRECTION.backward, 36);
+    // mission = new DriveStraightInches(DriveStraightInches.DRIVE_DIRECTION.backward, 36);
+    // mission = new DriveInches(1, 36);
     // mission = new TurnTurret(45);
     // mission = new DriveBackwardsStraight(36);
     // mission = new SequentialCommands(new ShootBall(), new ShootBall(), new ShootBall());
@@ -95,6 +97,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("shots", shooter.ballShots());
     controls.changeMode();
     applyOperatorInputs();
+    driveTrain.drive();
     runSystemsStateMachine();
 
     //testing
@@ -134,7 +137,6 @@ public class Robot extends TimedRobot {
   }
 
   private void runSystemsStateMachine() {
-    driveTrain.drive();
     intake.run();
     shooter.run();
     climber.run();

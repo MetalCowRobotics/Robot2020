@@ -11,7 +11,7 @@ public class ShootAndGo implements MCRCommand {
 
     public ShootAndGo() {
         MCRCommand shoot = new ShootBall();
-        mission = new SequentialCommands(new TimedCommandSet(shoot, 8), new DriveBackwardsStraight(36, 4));
+        mission = new SequentialCommands(new TimedCommandSet(shoot, 6), new DriveBackwardsStraight(36, 4));
     }
 
     @Override

@@ -75,15 +75,13 @@ public class Shooter {
         if (!readyToShoot) {
             prepDrum = false;
             readyToShoot = true;
-            turret.startTargeting();
-            // get target distance
-            // set shooter speed
-            // setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));//needs
-            // velocity
-            // setTargetSpeed(dashboard.getShooterTargetVelocity(2800));
-            setSpeed();
-            // set hood poistion
-            hood.setPosition(vision.getTargetDistance());
+            if(dashboard.isAutoTargeting()) {
+                turret.startTargeting();
+                setSpeed();
+                hood.setPosition(vision.getTargetDistance());
+            } else {
+                setTargetSpeed(3050);
+            }
             magazine.loadBallInShootingPosition();
         }
     }
@@ -159,15 +157,15 @@ public class Shooter {
         return false;
     }
 
-    public void setTargetSpeed(double targetSpeed) {
-        this.targetSpeed = targetSpeed + dashboard.speedCorrection();
+    public void setTargetSpeed(double newTarget) {
+        targetSpeed = newTarget + dashboard.speedCorrection();
         pidController.setSetPoint(targetSpeed);
         dashboard.pushShooterTargetVelocity(targetSpeed);
     }
 
     // testing
     public void setupShooter() {
-        setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));// needs velocity
+        // setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));// needs velocity
         // setSpeed();
         firstTime = false;
         readyToShoot = true;
@@ -175,7 +173,7 @@ public class Shooter {
 
     public void shooterTest() {
         if (firstTime) {
-            setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));// needs velocity
+            // setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));// needs velocity
             // setSpeed();
             firstTime = false;
         }
@@ -194,7 +192,7 @@ public class Shooter {
 
     private void setSpeed() {
         if (vision.getTargetDistance() > 5) {
-            setTargetSpeed(3000);
+            setTargetSpeed(3050);
         } else {
             setTargetSpeed(2700);
         }

@@ -18,7 +18,6 @@ public class TurnDegrees implements MCRCommand {
 	private final int ACTIVE = 1;
 	private final int DONE = 2;
 	private int numMatches = 0;
-	private int count = 0;
 
 	public TurnDegrees(double degrees) {
 		super();
