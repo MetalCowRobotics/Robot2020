@@ -158,14 +158,14 @@ public class Shooter {
     }
 
     public void setTargetSpeed(double newTarget) {
-        this.targetSpeed = newTarget + dashboard.speedCorrection();
-        pidController.setSetPoint(newTarget);
-        dashboard.pushShooterTargetVelocity(newTarget);
+        targetSpeed = newTarget + dashboard.speedCorrection();
+        pidController.setSetPoint(targetSpeed);
+        dashboard.pushShooterTargetVelocity(targetSpeed);
     }
 
     // testing
     public void setupShooter() {
-        setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));// needs velocity
+        // setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));// needs velocity
         // setSpeed();
         firstTime = false;
         readyToShoot = true;
@@ -173,7 +173,7 @@ public class Shooter {
 
     public void shooterTest() {
         if (firstTime) {
-            setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));// needs velocity
+            // setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));// needs velocity
             // setSpeed();
             firstTime = false;
         }

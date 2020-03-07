@@ -62,13 +62,13 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     vision.visionInit();
-    if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GO == dashboard.getAutoMission()) {
-      mission = new ShootAndGo();
-    } else if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GATHER == dashboard.getAutoMission()) {
-      mission = new ShootAndGather(dashboard.getStartingPosition());
-    } else {
-      mission = new NoAuto();
-    }
+    // if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GO == dashboard.getAutoMission()) {
+    //   mission = new ShootAndGo();
+    // } else if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GATHER == dashboard.getAutoMission()) {
+    //   mission = new ShootAndGather(dashboard.getStartingPosition());
+    // } else {
+    //   mission = new NoAuto();
+    // }
     // mission = new ShootAndGo();
     // mission = new DriveBackwardsStraight(36, 4);
     // mission = new DriveStraightInches(DriveStraightInches.DRIVE_DIRECTION.backward, 36);
@@ -97,6 +97,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("shots", shooter.ballShots());
     controls.changeMode();
     applyOperatorInputs();
+    driveTrain.drive();
     runSystemsStateMachine();
 
     //testing
@@ -136,7 +137,6 @@ public class Robot extends TimedRobot {
   }
 
   private void runSystemsStateMachine() {
-    driveTrain.drive();
     intake.run();
     shooter.run();
     climber.run();

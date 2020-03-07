@@ -38,6 +38,7 @@ public class DriveInches implements MCRCommand {
             driveTrain.resetGyro();
             startTics = driveTrain.getEncoderTics();
             driveController = new PIDController(driveTrain.getAngle(), kP, kI, kD);
+            System.out.println("Starting Drive Inches");
         }
 
         if (absTicsTravelled() < absTargetTics & !finished) {
