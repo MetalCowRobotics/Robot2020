@@ -44,7 +44,7 @@ public class DriveStraightInches extends TimedCommand implements MCRCommand {
         setTarget(targetInches);
     }
 
-    public enum DRIVE_DIRECTION {
+    public static enum DRIVE_DIRECTION {
         forward, backward
     }
 

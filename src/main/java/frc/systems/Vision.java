@@ -5,8 +5,8 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class Vision {
-    double focalWidth = 773.7660;
-    double focalHeight = 741.1590;
+    double focalWidth = 778.8679;
+    double focalHeight = 1828.1923;
     double targetWidth = 3.3125;
     double targetHeight = 1.4167;
 
@@ -59,16 +59,17 @@ public class Vision {
 
     // Periodic function
     public double getTargetDistance() {
-        distanceWidth = focalWidth * targetWidth / width.getDouble(0.0);
+        //distanceWidth = focalWidth * targetWidth / width.getDouble(0.0);
         distanceHeight = focalHeight * targetHeight / height.getDouble(0.0);
-        distance = (distanceHeight + distanceWidth) / 2;
+        //distance = (distanceHeight + distanceWidth) / 2;
+        distance = distanceHeight;
         distanceSquared = distance * distance;
         horizontal = Math.sqrt(distanceSquared - heightSquared);
         return horizontal;
     }
 
     public double getYawDegrees() {
-        yawDegrees = cameraFOV * 0.5 / maxYaw * yaw.getDouble(0.0);
+        yawDegrees = cameraFOV * 0.5 / maxYaw * yaw.getDouble(0.0) + width.getDouble(0.0)/640*25;
         return yawDegrees; 
     }
 

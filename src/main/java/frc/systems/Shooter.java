@@ -20,10 +20,10 @@ public class Shooter {
     private Funnel funnel = Funnel.getInstance();
     private static Vision vision = Vision.getInstance();
     private static RobotDashboard dashboard = RobotDashboard.getInstance();
-    private static double P = .00008;
+    private static double P = .0002;
     private static double I = .00001;
     private static double D = .0001;
-    private static double Iz = 450;
+    private static double Iz = 400;
     private static PIDController pidController;
     private static final double SHOOTER_SPEED = .45;
     private boolean firstTime = true;
@@ -83,14 +83,14 @@ public class Shooter {
             // setTargetSpeed(dashboard.getShooterTargetVelocity(2800));
             setSpeed();
             // set hood poistion
-            hood.setPosition(10);
+            hood.setPosition(vision.getTargetDistance());
             magazine.loadBallInShootingPosition();
         }
     }
 
     public void beginTargetting() {
         turret.startTargeting();
-        hood.setPosition(2);
+        hood.setPosition(vision.getTargetDistance());
     }
 
     public void runDrum(double speed) {
