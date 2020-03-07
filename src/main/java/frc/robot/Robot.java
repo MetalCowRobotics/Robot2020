@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.autonomous.NoAuto;
 import frc.autonomous.ShootAndGather;
+import frc.autonomous.ShootAndGatherParalell;
 import frc.autonomous.ShootAndGo;
 import frc.commands.DriveBackwardsStraight;
 import frc.commands.DriveInches;
@@ -66,6 +67,8 @@ public class Robot extends TimedRobot {
       mission = new ShootAndGo();
     } else if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GATHER == dashboard.getAutoMission()) {
       mission = new ShootAndGather(dashboard.getStartingPosition());
+    } else if(RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GATHER_PARALELL == dashboard.getAutoMission()) {
+      mission = new ShootAndGatherParalell(dashboard.getStartingPosition());
     } else {
       mission = new NoAuto();
     }

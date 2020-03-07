@@ -15,7 +15,7 @@ public class RobotDashboard {
 	private SendableChooser<AutoPosition> startingPosition = new SendableChooser<>();
 
 	public enum AutoMission {
-		AUTOMODE_NONE, AUTOMODE_SHOOT_N_GO, AUTOMODE_SHOOT_N_GATHER
+		AUTOMODE_NONE, AUTOMODE_SHOOT_N_GO, AUTOMODE_SHOOT_N_GATHER, AUTOMODE_SHOOT_N_GATHER_PARALELL
 	}
 
 	public enum AutoPosition {
