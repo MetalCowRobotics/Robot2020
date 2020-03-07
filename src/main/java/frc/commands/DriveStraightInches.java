@@ -63,12 +63,11 @@ public class DriveStraightInches extends TimedCommand implements MCRCommand {
             startTics = driveTrain.getEncoderTics();
         }
 
-        // if (ticsTravelled() < targetTics) {
-            //driveTrain.arcadeDrive(calculateSpeed(), getCorrection() * dir);
-            driveTrain.arcadeDrive(calculateSpeed(), .7);
-        // } else {
-            // end();
-        // }
+        if (ticsTravelled() < targetTics) {
+            driveTrain.arcadeDrive(calculateSpeed(), getCorrection() * dir);
+        } else {
+            end();
+        }
        System.out.println("gyro:"+driveTrain.getAngle()+"  |  tics:" + driveTrain.getEncoderTics() + "  |  startTics:" + startTics+ "  |  correction:" + getCorrection());
     }
 
@@ -84,8 +83,8 @@ public class DriveStraightInches extends TimedCommand implements MCRCommand {
     }
 
     private double calculateSpeed() {
-        // if (targetTics - RobotMap.DriveWithEncoder.SLOW_DOWN_DISTANCE < ticsTravelled())
-            // return RobotMap.DriveWithEncoder.BOTTOM_SPEED * dir;
+        if (targetTics - RobotMap.DriveWithEncoder.SLOW_DOWN_DISTANCE < ticsTravelled())
+            return RobotMap.DriveWithEncoder.BOTTOM_SPEED * dir;
         return RobotMap.DriveWithEncoder.TOP_SPEED * dir;
     }
 
