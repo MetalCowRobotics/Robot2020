@@ -68,7 +68,7 @@ public class DriveStraightInches extends TimedCommand implements MCRCommand {
         } else {
             end();
         }
-       System.out.println("gyro:"+driveTrain.getAngle()+"  |  tics:" + driveTrain.getEncoderTics() + "  |  startTics:" + startTics+ "  |  correction:" + getCorrection() + "  |  ticsTravelled:" + ticsTravelled());
+       System.out.println("gyro:"+driveTrain.getAngle()+"  |  tics:" + driveTrain.getEncoderTics() + "  |  startTics:" + startTics+ "  |  correction:" + getCorrection());
     }
 
     private void end() {
@@ -78,7 +78,7 @@ public class DriveStraightInches extends TimedCommand implements MCRCommand {
     }
 
     private double ticsTravelled() {
-       // logger.info("Drivetrain tics travelled: " + (driveTrain.getEncoderTics() - startTics));
+       logger.info("Drivetrain tics travelled: " + (driveTrain.getEncoderTics() - startTics));
         return Math.abs(driveTrain.getEncoderTics() - startTics);
     }
 
