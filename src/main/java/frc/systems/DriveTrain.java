@@ -76,10 +76,14 @@ public class DriveTrain {
 			invert();
 		}
 		double speed = (controller.forwardSpeed() - controller.reverseSpeed()) * inverted * getThrottle();
-		drive.arcadeDrive(speed, controller.direction() * getThrottle());
+		// drive.curvatureDrive(speed, controller.direction(), false);
+		drive.arcadeDrive(speed, controller.direction()* .7);
+		// drive.arcadeDrive(speed, controller.direction() * getThrottle());
 		//testing
 		dashboard.pushLeftEncoder(getLeftEncoderTics());
 		dashboard.pushRightEncoder(getRightEncoderTics());
+
+		SmartDashboard.putNumber("Gyro", getAngle());
 	}
 	
 	public void arcadeDrive(double speed, double angle) {

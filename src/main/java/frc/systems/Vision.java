@@ -6,7 +6,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class Vision {
     double focalWidth = 778.8679;
-    double focalHeight = 1828.1923;
+    double focalHeight = 827.9805;
     double targetWidth = 3.3125;
     double targetHeight = 1.4167;
 
@@ -52,8 +52,8 @@ public class Vision {
         yaw = myCam.getEntry("targetYaw");
         pitch = myCam.getEntry("targetPitch");
         isDriverMode = myCam.getEntry("driverMode");
-        width = myCam.getEntry("targetFittedWidth");
-        height = myCam.getEntry("targetFittedHeight");
+        width = myCam.getEntry("targetBoundingWidth");
+        height = myCam.getEntry("targetBoundingHeight");
 
     }
 
@@ -69,7 +69,7 @@ public class Vision {
     }
 
     public double getYawDegrees() {
-        yawDegrees = cameraFOV * 0.5 / maxYaw * yaw.getDouble(0.0) + width.getDouble(0.0)/640*25;
+        yawDegrees = cameraFOV * 0.5 / maxYaw * yaw.getDouble(0.0) + width.getDouble(0.0)/640*50;
         return yawDegrees; 
     }
 

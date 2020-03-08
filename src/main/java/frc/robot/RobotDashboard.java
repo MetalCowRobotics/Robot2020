@@ -174,6 +174,10 @@ public class RobotDashboard {
 		SmartDashboard.putNumber("SpeedCorrection", 0);
 	}
 
+	public boolean pushAutoTargeting(boolean autoOn) {
+		return SmartDashboard.getBoolean("AutoTarget", autoOn);
+	}
+
 	public boolean isAutoTargeting() {
 		return SmartDashboard.getBoolean("AutoTarget", true);
 	}

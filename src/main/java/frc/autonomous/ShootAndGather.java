@@ -1,5 +1,6 @@
 package frc.autonomous;
 
+import frc.commands.AutoTarget;
 import frc.commands.DriveInches;
 import frc.commands.DriveStraightInches;
 import frc.commands.IntakeDeployRun;
@@ -24,16 +25,11 @@ public class ShootAndGather implements MCRCommand {
             ShootBall shoot = new ShootBall();
             //  MCRCommand commandSet = new SequentialCommands(shoot, shoot, shoot);
             MCRCommand startUp = new ParallelCommands(new SpinUpDrum(), new TurnTurret(-98));
-            MCRCommand collect = new ParallelCommands(new IntakeDeployRun(), new DriveInches( 1, 144));
+            MCRCommand collect = new ParallelCommands(new IntakeDeployRun(), new AutoTarget(true), new DriveInches( 1, 144));
            MCRCommand driveSet = new SequentialCommands(
                startUp,
                 new TimedCommandSet(shoot, 3.5),
                collect,
-               //new TimedCommandSet(new TurnDegrees(170), 5),
-                    //new CommandPause(.02), new DriveStraightInches(90, 4), 
-                    //new TimedCommandSet(new TurnDegrees(18), 4),
-                    // new CommandPause(.02), 
-                    //new DriveInches( 1, 174)
                     new TimedCommandSet(new ShootBall(), 5));
              mission = driveSet;//new SequentialCommands(new TimedCommandSet(shoot, 5), new TimedCommandSet(driveSet, 30));
             System.out.println("auto mission shoot and gather right");
