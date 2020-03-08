@@ -3,10 +3,14 @@ package frc.autonomous;
 import frc.commands.AutoTarget;
 import frc.commands.DriveInches;
 import frc.commands.DriveStraightInches;
+import frc.commands.IntakeDeployRun;
 import frc.commands.ShootBall;
+import frc.commands.SpinUpDrum;
 import frc.commands.TurnDegrees;
+import frc.commands.TurnTurret;
 import frc.lib14.CommandPause;
 import frc.lib14.MCRCommand;
+import frc.lib14.ParallelCommands;
 import frc.lib14.SequentialCommands;
 import frc.lib14.TimedCommandSet;
 import frc.robot.RobotDashboard;
@@ -17,7 +21,7 @@ public class ShootAndGather implements MCRCommand {
 
     public ShootAndGather(AutoPosition position) {
 
-        if(position.equals(RobotDashboard.AutoPosition.AUTOMODE_RIGHT_OF_TARGET)) {
+        // if(position.equals(RobotDashboard.AutoPosition.AUTOMODE_RIGHT_OF_TARGET)) {
             ShootBall shoot = new ShootBall();
             //  MCRCommand commandSet = new SequentialCommands(shoot, shoot, shoot);
             MCRCommand startUp = new ParallelCommands(new SpinUpDrum(), new TurnTurret(-98));
@@ -29,8 +33,8 @@ public class ShootAndGather implements MCRCommand {
                     new TimedCommandSet(new ShootBall(), 5));
              mission = driveSet;//new SequentialCommands(new TimedCommandSet(shoot, 5), new TimedCommandSet(driveSet, 30));
             System.out.println("auto mission shoot and gather right");
-        }
-        else {mission = new ShootAndGo(); System.out.println("auto mission defaulted to shoot and go");}
+        // }
+        // else {mission = new ShootAndGo(); System.out.println("auto mission defaulted to shoot and go");}
     }
 
     public ShootAndGather(String position) {

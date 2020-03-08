@@ -13,7 +13,7 @@ import frc.robot.RobotMap;
 
 public class Hood {
     private static MCR_SRX hood = new MCR_SRX(RobotMap.Hood.HOOD_MOTOR);
-    private static AnalogPotentiometer pot = new AnalogPotentiometer(0, 10000, -2378);
+    private static AnalogPotentiometer pot = new AnalogPotentiometer(0, 10000, -2200);
     private static FC_JE_0149Encoder encoder = new FC_JE_0149Encoder(3, 2);
     private static RobotDashboard dashboard = RobotDashboard.getInstance();
 
@@ -42,10 +42,8 @@ public class Hood {
     }
 
     public void run() {
-        pushPosition();
-        //TODO what is pushHoodPosition trying to do
-        dashboard.pushHoodPositionText(1); 
         double currentTics = getCurrentTics();
+        dashboard.pushHoodPositionText((int) currentTics); 
         double target = targetTics + adjustment + dashboard.hoodCorrection();
         double error = (target - currentTics) / 100;
         error = UtilityMethods.absMin(error, .5);
@@ -101,9 +99,9 @@ public class Hood {
 
     // automated set hood position
     public void setPosition(double distance) {
-        if (distance > 25) {
+        if (distance > 20) {
             setFarShot();
-        } else if (distance > 5) {
+        } else if (distance > 7) {
             setTenFoot();
         } else {
             setSafeZone();
@@ -131,14 +129,4 @@ public class Hood {
         adjustment = 0;
     }
 
-    private void pushPosition() {
-        double currentTics = getCurrentTics();
-        if (currentTics - 2043 < currentTics - 1990) {
-            SmartDashboard.putString("Hood Position", String.valueOf(currentTics) + " away from Long Shot");
-        } else if (currentTics - 1990 < currentTics - 1466) {
-            SmartDashboard.putString("Hood Position", String.valueOf(currentTics) + " away from 10 Foot Shot");
-        } else {
-            SmartDashboard.putString("Hood Position", String.valueOf(currentTics) + " away from Safe Zone Shot");
-        }
-    }
 }

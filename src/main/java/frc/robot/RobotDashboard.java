@@ -195,7 +195,13 @@ public class RobotDashboard {
 	}
 
 	public void pushHoodPositionText(int tics) {
-
+        if (tics > 1822) {
+            SmartDashboard.putString("Hood Position", "Long");
+        } else if (tics > 1647) {
+            SmartDashboard.putString("Hood Position", "10 Foot");
+        } else {
+            SmartDashboard.putString("Hood Position", "Safe Zone");
+        }
 	}
 
 }

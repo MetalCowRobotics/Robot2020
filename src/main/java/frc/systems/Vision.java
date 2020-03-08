@@ -59,9 +59,10 @@ public class Vision {
 
     // Periodic function
     public double getTargetDistance() {
-        distanceWidth = focalWidth * targetWidth / width.getDouble(0.0);
+        //distanceWidth = focalWidth * targetWidth / width.getDouble(0.0);
         distanceHeight = focalHeight * targetHeight / height.getDouble(0.0);
-        distance = (distanceHeight + distanceWidth) / 2;
+        //distance = (distanceHeight + distanceWidth) / 2;
+        distance = distanceHeight;
         distanceSquared = distance * distance;
         horizontal = Math.sqrt(distanceSquared - heightSquared);
         return horizontal;

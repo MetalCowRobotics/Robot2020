@@ -78,12 +78,12 @@ public class Turret {
 
     public void turnTurret(double power) { // for human control
         SmartDashboard.putNumber("power", power);
-        if (!targeting) {
+        // if (!targeting) {
             setTurretPower(power);
-        }
+        // }
     }
 
-    private void setTurretPower(double power) {
+    public void setTurretPower(double power) {
         if (power < 0 && encoder.getTics() < leftBound) {
             turret.set(UtilityMethods.absMin(power, turretSpeed));
         } else if (power > 0 && encoder.getTics() > rightBound) {

@@ -29,6 +29,10 @@ public class NewTurn implements MCRCommand {
     private static final double MAX_ADJUSTMENT = .6;
     private static final double SLOW_VARIANCE = 15; // 10
     private static final double SLOW_ADJUSTMENT = .6;
+    public static final double kP = 0.04; 
+    public static final double kI = .008; 
+    public static final double kD = .08;
+    public static final double Iz = 5;
 
     // degrees = positive numbers turn right and negative numbers turn left
     public NewTurn(double degrees) {
@@ -49,6 +53,7 @@ public class NewTurn implements MCRCommand {
         driveController.set_kP(dashboard.getTurnKP());
         driveController.set_kI(dashboard.getTurnKI());
         driveController.set_kD(dashboard.getTurnKD());
+        driveController.set_Iz(dashboard.getTurnIz());
         double correction = driveController.calculateAdjustment(currentAngle);
         System.out.println("correction before limits" + correction);
         if (UtilityMethods.between(currentAngle, setPoint - SLOW_VARIANCE, setPoint + SLOW_VARIANCE)) {
@@ -76,8 +81,7 @@ public class NewTurn implements MCRCommand {
             driveTrain.resetGyro();
             setPoint = driveTrain.getAngle() + degrees;
             System.out.println(("TurnDegrees SetPoint:" + setPoint));
-            driveController = new PIDController(setPoint, RobotMap.TurnDegrees.kP, RobotMap.TurnDegrees.kI,
-                    RobotMap.TurnDegrees.kD, RobotMap.TurnDegrees.Iz);
+            driveController = new PIDController(setPoint, dashboard.getTurnKP(), dashboard.getTurnKI(), dashboard.getTurnKD(), dashboard.getTurnIz());
         }
     }
 

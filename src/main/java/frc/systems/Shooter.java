@@ -20,10 +20,10 @@ public class Shooter {
     private Funnel funnel = Funnel.getInstance();
     private static Vision vision = Vision.getInstance();
     private static RobotDashboard dashboard = RobotDashboard.getInstance();
-    private static double P = .00008;
+    private static double P = .0002;
     private static double I = .00001;
     private static double D = .0001;
-    private static double Iz = 450;
+    private static double Iz = 400;
     private static PIDController pidController;
     private static final double SHOOTER_SPEED = .45;
     private boolean firstTime = true;
@@ -75,22 +75,20 @@ public class Shooter {
         if (!readyToShoot) {
             prepDrum = false;
             readyToShoot = true;
-            turret.startTargeting();
-            // get target distance
-            // set shooter speed
-            // setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));//needs
-            // velocity
-            // setTargetSpeed(dashboard.getShooterTargetVelocity(2800));
-            setSpeed();
-            // set hood poistion
-            hood.setPosition(10);
+            if(dashboard.isAutoTargeting()) {
+                turret.startTargeting();
+                setSpeed();
+                hood.setPosition(vision.getTargetDistance());
+            } else {
+                setTargetSpeed(3050);
+            }
             magazine.loadBallInShootingPosition();
         }
     }
 
     public void beginTargetting() {
         turret.startTargeting();
-        hood.setPosition(2);
+        hood.setPosition(vision.getTargetDistance());
     }
 
     public void runDrum(double speed) {
@@ -159,15 +157,15 @@ public class Shooter {
         return false;
     }
 
-    public void setTargetSpeed(double targetSpeed) {
-        this.targetSpeed = targetSpeed + dashboard.speedCorrection();
+    public void setTargetSpeed(double newTarget) {
+        targetSpeed = newTarget + dashboard.speedCorrection();
         pidController.setSetPoint(targetSpeed);
         dashboard.pushShooterTargetVelocity(targetSpeed);
     }
 
     // testing
     public void setupShooter() {
-        setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));// needs velocity
+        // setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));// needs velocity
         // setSpeed();
         firstTime = false;
         readyToShoot = true;
@@ -175,7 +173,7 @@ public class Shooter {
 
     public void shooterTest() {
         if (firstTime) {
-            setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));// needs velocity
+            // setTargetSpeed(SmartDashboard.getNumber("Set Velocity", 1500));// needs velocity
             // setSpeed();
             firstTime = false;
         }

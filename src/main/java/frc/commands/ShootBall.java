@@ -14,6 +14,7 @@ import frc.systems.Shooter;
 public class ShootBall implements MCRCommand{ 
     Shooter shooter = Shooter.getInstance();
     boolean firstTime = true;
+    boolean shotOne = false;
     boolean done = false;
 
     @Override
@@ -23,12 +24,20 @@ public class ShootBall implements MCRCommand{
             shooter.prepareToShoot();
             SmartDashboard.putBoolean("First time", firstTime);
         }
-        if(shooter.atSpeed()){
+        if (shotOne) {
             shooter.shootBall();
+        } else {
+            if(shooter.atSpeed()){
+                shooter.shootBall();
+                shotOne = true;
+            } 
         }
             //TODO how will we know when we are done
             // done = true;
-        //}
+    }
+
+    private void end() {
+        shooter.stopShooter();
     }
 
     @Override
