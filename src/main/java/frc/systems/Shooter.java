@@ -86,6 +86,17 @@ public class Shooter {
         }
     }
 
+    public void prepareToShoot(double fromDistance) {
+            prepDrum = false;
+            readyToShoot = true;
+            magazine.loadBallInShootingPosition();
+            setTargetSpeed(fromDistance);
+            hood.setPosition(fromDistance);
+            if(dashboard.isAutoTargeting()) {
+                turret.startTargeting();
+            }
+    }
+
     public void beginTargetting() {
         turret.startTargeting();
         hood.setPosition(vision.getTargetDistance());

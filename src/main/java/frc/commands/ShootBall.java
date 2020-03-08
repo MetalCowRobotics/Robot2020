@@ -16,13 +16,21 @@ public class ShootBall implements MCRCommand{
     boolean firstTime = true;
     boolean shotOne = false;
     boolean done = false;
+    double targetDistance = 144; //inches
+
+    public ShootBall() {
+
+    }
+
+    public ShootBall(double inchesFromTarget) {
+        targetDistance = inchesFromTarget;
+    }
 
     @Override
     public void run() {
         if(firstTime){
             firstTime = false;
-            shooter.prepareToShoot();
-            SmartDashboard.putBoolean("First time", firstTime);
+            shooter.prepareToShoot(targetDistance);
         }
         if (shotOne) {
             shooter.shootBall();
