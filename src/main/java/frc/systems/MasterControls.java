@@ -16,6 +16,7 @@ public class MasterControls {
 	private static final MasterControls instance = new MasterControls();
 
 	private boolean fieldMode = true;
+	private boolean intakeUp = true;
 
 	private MasterControls() {
 		// Intentionally Blank for Singleton
@@ -58,11 +59,21 @@ public class MasterControls {
 	}
 
 	public boolean raiseIntake() {
-		return isDpadUpperHalf(operator);
+		boolean raise = isDpadUpperHalf(operator) || (operator.getBumperPressed(Hand.kLeft) && intakeUp);
+		if (raise) {
+			intakeUp = true;
+		}
+		return raise;
+		// return isDpadUpperHalf(operator);
 	}
 
 	public boolean lowerIntake() {
-		return isDpadLowerHalf(operator);
+		boolean lower = isDpadLowerHalf(operator) || (operator.getBumperPressed(Hand.kLeft) && !intakeUp);
+		if (lower) {
+			intakeUp = false;
+		}
+		return lower;		
+		// return isDpadLowerHalf(operator);
 	}
 
 	private boolean isDpadUpperHalf(XboxControllerMetalCow controller) {
@@ -83,7 +94,7 @@ public class MasterControls {
 	}
 
 	public boolean intakeOnOff() {
-		return operator.getBumperPressed(Hand.kRight);
+		return operator.getBumperPressed(Hand.kRight) || driver.getBumperPressed(Hand.kRight);
 	}
 
 	public void changeMode() {
