@@ -40,8 +40,14 @@ public class Turret {
     }
 
     public void run() {
-        double yawCorrection = UtilityMethods.map(vision.getTargetDistance(), 10, 30, dashboard.yawCorrectionShort(), dashboard.yawCorrectionLong());
+        // double yawCorrection = UtilityMethods.map(vision.getTargetDistance(), 6, 30, dashboard.yawCorrectionShort(), dashboard.yawCorrectionLong());
         // double yaw = vision.getYawDegrees() + dashboard.yawCorrectionShort();
+        double yawCorrection;
+        if (vision.distance > 20) {
+            yawCorrection = vision.getYawDegrees() + dashboard.yawCorrectionLong();
+        } else {
+            yawCorrection = vision.getYawDegrees() + dashboard.yawCorrectionShort();
+        }
         double yaw = vision.getYawDegrees() + yawCorrection + adjustment;
         if (targeting) {
             if (UtilityMethods.between(yaw, -2, 2)) {
