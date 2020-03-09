@@ -130,4 +130,7 @@ public class MasterControls {
 	public boolean target() {
 		return operator.getXButton();
 	}
+	public boolean rototeColorWheel(){
+		return operator.getYButton();
+	}
 }

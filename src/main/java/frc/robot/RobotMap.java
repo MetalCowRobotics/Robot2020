@@ -128,7 +128,7 @@ public class RobotMap {
 
 
 	public static final class ColorWheel{
-		public static final int Motor = 0;
+		public static final int Motor = 6;
 	} 
 
 	public static final class LightRing {

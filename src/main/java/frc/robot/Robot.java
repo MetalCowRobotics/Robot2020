@@ -13,11 +13,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.autonomous.NoAuto;
 import frc.autonomous.ShootAndGather;
 import frc.autonomous.ShootAndGo;
-import frc.commands.DriveBackwardsStraight;
-import frc.commands.DriveInches;
-import frc.commands.DriveStraightInches;
-import frc.commands.TurnTurret;
 import frc.lib14.MCRCommand;
+import frc.systems.ColorWheel;
 import frc.systems.Climber;
 import frc.systems.DriveTrain;
 import frc.systems.Intake;
@@ -37,6 +34,7 @@ public class Robot extends TimedRobot {
   Intake intake = Intake.getInstance();
   Shooter shooter = Shooter.getInstance();
   Climber climber = Climber.getInstance();
+  ColorWheel wheel = ColorWheel.getInstance();
   MasterControls controls = MasterControls.getInstance();
   RobotDashboard dashboard = RobotDashboard.getInstance();
   Vision vision = Vision.getInstance();
@@ -135,6 +133,12 @@ public class Robot extends TimedRobot {
     }
     // climber
     climber.raiseClimber(controls.climbSpeed());
+    // colorWheel
+    if (controls.rototeColorWheel()) {
+      wheel.override(.4);
+    } else {
+      wheel.stopColorWheel();
+    }
   }
 
   private void runSystemsStateMachine() {

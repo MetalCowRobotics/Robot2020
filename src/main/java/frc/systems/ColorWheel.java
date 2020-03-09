@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
+import frc.lib14.MCR_SPX;
 import frc.lib14.MCR_SRX;
 import frc.robot.RobotDashboard;
 import frc.robot.RobotMap;
@@ -18,7 +19,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ColorWheel {
-    private static MCR_SRX colorWheelMotor = new MCR_SRX(RobotMap.ColorWheel.Motor);// TODO: needs to be mapped
+    // private static MCR_SRX colorWheelMotor = new MCR_SRX(RobotMap.ColorWheel.Motor);// TODO: needs to be mapped
+    private static MCR_SPX colorWheelMotor = new MCR_SPX(RobotMap.ColorWheel.Motor);
     private static I2C.Port port = I2C.Port.kOnboard;
     private static ColorSensorV3 sensor = new ColorSensorV3(port);
     private RobotDashboard dashboard = RobotDashboard.getInstance();
