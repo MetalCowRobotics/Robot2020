@@ -25,7 +25,7 @@ import frc.lib14.TimedCommandSet;
 public class GatherAndShoot implements MCRCommand{
     MCRCommand mission;
 
-        public GatherAndShoot(){
+        public GatherAndShoot(){// this mission will start with the intake facing the opponents color wheel headed for the two balls, then drive and tun then drive and shoot al 5(hopefully) balls
             MCRCommand stepOne = new ParallelCommands(new IntakeDeployRun(), new TimedCommandSet(new DriveInches(1, 145), 4));
             MCRCommand stepTwo = new ParallelCommands(new TimedCommandSet(new DriveInches(-1, 175), 4));
             MCRCommand stepThree = new ParallelCommands(new IntakeStow(), new TimedCommandSet (new TurnDegrees(90), 3), new SpinUpDrum());
