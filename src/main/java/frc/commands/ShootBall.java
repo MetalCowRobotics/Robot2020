@@ -16,14 +16,14 @@ public class ShootBall implements MCRCommand{
     boolean firstTime = true;
     boolean shotOne = false;
     boolean done = false;
-    double targetDistance = 144; //inches
+    double targetDistance = 12; //feet
 
     public ShootBall() {
 
     }
 
-    public ShootBall(double inchesFromTarget) {
-        targetDistance = inchesFromTarget;
+    public ShootBall(double feetFromTarget) {
+        targetDistance = feetFromTarget;
     }
 
     @Override
