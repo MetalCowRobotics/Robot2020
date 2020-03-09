@@ -30,7 +30,7 @@ import java.util.HashMap;
  * Add your docs here.
  */
 public class ColorWheel {
-    private static final int COLOR_WHEEL_MOTOR_MAPPING = 10;
+    private static final int COLOR_WHEEL_MOTOR_MAPPING = 6;
     private static final ColorWheel instance = new ColorWheel();
     private static MCR_SRX colorWheelMotor = new MCR_SRX(COLOR_WHEEL_MOTOR_MAPPING); //TODO: needs to be mapped
 
