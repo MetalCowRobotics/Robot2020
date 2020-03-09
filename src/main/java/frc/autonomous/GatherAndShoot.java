@@ -27,8 +27,8 @@ public class GatherAndShoot implements MCRCommand{
 
         public GatherAndShoot(){
             MCRCommand stepOne = new ParallelCommands(new IntakeDeployRun(), new TimedCommandSet(new DriveInches(1, 145), 4));
-            MCRCommand stepTwo = new ParallelCommands(new IntakeStow(), new TimedCommandSet(new DriveInches(-1, 175), 4));
-            MCRCommand stepThree = new ParallelCommands(new TimedCommandSet (new TurnDegrees(90), 3), new SpinUpDrum());
+            MCRCommand stepTwo = new ParallelCommands(new TimedCommandSet(new DriveInches(-1, 175), 4));
+            MCRCommand stepThree = new ParallelCommands(new IntakeStow(), new TimedCommandSet (new TurnDegrees(90), 3), new SpinUpDrum());
             MCRCommand stepFour = new SequentialCommands(new TimedCommandSet(new DriveInches(-1, 270), 4));
             MCRCommand stepFive = new SequentialCommands(new ShootBall());
             mission = new SequentialCommands(stepOne, stepTwo, stepThree, stepFour, stepFive);
