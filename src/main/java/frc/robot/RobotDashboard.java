@@ -187,7 +187,7 @@ public class RobotDashboard {
 		return (int) SmartDashboard.getNumber("HoodCorrection", 0);
 	}
 
-	public double yawCorrection() {
+	public double yawCorrectionShort() {
 		return SmartDashboard.getNumber("YawCorrectionShort", 0);
 	}
 
