@@ -59,7 +59,7 @@ public class MasterControls {
 	}
 
 	public boolean raiseIntake() {
-		boolean raise = isDpadUpperHalf(operator) || (operator.getBumperPressed(Hand.kLeft) && intakeUp);
+		boolean raise = isDpadUpperHalf(operator) || (operator.getBumperPressed(Hand.kLeft) && !intakeUp);
 		if (raise) {
 			intakeUp = true;
 		}
@@ -68,7 +68,7 @@ public class MasterControls {
 	}
 
 	public boolean lowerIntake() {
-		boolean lower = isDpadLowerHalf(operator) || (operator.getBumperPressed(Hand.kLeft) && !intakeUp);
+		boolean lower = isDpadLowerHalf(operator) || (operator.getBumperPressed(Hand.kLeft) && intakeUp);
 		if (lower) {
 			intakeUp = false;
 		}
