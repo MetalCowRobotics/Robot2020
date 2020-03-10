@@ -1,7 +1,6 @@
 package frc.systems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib14.FC_JE_0149Encoder;
 import frc.lib14.MCR_SRX;
@@ -126,4 +125,5 @@ public class Turret {
     public int getTurretPosition() {
         return encoder.getTics();
     }
+
 }
