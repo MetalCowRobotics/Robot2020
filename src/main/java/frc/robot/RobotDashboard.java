@@ -30,6 +30,14 @@ public class RobotDashboard {
 		return ourInstance;
 	}
 
+	public void initialPush() {
+		pushAuto();
+		pushTurnPID();
+		pushShooterTargetVelocity(2700);
+		pushTargetingTuning();
+		pushTurretOffset();
+	}
+
 	public void pushAuto() {
 		autonomousAction.setDefaultOption("shoot and go", AutoMission.AUTOMODE_SHOOT_N_GO);
 		autonomousAction.addOption("shoot and gather", AutoMission.AUTOMODE_SHOOT_N_GATHER);
@@ -170,7 +178,8 @@ public class RobotDashboard {
 	public void pushTargetingTuning() {
 		SmartDashboard.putBoolean("AutoTarget", true);
 		SmartDashboard.putNumber("HoodCorrection", 0);
-		SmartDashboard.putNumber("YawCorrection", 0);
+		SmartDashboard.putNumber("YawCorrectionShort", 0);
+		SmartDashboard.putNumber("YawCorrectionLong", 0);
 		SmartDashboard.putNumber("SpeedCorrection", 0);
 	}
 
@@ -186,8 +195,12 @@ public class RobotDashboard {
 		return (int) SmartDashboard.getNumber("HoodCorrection", 0);
 	}
 
-	public double yawCorrection() {
-		return SmartDashboard.getNumber("YawCorrection", 0);
+	public double yawCorrectionShort() {
+		return SmartDashboard.getNumber("YawCorrectionShort", 0);
+	}
+
+	public double yawCorrectionLong() {
+		return SmartDashboard.getNumber("YawCorrectionLong", 0);
 	}
 
 	public double speedCorrection() {
@@ -202,6 +215,14 @@ public class RobotDashboard {
         } else {
             SmartDashboard.putString("Hood Position", "Safe Zone");
         }
+	}
+
+	public void pushTurretOffset() {
+		SmartDashboard.putNumber("TurretOffset", 0);
+	}
+
+	public double getTurretOffset() {
+		return SmartDashboard.getNumber("TurretOffset", 0);
 	}
 
 }

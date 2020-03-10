@@ -53,10 +53,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     CameraServer.getInstance().startAutomaticCapture(0);
     driveTrain.calibrateGyro();
-    dashboard.pushAuto();
-    dashboard.pushTurnPID();
-    dashboard.pushShooterTargetVelocity(2700);
-    dashboard.pushTargetingTuning();
+    dashboard.initialPush();
   }
 
   @Override
@@ -69,22 +66,12 @@ public class Robot extends TimedRobot {
     } else {
       mission = new NoAuto();
     }
-    // mission = new TurnTurret(-85);
-    // mission = new DriveBackwardsStraight(36, 4);
-    // mission = new DriveStraightInches(DriveStraightInches.DRIVE_DIRECTION.backward, 36);
-    // mission = new DriveInches(1, 36);
-    // mission = new TurnTurret(45);
-    // mission = new DriveBackwardsStraight(36);
-    // mission = new SequentialCommands(new ShootBall(), new ShootBall(), new ShootBall());
   }
 
   @Override
   public void autonomousPeriodic() {
-    SmartDashboard.putBoolean("is ready", shooter.isReady());
     mission.run();
-    SmartDashboard.putNumber("shots", shooter.ballShots());
     runSystemsStateMachine();
-    SmartDashboard.putNumber("Gyro", driveTrain.getAngle());
   }
 
   @Override
@@ -94,8 +81,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    SmartDashboard.putBoolean("is ready", shooter.isReady());
-    SmartDashboard.putNumber("shots", shooter.ballShots());
     controls.changeMode();
     applyOperatorInputs();
     driveTrain.drive();

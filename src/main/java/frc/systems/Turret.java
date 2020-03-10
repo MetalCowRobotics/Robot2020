@@ -14,23 +14,24 @@ public class Turret {
     private static FC_JE_0149Encoder encoder = new FC_JE_0149Encoder(5, 4);
     private static final Vision vision = Vision.getInstance();
     private static final RobotDashboard dashboard = RobotDashboard.getInstance();
-    final double turretSpeed = .4;
-    final int leftBound = 127; // not final num
-    final int rightBound = -273; // not final num
-    int deadZone = 30;
-    int startPos = 0;
-    boolean targeting = false;
-    int targetTics = 0;
-    boolean onTarget = false;
+    private final double turretSpeed = .4;
+    private int leftBound = 127; // not final num
+    private int rightBound = -273; // not final num
+    private boolean targeting = false;
+    private boolean onTarget = false;
+    private double adjustment = 0;
+    private double targetTics = 0;
 
-    //singletom
+    //singleton
     private static final Turret instance = new Turret();
 
     private Turret() {
         turret.configFactoryDefault();
         turret.setNeutralMode(NeutralMode.Brake);
         resetTurretEncoder();
-        targetTics = startPos;
+        double offset = dashboard.getTurretOffset();
+        leftBound += offset;
+        rightBound -= offset;
         stopTurret();
     }
 
@@ -39,11 +40,21 @@ public class Turret {
     }
 
     public void run() {
-        double yaw = vision.getYawDegrees() + dashboard.yawCorrection();
+        // double yawCorrection = UtilityMethods.map(vision.getTargetDistance(), 6, 30, dashboard.yawCorrectionShort(), dashboard.yawCorrectionLong());
+        // double yaw = vision.getYawDegrees() + dashboard.yawCorrectionShort();
+        double yawCorrection;
+        if (vision.distance > 20) {
+            yawCorrection = vision.getYawDegrees() + dashboard.yawCorrectionLong();
+        } else {
+            yawCorrection = vision.getYawDegrees() + dashboard.yawCorrectionShort();
+        }
+        double yaw = vision.getYawDegrees() + yawCorrection + adjustment;
         if (targeting) {
             if (UtilityMethods.between(yaw, -2, 2)) {
                 turret.stopMotor();
+                onTarget = true;
             } else {
+                onTarget = false;
                 if (yaw > 0) {
                     setTurretPower(.2);
                 } else if (yaw < 0) {
@@ -57,8 +68,7 @@ public class Turret {
         SmartDashboard.putNumber("yaw", yaw);
     }
 
-    //TODO onTarget is never getting set
-    private boolean onTarget() {
+    public boolean onTarget() {
         return onTarget;
     }
 
@@ -68,6 +78,7 @@ public class Turret {
 
     public void stopTargeting() {
         targeting = false;
+        adjustment = 0 ;
     }
 
     //TODO does this work?
@@ -78,9 +89,11 @@ public class Turret {
 
     public void turnTurret(double power) { // for human control
         SmartDashboard.putNumber("power", power);
-        // if (!targeting) {
+        if (!targeting) {
             setTurretPower(power);
-        // }
+        } else {
+            adjustment += UtilityMethods.copySign(power, .75);
+        }
     }
 
     public void setTurretPower(double power) {
@@ -99,7 +112,6 @@ public class Turret {
 
     public void resetTurretEncoder() {
         encoder.reset();
-        startPos = encoder.getTics();
     }
 
     private void setTargetTics(int tics) {
