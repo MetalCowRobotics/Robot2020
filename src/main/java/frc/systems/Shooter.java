@@ -86,6 +86,17 @@ public class Shooter {
         }
     }
 
+    public void prepareToShoot(double feetFromDistance) {
+        prepDrum = false;
+        readyToShoot = true;
+        magazine.loadBallInShootingPosition();
+        setTargetSpeed(determineSpeedFromDistance(feetFromDistance));
+        hood.setPosition(feetFromDistance);
+        if(dashboard.isAutoTargeting()) {
+            turret.startTargeting();
+        }
+    }
+
     public void beginTargetting() {
         turret.startTargeting();
         hood.setPosition(vision.getTargetDistance());
@@ -201,13 +212,15 @@ public class Shooter {
     }
 
     private double determineSpeedFromDistance(double distance) {
-        double adjustment = (3050 - 2700) / (22 - 5);
-        return Math.min((distance - 5) * adjustment, 3500);
-        // if (distance > 5) {
-        //     return 3000;
-        // } else {
-        //     return 2700;
-        // }
+        // double adjustment = (3050 - 2700) / (22 - 5);
+        // return Math.min((distance - 5) * adjustment, 3500);
+        if (distance > 20) {
+            return 3000;
+        } else if (distance > 5){
+            return 2500;
+        } else {
+            return 1750;
+        }
     }
 
 }
