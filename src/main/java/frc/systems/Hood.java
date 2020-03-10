@@ -47,7 +47,7 @@ public class Hood {
         double target = targetTics + adjustment + dashboard.hoodCorrection();
         double error = (target - currentTics) / 100;
         error = UtilityMethods.absMin(error, .5);
-        if (Math.abs(target - currentTics) < 5) {
+        if (Math.abs(target - currentTics) < 4) {
             hood.stopMotor();
         } else {
             //TODO check upper and lower bounds
