@@ -110,7 +110,7 @@ public class Hood {
     }
 
     public void setFarShot() {
-        targetTics = inchesToTics(4);
+        targetTics = inchesToTics(3.7);
     }
 
     public void setTenFoot() {

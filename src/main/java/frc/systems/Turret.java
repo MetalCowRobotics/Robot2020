@@ -1,7 +1,6 @@
 package frc.systems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib14.FC_JE_0149Encoder;
 import frc.lib14.MCR_SRX;
@@ -39,7 +38,15 @@ public class Turret {
     }
 
     public void run() {
-        double yaw = vision.getYawDegrees() + dashboard.yawCorrection();
+        // double yawCorrection = UtilityMethods.map(vision.getTargetDistance(), 6, 30, dashboard.yawCorrectionShort(), dashboard.yawCorrectionLong());
+        // double yaw = vision.getYawDegrees() + dashboard.yawCorrectionShort();
+        double yawCorrection;
+        if (vision.distance > 20) {
+            yawCorrection = vision.getYawDegrees() + getOffset() + dashboard.yawCorrectionLong();
+        } else {
+            yawCorrection = vision.getYawDegrees() + getOffset() + dashboard.yawCorrectionShort();
+        }
+        double yaw = vision.getYawDegrees() + yawCorrection + adjustment;
         if (targeting) {
             if (UtilityMethods.between(yaw, -2, 2)) {
                 turret.stopMotor();
@@ -113,5 +120,13 @@ public class Turret {
 
     public int getTurretPosition() {
         return encoder.getTics();
+    }
+
+    private double getOffset() {
+        if (vision.getTargetDistance() < 20) {
+            return -12;
+        } else {
+            return .175;
+        }
     }
 }
