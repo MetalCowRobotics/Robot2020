@@ -1,5 +1,6 @@
 package frc.autonomous;
 
+import frc.commands.AutoTarget;
 import frc.commands.DriveBackwardsStraight;
 import frc.commands.ShootBall;
 import frc.lib14.MCRCommand;
@@ -11,7 +12,7 @@ public class ShootAndGo implements MCRCommand {
 
     public ShootAndGo() {
         MCRCommand shoot = new ShootBall();
-        mission = new SequentialCommands(new TimedCommandSet(shoot, 6), new DriveBackwardsStraight(36, 4));
+        mission = new SequentialCommands(new TimedCommandSet(shoot, 6), new DriveBackwardsStraight(36, 4), new AutoTarget(true));
     }
 
     @Override

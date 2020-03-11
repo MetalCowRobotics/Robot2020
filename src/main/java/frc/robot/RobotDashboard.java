@@ -176,7 +176,7 @@ public class RobotDashboard {
 	}
 
 	public void pushTargetingTuning() {
-		SmartDashboard.putBoolean("AutoTarget", true);
+		pushAutoTargeting(true);
 		SmartDashboard.putNumber("HoodCorrection", 0);
 		SmartDashboard.putNumber("YawCorrectionShort", -15);
 		SmartDashboard.putNumber("YawCorrectionLong", .175);
