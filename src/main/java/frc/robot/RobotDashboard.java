@@ -225,4 +225,8 @@ public class RobotDashboard {
 		return SmartDashboard.getNumber("TurretOffset", 0);
 	}
 
+	public void pushFMSColor(String gameSpecificMessage) {
+		SmartDashboard.putString("FMS_String", gameSpecificMessage);
+	}
+
 }

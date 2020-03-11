@@ -20,6 +20,7 @@ public class Turret {
     private boolean onTarget = false;
     private double adjustment = 0;
     private double targetTics = 0;
+    private boolean firstTime = true;
 
     //singleton
     private static final Turret instance = new Turret();
@@ -28,9 +29,6 @@ public class Turret {
         turret.configFactoryDefault();
         turret.setNeutralMode(NeutralMode.Brake);
         resetTurretEncoder();
-        double offset = dashboard.getTurretOffset();
-        leftBound += offset;
-        rightBound -= offset;
         stopTurret();
     }
 
@@ -39,6 +37,12 @@ public class Turret {
     }
 
     public void run() {
+        if (firstTime) {
+            firstTime = false;
+            double offset = dashboard.getTurretOffset();
+            leftBound += offset;
+            rightBound -= offset;
+        }
         // double yawCorrection = UtilityMethods.map(vision.getTargetDistance(), 6, 30, dashboard.yawCorrectionShort(), dashboard.yawCorrectionLong());
         // double yaw = vision.getYawDegrees() + dashboard.yawCorrectionShort();
         double yawCorrection;
