@@ -11,8 +11,8 @@ import frc.robot.RobotDashboard;
 import frc.robot.RobotMap;
 
 public class Shooter {
-    private static CANSparkMax neo1 = new CANSparkMax(RobotMap.Shooter.TOP_MOTOR, MotorType.kBrushless);
-    private static CANSparkMax neo2 = new CANSparkMax(RobotMap.Shooter.BOTTOM_MOTOR, MotorType.kBrushless);
+    private static CANSparkMax neo1 = new CANSparkMax(RobotMap.Shooter.BOTTOM_MOTOR, MotorType.kBrushless);
+    private static CANSparkMax neo2 = new CANSparkMax(RobotMap.Shooter.TOP_MOTOR, MotorType.kBrushless);
     private static SpeedControllerGroup shooter = new SpeedControllerGroup(neo1, neo2);
     private Magazine magazine = Magazine.getInstance();
     private Hood hood = Hood.getInstance();
@@ -189,7 +189,7 @@ public class Shooter {
             firstTime = false;
         }
         shooter.set(SHOOTER_SPEED + getCorrection());
-        SmartDashboard.putNumber("Correction", getCorrection());
+        SmartDashboard.putNumber("ShootCorrection", getCorrection());
         SmartDashboard.putNumber("Actual Velocity", neo1.getEncoder().getVelocity());
     }
 

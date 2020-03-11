@@ -47,24 +47,41 @@ public class Turret {
         } else {
             yawCorrection = vision.getYawDegrees() + dashboard.yawCorrectionShort();
         }
-        double yaw = vision.getYawDegrees() + yawCorrection + adjustment;
+        double yaw = vision.getYawDegrees() + yawCorrection;// + adjustment;
         if (targeting) {
-            if (UtilityMethods.between(yaw, -2, 2)) {
+            if (UtilityMethods.between(yaw, -3, 3)) {
                 turret.stopMotor();
                 onTarget = true;
             } else {
                 onTarget = false;
-                if (yaw > 0) {
-                    setTurretPower(.2);
-                } else if (yaw < 0) {
-                    setTurretPower(-.2);
+                if(Math.abs(yaw) > 5) {
+                    normalAdjustment(yaw);
                 } else {
-                    stopTurret();
+                    slowAdjustment(yaw);
                 }
             }
         }
         SmartDashboard.putNumber("turret encoder", encoder.getTics());
-        SmartDashboard.putNumber("yaw", yaw);
+    }
+
+    private void normalAdjustment(double yaw) {
+        if (yaw > 0) {
+            setTurretPower(.2);
+        } else if (yaw < 0) {
+            setTurretPower(-.2);
+        } else {
+            stopTurret();
+        }
+    }
+
+    private void slowAdjustment(double yaw) {
+        if (yaw > 0) {
+            setTurretPower(.1);
+        } else if (yaw < 0) {
+            setTurretPower(-.1);
+        } else {
+            stopTurret();
+        }
     }
 
     public boolean onTarget() {
@@ -73,11 +90,11 @@ public class Turret {
 
     public void startTargeting() {
         targeting = true;
+        adjustment = 0;
     }
 
     public void stopTargeting() {
         targeting = false;
-        adjustment = 0 ;
     }
 
     //TODO does this work?
@@ -91,7 +108,7 @@ public class Turret {
         if (!targeting) {
             setTurretPower(power);
         } else {
-            adjustment += UtilityMethods.copySign(power, .75);
+            adjustment += UtilityMethods.copySign(power, .25);
         }
     }
 

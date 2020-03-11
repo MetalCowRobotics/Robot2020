@@ -59,19 +59,21 @@ public class MasterControls {
 	}
 
 	public boolean raiseIntake() {
-		boolean raise = isDpadUpperHalf(operator) || (operator.getBumperPressed(Hand.kLeft) && !intakeUp);
+		boolean raise = isDpadUpperHalf(operator) || (driver.getBumperPressed(Hand.kLeft) && !intakeUp);
 		if (raise) {
 			intakeUp = true;
 		}
+		// intakeUp = true;
 		return raise;
 		// return isDpadUpperHalf(operator);
 	}
 
 	public boolean lowerIntake() {
-		boolean lower = isDpadLowerHalf(operator) || (operator.getBumperPressed(Hand.kLeft) && intakeUp);
+		boolean lower = isDpadLowerHalf(operator) || (driver.getBumperPressed(Hand.kLeft) && intakeUp);
 		if (lower) {
 			intakeUp = false;
 		}
+		// intakeUp = false;
 		return lower;		
 		// return isDpadLowerHalf(operator);
 	}
