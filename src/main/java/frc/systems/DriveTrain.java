@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib14.MCR_SRX;
 import frc.lib14.UtilityMethods;
+import frc.robot.IMUFixed;
 import frc.robot.RobotDashboard;
 import frc.robot.RobotMap;
 import frc.robot.RobotMap.Drivetrain;
@@ -18,6 +19,7 @@ import frc.robot.RobotMap.Drivetrain;
 public class DriveTrain {
 	// private static final Logger logger = Logger.getLogger(DriveTrain.class.getName());
 	public static final ADIS16470_IMU GYRO = new ADIS16470_IMU();
+	// public static final IMUFixed GYRO = new IMUFixed();
 	private static MCR_SRX rightFrontMotor = new MCR_SRX(RobotMap.Drivetrain.RIGHT_MOTOR);
 	private static MCR_SRX rightBackMotor = new MCR_SRX(Drivetrain.RIGHT_MOTOR_NO_ENCODER); 
 	private static MCR_SRX leftFrontMotor = new MCR_SRX(RobotMap.Drivetrain.LEFT_MOTOR);
