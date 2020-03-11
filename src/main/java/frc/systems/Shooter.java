@@ -189,7 +189,7 @@ public class Shooter {
             firstTime = false;
         }
         shooter.set(SHOOTER_SPEED + getCorrection());
-        SmartDashboard.putNumber("Correction", getCorrection());
+        SmartDashboard.putNumber("ShootCorrection", getCorrection());
         SmartDashboard.putNumber("Actual Velocity", neo1.getEncoder().getVelocity());
     }
 

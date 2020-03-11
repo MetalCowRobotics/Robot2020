@@ -7,7 +7,6 @@
 
 package frc.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib14.MCRCommand;
 import frc.systems.Shooter;
 

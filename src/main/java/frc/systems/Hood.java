@@ -54,10 +54,10 @@ public class Hood {
             hood.set(UtilityMethods.copySign(error, .4));
         }
 
-        SmartDashboard.putNumber("Current Tics", encoder.getTics());
-        SmartDashboard.putNumber("Encoder Tics with Starting Position", encoder.getTics() + startingPosition);
+        SmartDashboard.putNumber("HoodEncoder", encoder.getTics());
+        SmartDashboard.putNumber("HoodEncoderPlusOffset", encoder.getTics() + startingPosition);
         SmartDashboard.putNumber("PotTics", pot.get());
-        SmartDashboard.putNumber("Target Tics", targetTics);
+        SmartDashboard.putNumber("HoodTarget", targetTics);
     }
 
     private double inchesToTics(double inches) {

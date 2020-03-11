@@ -62,7 +62,6 @@ public class Turret {
             }
         }
         SmartDashboard.putNumber("turret encoder", encoder.getTics());
-        SmartDashboard.putNumber("yaw", yaw);
     }
 
     private void normalAdjustment(double yaw) {
@@ -91,11 +90,11 @@ public class Turret {
 
     public void startTargeting() {
         targeting = true;
+        adjustment = 0;
     }
 
     public void stopTargeting() {
         targeting = false;
-        adjustment = 0 ;
     }
 
     //TODO does this work?
@@ -109,7 +108,7 @@ public class Turret {
         if (!targeting) {
             setTurretPower(power);
         } else {
-            adjustment += UtilityMethods.copySign(power, .75);
+            adjustment += UtilityMethods.copySign(power, .25);
         }
     }
 
