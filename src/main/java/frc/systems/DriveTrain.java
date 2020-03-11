@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib14.MCR_SRX;
+import frc.lib14.UtilityMethods;
 import frc.robot.RobotDashboard;
 import frc.robot.RobotMap;
 import frc.robot.RobotMap.Drivetrain;
@@ -77,8 +78,14 @@ public class DriveTrain {
 		}
 		double speed = (controller.forwardSpeed() - controller.reverseSpeed()) * inverted * getThrottle();
 		// drive.curvatureDrive(speed, controller.direction(), false);
-		drive.arcadeDrive(speed, controller.direction()* .7);
 		// drive.arcadeDrive(speed, controller.direction() * getThrottle());
+		if (controller.isCrawlToggle()) {
+			drive.arcadeDrive(speed, controller.direction()* .5) ;
+		} else {
+			drive.arcadeDrive(speed, controller.direction()* .8);
+		}
+
+		// drive.arcadeDrive(speed, controller.direction() * UtilityMethods.absMin(getThrottle(), .7));
 		//testing
 		dashboard.pushLeftEncoder(getLeftEncoderTics());
 		dashboard.pushRightEncoder(getRightEncoderTics());
