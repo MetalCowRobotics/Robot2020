@@ -63,7 +63,7 @@ public class MasterControls {
 		if (raise) {
 			intakeUp = true;
 		}
-		intakeUp = true;
+		// intakeUp = true;
 		return raise;
 		// return isDpadUpperHalf(operator);
 	}
@@ -73,7 +73,7 @@ public class MasterControls {
 		if (lower) {
 			intakeUp = false;
 		}
-		intakeUp = false;
+		// intakeUp = false;
 		return lower;		
 		// return isDpadLowerHalf(operator);
 	}
