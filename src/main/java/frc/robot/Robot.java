@@ -73,6 +73,9 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     vision.visionInit();
+    intake.stopIntake();
+    shooter.stopShooter();
+    driveTrain.stop();
   }
 
   @Override
