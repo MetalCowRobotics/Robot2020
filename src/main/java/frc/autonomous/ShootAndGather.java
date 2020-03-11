@@ -18,7 +18,7 @@ public class ShootAndGather implements MCRCommand {
 
     public ShootAndGather(AutoPosition position) {
             ShootBall shoot = new ShootBall(12);
-            MCRCommand startUp = new ParallelCommands(new SpinUpDrum(), new TurnTurret(-98));
+            MCRCommand startUp = new ParallelCommands(new SpinUpDrum(), new TurnTurret(-226));
             MCRCommand secondShoot = new SequentialCommands(new CommandPause(1.5), new TimedCommandSet(new ShootBall(24), 11));
             MCRCommand collect = new ParallelCommands(new IntakeDeployRun(), new AutoTarget(true), new DriveInches(1, 144), secondShoot);
             // MCRCommand collect = new ParallelCommands(new IntakeDeployRun(), new AutoTarget(true), new DriveInches( 1, 144));

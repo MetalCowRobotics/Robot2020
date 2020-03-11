@@ -142,7 +142,7 @@ public class DriveTrain {
 
 	public void printRightEncoder() {
 		System.out.println(getRightEncoderTics() + " RightEncoder");
-		SmartDashboard.putNumber("encoder", getRightEncoderTics());
+		SmartDashboard.putNumber("right encoder", getRightEncoderTics());
 	}
 	public void printLeftEncoder() {
 		System.out.println(getLeftEncoderTics() + " LeftEncoder");

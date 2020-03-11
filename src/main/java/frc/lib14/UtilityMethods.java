@@ -55,7 +55,24 @@ public class UtilityMethods {
 	}
 
 	public static double map(double in, double in_min, double in_max, double out_min, double out_max) {
-  		return (in - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+		if (in_min <= in_max){
+			if(in <= in_min) {
+				return out_min;
+			} else if (in > in_max){
+				return out_max;
+			} else {
+				return (in - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+			}
+		} else if (in > in_min){
+			return out_min;
+		} else if (in > in_min) {
+			return out_min;
+		} else if(in < in_max) {
+			return out_max;
+		} else {
+			double x = ((in-in_min) / (in_max - in_min))*(out_max - out_min) + out_min;
+			return (in - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+		}
 	}
 
 	public static double limit(double input, double lowerBound, double upperBound) {
