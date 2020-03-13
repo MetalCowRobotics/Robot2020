@@ -17,6 +17,7 @@ public class MasterControls {
 
 	private boolean fieldMode = true;
 	private boolean intakeUp = true;
+	private boolean driverInakeButonPressed;
 
 	private MasterControls() {
 		// Intentionally Blank for Singleton
@@ -58,24 +59,26 @@ public class MasterControls {
 		return driver.getLX();
 	}
 
-	public boolean raiseIntake() {
-		boolean raise = isDpadUpperHalf(operator) || (driver.getBumperPressed(Hand.kLeft) && !intakeUp);
-		if (raise) {
-			intakeUp = true;
-		}
-		// intakeUp = true;
-		return raise;
-		// return isDpadUpperHalf(operator);
-	}
-
 	public boolean lowerIntake() {
-		boolean lower = isDpadLowerHalf(operator) || (driver.getBumperPressed(Hand.kLeft) && intakeUp);
+		driverInakeButonPressed = driver.getBumperPressed(Hand.kLeft);
+		boolean lower = isDpadLowerHalf(operator) || (driverInakeButonPressed && intakeUp);
 		if (lower) {
 			intakeUp = false;
 		}
 		// intakeUp = false;
 		return lower;		
 		// return isDpadLowerHalf(operator);
+	}
+
+	public boolean raiseIntake() {
+		boolean raise = isDpadUpperHalf(operator) || (driverInakeButonPressed && !intakeUp);
+		if (raise) {
+			intakeUp = true;
+		}
+		// intakeUp = true;
+		driverInakeButonPressed = false;
+		return raise;
+		// return isDpadUpperHalf(operator);
 	}
 
 	private boolean isDpadUpperHalf(XboxControllerMetalCow controller) {
