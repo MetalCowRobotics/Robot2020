@@ -146,4 +146,8 @@ public class MasterControls {
 	public boolean target() {
 		return operator.getXButton();
 	}
+
+	public boolean colorWheelForward() {
+		return operator.getYButton();
+	}
 }

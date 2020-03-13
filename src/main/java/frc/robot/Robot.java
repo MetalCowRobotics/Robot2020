@@ -15,6 +15,7 @@ import frc.autonomous.ShootAndGather;
 import frc.autonomous.ShootAndGo;
 import frc.lib14.MCRCommand;
 import frc.systems.Climber;
+import frc.systems.ColorWheel;
 import frc.systems.DriveTrain;
 import frc.systems.Intake;
 import frc.systems.MasterControls;
@@ -33,6 +34,7 @@ public class Robot extends TimedRobot {
   Intake intake = Intake.getInstance();
   Shooter shooter = Shooter.getInstance();
   Climber climber = Climber.getInstance();
+  ColorWheel colorWheel = ColorWheel.getInstance();
   MasterControls controls = MasterControls.getInstance();
   RobotDashboard dashboard = RobotDashboard.getInstance();
   Vision vision = Vision.getInstance();
@@ -73,9 +75,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     vision.visionInit();
-    intake.stopIntake();
-    shooter.stopShooter();
-    driveTrain.stop();
   }
 
   @Override
@@ -91,6 +90,11 @@ public class Robot extends TimedRobot {
   }
 
   private void applyOperatorInputs() {
+    if (controls.colorWheelForward()) {
+      colorWheel.override(1);
+    } else {
+      colorWheel.stopColorWheel();
+    }
     // intake
     if (controls.lowerIntake()) {
       intake.lowerIntake();
