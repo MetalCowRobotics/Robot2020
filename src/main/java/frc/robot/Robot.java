@@ -58,14 +58,13 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     vision.visionInit();
-    // if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GO == dashboard.getAutoMission()) {
-    //   mission = new ShootAndGo();
-    // } else if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GATHER == dashboard.getAutoMission()) {
-    //   mission = new ShootAndGather(dashboard.getStartingPosition());
-    // } else {
-    //   mission = new NoAuto();
-    // }
-    mission = new TurnTurret(-85); //-226
+    if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GO == dashboard.getAutoMission()) {
+      mission = new ShootAndGo();
+    } else if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GATHER == dashboard.getAutoMission()) {
+      mission = new ShootAndGather(dashboard.getStartingPosition());
+    } else {
+      mission = new NoAuto();
+    }
   }
 
   @Override
