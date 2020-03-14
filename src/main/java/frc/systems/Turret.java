@@ -15,7 +15,7 @@ public class Turret {
     private static final RobotDashboard dashboard = RobotDashboard.getInstance();
     private final double turretSpeed = .4;
     private int leftBound = 127; // not final num
-    private int rightBound = -273; // not final num
+    private int rightBound = -264; // was -273 not final num
     private boolean targeting = false;
     private boolean onTarget = false;
     private double adjustment = 0;
@@ -51,7 +51,7 @@ public class Turret {
         } else {
             yawCorrection = vision.getYawDegrees() + dashboard.yawCorrectionShort();
         }
-        double yaw = vision.getYawDegrees() + yawCorrection;// + adjustment;
+        double yaw = vision.getYawDegrees() + yawCorrection + adjustment;
         if (targeting) {
             if (UtilityMethods.between(yaw, -3, 3)) {
                 turret.stopMotor();
@@ -108,12 +108,15 @@ public class Turret {
     }
 
     public void turnTurret(double power) { // for human control
-        SmartDashboard.putNumber("power", power);
+        // SmartDashboard.putNumber("power", power);
         if (!targeting) {
             setTurretPower(power);
         } else {
-            adjustment += UtilityMethods.copySign(power, .25);
+            if (Math.abs(power) > 0) {
+                adjustment += UtilityMethods.copySign(power, .25);
+            }
         }
+        SmartDashboard.putNumber("turretAdjustment", adjustment);
     }
 
     public void setTurretPower(double power) {
