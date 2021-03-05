@@ -40,8 +40,11 @@ public class Robot extends TimedRobot {
   RobotDashboard dashboard = RobotDashboard.getInstance();
   Vision vision = Vision.getInstance();
 
+  // Turret turret;// = Turret.getInstance();
+
   // class variables
   MCRCommand mission;
+
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -52,7 +55,9 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     CameraServer.getInstance().startAutomaticCapture(0);
     driveTrain.calibrateGyro();
-    dashboard.initialPush();
+    dashboard.pushAuto();
+    dashboard.pushTurnPID();
+    dashboard.pushShooterTargetVelocity(1500);
   }
 
   @Override
@@ -87,7 +92,7 @@ public class Robot extends TimedRobot {
 
     //testing
     SmartDashboard.putNumber("distance", vision.getTargetDistance());
-    SmartDashboard.putNumber("yaw", vision.getYawDegrees());                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+    SmartDashboard.putNumber("yaw", vision.getYawDegrees());
   }
 
   private void applyOperatorInputs() {
@@ -127,7 +132,8 @@ public class Robot extends TimedRobot {
   }
 
   private void runSystemsStateMachine() {
-    intake.run();
+    driveTrain.drive();
+   // intake.run();
     shooter.run();
     climber.run();
   }

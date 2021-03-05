@@ -174,7 +174,7 @@ public class RobotDashboard {
 		SmartDashboard.putString("color", match.color.toString());
 		SmartDashboard.putNumber("confidence", match.confidence);
 	}
-
+/*
 	public void pushTargetingTuning() {
 		pushAutoTargeting(true);
 		SmartDashboard.putNumber("HoodCorrection", 0);
@@ -228,5 +228,5 @@ public class RobotDashboard {
 	public void pushFMSColor(String gameSpecificMessage) {
 		SmartDashboard.putString("FMS_String", gameSpecificMessage);
 	}
-
+*/
 }

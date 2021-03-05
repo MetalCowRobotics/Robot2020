@@ -29,22 +29,13 @@ public class ShootBall implements MCRCommand{
     public void run() {
         if(firstTime){
             firstTime = false;
-            shooter.prepareToShoot(targetDistance);
+            shooter.prepareToShoot();
         }
-        if (shotOne) {
-            shooter.shootBall();
-        } else {
-            if(shooter.atSpeed()){
-                shooter.shootBall();
-                shotOne = true;
-            } 
-        }
+        if(shooter.isReady()){
+            shooter.shootBallWhenReady();
             //TODO how will we know when we are done
             // done = true;
-    }
-
-    private void end() {
-        shooter.stopShooter();
+        }
     }
 
     @Override

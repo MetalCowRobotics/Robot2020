@@ -55,6 +55,11 @@ public class Vision {
         width = myCam.getEntry("targetBoundingWidth");
         height = myCam.getEntry("targetBoundingHeight");
 
+       /* 
+        width = myCam.getEntry("targetFittedWidth");
+        height = myCam.getEntry("targetFittedHeight");
+        setTargetMode(false);
+        */
     }
 
     // Periodic function
@@ -71,6 +76,11 @@ public class Vision {
     public double getYawDegrees() {
         yawDegrees = cameraFOV * 0.5 / maxYaw * yaw.getDouble(0.0) + width.getDouble(0.0)/640*50;
         return yawDegrees; 
+
+        /*
+        yawDegrees = cameraFOV * 0.5 / maxYaw * yaw.getDouble(0.0);
+        return yawDegrees;
+        */
     }
 
     public void setTargetMode(boolean cameraMode) {
@@ -84,29 +94,5 @@ public class Vision {
         return targetMode;
     }
 
-/* 
-    public void teleopPeriodic() {
-        
-        //System.out.println("hello world");
-        //System.out.println("Yaw: " + yaw.getDouble(0.0) + "  Pitch: " + pitch.getDouble(0.0)+ "  targetFittedWidth " + width.getDouble(0.0));//trys to print yaw, if it doesnt exist it will print 0
-        System.out.println("Distance: " + distance + "  distanceHeight: " + distanceHeight + "   distanceWidth" + distanceWidth + "   yaw" + yaw.getDouble(0.0));
-        targetYaw = yaw.getDouble(0.0);
-       if (targetYaw > targetTolerance) { 
-           //turn clockwise
-           targetYaw = yaw.getDouble(0.0);
-           turnCW.updateDegrees(targetYaw);
-           turnCW.run();
-           System.out.println("New Target Yaw: " + targetYaw);
-           turnDelay=1;
-          }
-         if (targetYaw < -targetTolerance) { 
-          //turn counter-clockwise
-          targetYaw = yaw.getDouble(0.0);
-          turnCCW.updateDegrees(targetYaw);
-          turnCCW.run();
-          System.out.println("New Target Yaw: " + targetYaw);
-          turnDelay=1;
-          }   
-          turnDelay--; 
-    }*/
+
 }

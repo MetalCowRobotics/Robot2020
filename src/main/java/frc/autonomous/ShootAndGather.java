@@ -1,3 +1,10 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 package frc.autonomous;
 
 import frc.commands.AutoTarget;
@@ -17,26 +24,18 @@ public class ShootAndGather implements MCRCommand {
     MCRCommand mission;
 
     public ShootAndGather(AutoPosition position) {
-            ShootBall shoot = new ShootBall(12);
-            MCRCommand startUp = new ParallelCommands(new SpinUpDrum(), new TurnTurret(-226));
-            MCRCommand secondShoot = new SequentialCommands(new CommandPause(1.5), new TimedCommandSet(new ShootBall(24), 11));
-            MCRCommand collect = new ParallelCommands(new IntakeDeployRun(), new AutoTarget(true), new DriveInches(1, 144), secondShoot);
-            // MCRCommand collect = new ParallelCommands(new IntakeDeployRun(), new AutoTarget(true), new DriveInches( 1, 144));
-            mission = new SequentialCommands(
-               startUp,
-               new TimedCommandSet(shoot, 3.5),
-               collect
-               //new TimedCommandSet(new ShootBall(288), 5)
-            );
-    }
 
-    // public ShootAndGather(String position) {
-    //     MCRCommand commandSet = new SequentialCommands(new ShootBall(), new ShootBall(), new ShootBall());
-    //     MCRCommand driveset = new SequentialCommands( new TimedCommandSet(new TurnDegrees(170), 4),new CommandPause(.02), new DriveStraightInches(98, 3), new TimedCommandSet(new TurnDegrees(22), 3), new CommandPause(.02), new DriveStraightInches(36, 2),new CommandPause(.02), new DriveStraightInches(36, 2));
-    //     //MCRCommand driveSet = new TurnDegrees(90);
-    //     mission = new SequentialCommands(new TimedCommandSet(commandSet, 5), new TimedCommandSet(driveset, 30));
-    //     //mission = new SequentialCommands(driveSet);
-    // }
+        if(position.equals(RobotDashboard.AutoPosition.AUTOMODE_RIGHT_OF_TARGET)) {
+            
+             MCRCommand commandSet = new SequentialCommands(new ShootBall(), new ShootBall(), new ShootBall());
+           MCRCommand driveSet = new SequentialCommands(new TimedCommandSet(new TurnDegrees(170), 5),
+                    new CommandPause(.02), new DriveStraightInches(90, 4), new TimedCommandSet(new TurnDegrees(18), 4),
+                    new CommandPause(.02), new DriveStraightInches(75, 4));
+             mission = new SequentialCommands(new TimedCommandSet(commandSet, 5), new TimedCommandSet(driveSet, 30));
+            System.out.println("auto mission shoot and gather right");
+        }
+        else {mission = new ShootAndGo(); System.out.println("auto mission defaulted to shoot and go");}
+    }
 
     @Override
     public void run() {

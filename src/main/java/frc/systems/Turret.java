@@ -5,13 +5,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib14.FC_JE_0149Encoder;
 import frc.lib14.MCR_SRX;
 import frc.lib14.UtilityMethods;
-import frc.robot.RobotDashboard;
 import frc.robot.RobotMap;
 
 public class Turret {
     private static MCR_SRX turret = new MCR_SRX(RobotMap.Turret.TURRET_MOTOR);
     private static FC_JE_0149Encoder encoder = new FC_JE_0149Encoder(5, 4);
     private static final Vision vision = Vision.getInstance();
+/* My code...
     private static final RobotDashboard dashboard = RobotDashboard.getInstance();
     private final double turretSpeed = .4;
     private int leftBound = 127; // not final num
@@ -23,6 +23,17 @@ public class Turret {
     private boolean firstTime = true;
 
     //singleton
+  */  
+    final double turretSpeed = .4;
+    final int leftBound = 127; // not final num
+    final int rightBound = -273; // not final num
+    int deadZone = 30;
+    int startPos = 0;
+    boolean targeting = false;
+    int targetTics = 0;
+    boolean onTarget = false;
+
+    //singletom
     private static final Turret instance = new Turret();
 
     private Turret() {
@@ -37,6 +48,7 @@ public class Turret {
     }
 
     public void run() {
+        /* My code...
         if (firstTime) {
             firstTime = false;
             double offset = dashboard.getTurretOffset();
@@ -54,20 +66,44 @@ public class Turret {
         double yaw = vision.getYawDegrees() + yawCorrection + adjustment;
         if (targeting) {
             if (UtilityMethods.between(yaw, -3, 3)) {
+                */
+        double yaw = vision.getYawDegrees();
+        if (targeting) {
+            vision.setTargetMode(true);
+            if (UtilityMethods.between(yaw, -4, 4)) {
                 turret.stopMotor();
                 onTarget = true;
             } else {
-                onTarget = false;
-                if(Math.abs(yaw) > 5) {
-                    normalAdjustment(yaw);
+
+              // My Code...
+              //  onTarget = false;
+              //  if(Math.abs(yaw) > 5) {
+              //      normalAdjustment(yaw);
+//-------------------------------------------------------
+                // if (yaw > 0 && encoder.getTics() > -50) { //left
+                // turret.set(0.2);
+                // } else if (yaw< 0 && encoder.getTics() < 50){ //right
+                // turret.set(-0.2);
+                // } else {
+                // stopTurret();
+                // }
+                // set turrent power can deal with the limits
+                if (yaw > 0) {
+                    setTurretPower(.2);
+                } else if (yaw < 0) {
+                    setTurretPower(-.2);
                 } else {
                     slowAdjustment(yaw);
                 }
             }
-        }
+        } else {
+            vision.setTargetMode(false);
+        } 
+            
+        
         SmartDashboard.putNumber("turret encoder", encoder.getTics());
     }
-
+/* my code...
     private void normalAdjustment(double yaw) {
         if (yaw > 0) {
             setTurretPower(.2);
@@ -87,7 +123,7 @@ public class Turret {
             stopTurret();
         }
     }
-
+*/
     public boolean onTarget() {
         return onTarget;
     }
@@ -101,9 +137,8 @@ public class Turret {
         targeting = false;
     }
 
-    //TODO does this work?
     // 4096tics = 360 degrees 11.25tics = 1 degree
-    private void rotateTurret(double degrees) { // for vision
+    public void rotateTurret(double degrees) { // for vision
         setTargetTics((int) (encoder.getTics() + (degrees * 1.4)));
     }
 
@@ -111,10 +146,12 @@ public class Turret {
         // SmartDashboard.putNumber("power", power);
         if (!targeting) {
             setTurretPower(power);
-        } else {
-            if (Math.abs(power) > 0) {
-                adjustment += UtilityMethods.copySign(power, .25);
-            }
+            // My Code...
+      //  } else {
+        //    if (Math.abs(power) > 0) {
+        //        adjustment += UtilityMethods.copySign(power, .25);
+        //    }
+           
         }
         SmartDashboard.putNumber("turretAdjustment", adjustment);
     }
@@ -138,7 +175,6 @@ public class Turret {
     }
 
     private void setTargetTics(int tics) {
-        //TODO check this logic
         if (tics < 0) {
             targetTics = Math.min(tics, leftBound);
         } else {
@@ -146,8 +182,8 @@ public class Turret {
         }
     }
 
-    public int getTurretPosition() {
-        return encoder.getTics();
-    }
+   // public int getTurretPosition() {
+      //  return encoder.getTics();
+  //  }
 
 }
