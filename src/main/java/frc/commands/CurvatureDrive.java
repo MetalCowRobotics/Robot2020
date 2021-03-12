@@ -16,10 +16,10 @@ public class CurvatureDrive implements MCRCommand {
     DriveTrain driveTrain = DriveTrain.getInstance();
     boolean firstTime = true;
     boolean isFinished = false;
-
+// Direction: 1 is right and -1 is left
     public CurvatureDrive(String direction, double angle, double radius, int time) {
         this.angle = angle;
-        this.radius = radius;
+        this.radius = radius - 15;
         this.timeInSeconds = time;
         driveTrain.resetGyro();
         driveTrain.calibrateGyro();
@@ -36,10 +36,9 @@ public class CurvatureDrive implements MCRCommand {
         if (firstTime) {
             double innerRate = (Math.PI * 2 * radius) / timeInSeconds;
             double outerRate = (Math.PI * 2 * (radius + 30)) / timeInSeconds;
-            int innerDivisor = Double.toString(innerRate).indexOf(".");
-            int outerDivisor = Double.toString(outerRate).indexOf(".");
-            innerRate = innerRate / UtilityMethods.absMax(innerDivisor, outerDivisor);
-            outerRate = innerRate / UtilityMethods.absMax(innerDivisor, outerDivisor);
+            double ratio = radius / (radius + 30);
+            innerRate = 0.8;
+            outerRate = 0.8 * ratio;
             if (direction == -1) {
                 driveTrain.tankDrive(innerRate, outerRate);
             } else {
