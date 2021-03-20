@@ -10,7 +10,6 @@ public class CurvatureDrive implements MCRCommand {
     int direction = 1;
     double angle = 0;
     double radius = 0;
-    int timeInSeconds = 0;
     double startAngle = 0;
     double endAngle = 0;
     DriveTrain driveTrain = DriveTrain.getInstance();
@@ -20,11 +19,10 @@ public class CurvatureDrive implements MCRCommand {
     final int AXLE_WIDTH = 30; //get actual width from robot 
     final double MAX_SPEED = 0.9;
 // Direction: 1 is right and -1 is left
-    public CurvatureDrive(String direction, double angle, double radius, int time, double maximumSpeed) {
+    public CurvatureDrive(String direction, double angle, double radius, double maximumSpeed) {
         this.outerSpeed = maximumSpeed;
         this.angle = angle;
         this.radius = radius - (AXLE_WIDTH / 2);
-        this.timeInSeconds = time;
         if (direction.toUpperCase() == "LEFT") {
             this.direction = -1;
         } else if (direction.toUpperCase() == "RIGHT") {

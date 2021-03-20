@@ -22,6 +22,7 @@ import frc.systems.Intake;
 import frc.systems.MasterControls;
 import frc.systems.Shooter;
 import frc.systems.Vision;
+import frc.autonomous.BarrelRacing;
 
 /**
  * The VM is configured to automatically run this class. If you change the name
@@ -58,13 +59,14 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     vision.visionInit();
-    if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GO == dashboard.getAutoMission()) {
-      mission = new ShootAndGo();
-    } else if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GATHER == dashboard.getAutoMission()) {
-      mission = new ShootAndGather(dashboard.getStartingPosition());
-    } else {
-      mission = new NoAuto();
-    }
+    // if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GO == dashboard.getAutoMission()) {
+    //   mission = new ShootAndGo();
+    // } else if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GATHER == dashboard.getAutoMission()) {
+    //   mission = new ShootAndGather(dashboard.getStartingPosition());
+    // } else {
+    //   mission = new NoAuto();
+    // }
+    mission = new BarrelRacing();
   }
 
   @Override
