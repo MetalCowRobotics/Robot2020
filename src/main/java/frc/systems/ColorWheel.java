@@ -70,7 +70,7 @@ public class ColorWheel {
         }
         //TODO how do i do the reverse of goal color to target color so i can have i see this color do field sees this color
         dashboard.pushCurrentColor(readCurrentColor().toString(), null);
-        dashboard.pushFMSColor(DriverStation.getInstance().getGameSpecificMessage());
+        //dashboard.pushFMSColor(DriverStation.getInstance().getGameSpecificMessage());
     }
 
     public void rotate3Times() {

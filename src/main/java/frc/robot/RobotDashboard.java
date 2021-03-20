@@ -176,7 +176,7 @@ public class RobotDashboard {
 	}
 
 	public void pushTargetingTuning() {
-		pushAutoTargeting(true);
+		SmartDashboard.putBoolean("AutoTarget", true);
 		SmartDashboard.putNumber("HoodCorrection", 0);
 		SmartDashboard.putNumber("YawCorrectionShort", -15);
 		SmartDashboard.putNumber("YawCorrectionLong", .175);
@@ -207,15 +207,15 @@ public class RobotDashboard {
 		return SmartDashboard.getNumber("SpeedCorrection", 0);
 	}
 
-	public void pushHoodPositionText(int tics) {
-        if (tics > 1822) {
-            SmartDashboard.putString("Hood Position", "Long");
-        } else if (tics > 1647) {
-            SmartDashboard.putString("Hood Position", "10 Foot");
-        } else {
-            SmartDashboard.putString("Hood Position", "Safe Zone");
-        }
-	}
+	// public void pushHoodPositionText(int tics) {
+    //     if (tics > 1822) {
+    //         SmartDashboard.putString("Hood Position", "Long");
+    //     } else if (tics > 1647) {
+    //         SmartDashboard.putString("Hood Position", "10 Foot");
+    //     } else {
+    //         SmartDashboard.putString("Hood Position", "Safe Zone");
+    //     }
+	// }
 
 	public void pushTurretOffset() {
 		SmartDashboard.putNumber("TurretOffset", 0);
@@ -223,10 +223,6 @@ public class RobotDashboard {
 
 	public double getTurretOffset() {
 		return SmartDashboard.getNumber("TurretOffset", 0);
-	}
-
-	public void pushFMSColor(String gameSpecificMessage) {
-		SmartDashboard.putString("FMS_String", gameSpecificMessage);
 	}
 
 }

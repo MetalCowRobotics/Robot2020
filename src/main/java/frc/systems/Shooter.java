@@ -31,6 +31,8 @@ public class Shooter {
     private boolean readyToShoot = false;
     private boolean prepDrum = false;
 
+    private int requestedDistance = 1;
+
     // singleton instance
     private static final Shooter instance = new Shooter();
 
@@ -77,10 +79,10 @@ public class Shooter {
             readyToShoot = true;
             if(dashboard.isAutoTargeting()) {
                 turret.startTargeting();
-                setSpeed();
-                hood.setPosition(vision.getTargetDistance());
+                //setSpeed();
+                //hood.setPosition(vision.getTargetDistance());
             } else {
-                setTargetSpeed(3050);
+                //setTargetSpeed(3050);
             }
             magazine.loadBallInShootingPosition();
         }
@@ -99,7 +101,7 @@ public class Shooter {
 
     public void beginTargetting() {
         turret.startTargeting();
-        hood.setPosition(vision.getTargetDistance());
+        //hood.setPosition(vision.getTargetDistance()); //disabled for accuracy challenge
     }
 
     public void runDrum(double speed) {
@@ -220,6 +222,34 @@ public class Shooter {
             return 2500;
         } else {
             return 1750;
+        }
+    }
+
+    public void adjustToRequestedDistance( int requestedDistance) {
+        switch (requestedDistance) {
+            case 1:
+                // 3/6 new
+                hood.setRequiredPosition(2.14);
+                setTargetSpeed(1850);
+                break;
+            
+            case 2:
+                // 5/6 new
+                hood.setRequiredPosition(2.9);
+                setTargetSpeed(2250);                
+                break;
+
+            case 3:
+                // 2/3 all
+                hood.setRequiredPosition(3.13);
+                setTargetSpeed(2650);               
+                break;
+
+            case 4:
+                // 3/6 all
+                hood.setRequiredPosition(3.17);
+                setTargetSpeed(2700);           
+                break;
         }
     }
 

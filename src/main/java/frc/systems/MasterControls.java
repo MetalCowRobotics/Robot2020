@@ -61,7 +61,7 @@ public class MasterControls {
 
 	public boolean lowerIntake() {
 		driverInakeButonPressed = driver.getBumperPressed(Hand.kLeft);
-		boolean lower = isDpadLowerHalf(operator) || (driverInakeButonPressed && intakeUp);
+		boolean lower = (driverInakeButonPressed && intakeUp);
 		if (lower) {
 			intakeUp = false;
 		}
@@ -71,7 +71,7 @@ public class MasterControls {
 	}
 
 	public boolean raiseIntake() {
-		boolean raise = isDpadUpperHalf(operator) || (driverInakeButonPressed && !intakeUp);
+		boolean raise = (driverInakeButonPressed && !intakeUp);
 		if (raise) {
 			intakeUp = true;
 		}
@@ -149,5 +149,19 @@ public class MasterControls {
 
 	public boolean colorWheelForward() {
 		return operator.getYButton();
+	}
+
+	public int requestDistance() {
+		if (operator.getPOV() == 180) {
+			return 1;
+		} else if (operator.getPOV() == 90) {
+			return 2;
+		} else if (operator.getPOV() == 270) {
+			return 3;
+		} else if (operator.getPOV() == 0) {
+			return 4;
+		} else {
+			return 0;
+		}
 	}
 }

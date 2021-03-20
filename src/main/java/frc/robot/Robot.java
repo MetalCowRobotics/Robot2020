@@ -106,6 +106,7 @@ public class Robot extends TimedRobot {
       intake.toggleIntakeState();
     }
     //shooter
+    shooter.adjustToRequestedDistance(controls.requestDistance());
     shooter.manualAdjustHood(controls.hoodAdjustment());
     shooter.rotateTurret(controls.turretAdjustment());
     //check if operator wants to shoot
