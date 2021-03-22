@@ -30,6 +30,7 @@ public class CurvatureDrive implements MCRCommand {
             this.direction = 1;
         }
         // driveTrain.resetGyro();
+        
     } 
 
     public void run() {
@@ -57,16 +58,25 @@ public class CurvatureDrive implements MCRCommand {
             firstTime = false;
         }
 
-        driveTrain.tankDrive(left, right);;
 
+        if (isFinished()) {
+            return;
+        }
         if (UtilityMethods.between(driveTrain.getAngle(), endAngle, endAngle + 10)) {
             driveTrain.stop();
             isFinished = true;
+        } else {
+            driveTrain.tankDrive(left, right);
         }
     }
 
     @Override
     public boolean isFinished() {
         return isFinished;
+    }
+
+    private int targetTics(double target_inches) {
+        return (int) ((target_inches / RobotMap.DriveWithEncoder.INCHES_PER_ROTATION)
+                * RobotMap.DriveWithEncoder.TICS_PER_ROTATION);
     }
 } 
