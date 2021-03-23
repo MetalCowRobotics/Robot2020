@@ -5,13 +5,14 @@ import frc.systems.DriveTrain;
 import java.lang.Math;
 import frc.lib14.UtilityMethods;
 import frc.lib14.MCRCommand;
+import java.lang.Math;
 
 public class CurvatureDrive implements MCRCommand {
     int direction = 1;
     double angle = 0;
     double radius = 0;
-    double startAngle = 0;
-    double endAngle = 0;
+    double startAngle;
+    double endAngle;
     DriveTrain driveTrain = DriveTrain.getInstance();
     boolean firstTime = true;
     boolean isFinished = false;
@@ -19,16 +20,21 @@ public class CurvatureDrive implements MCRCommand {
     final int AXLE_WIDTH = 30; //get actual width from robot 
     final double MAX_SPEED = 0.9;
     double left, right = 0;
+    int targetTics;
+    int currentTics;
+    DriveTrain drive = DriveTrain.getInstance();
 // Direction: 1 is right and -1 is left
     public CurvatureDrive(String direction, double angle, double radius, double maximumSpeed) {
         this.outerSpeed = maximumSpeed;
         this.angle = angle;
         this.radius = radius - (AXLE_WIDTH / 2);
+        this.currentTics = drive.getEncoderTics();
         if (direction.toUpperCase() == "LEFT") {
             this.direction = -1;
         } else if (direction.toUpperCase() == "RIGHT") {
             this.direction = 1;
         }
+        
         // driveTrain.resetGyro();
         
     } 
@@ -46,10 +52,20 @@ public class CurvatureDrive implements MCRCommand {
                 driveTrain.tankDrive(innerRate, outerRate);
                 left = innerRate;
                 right = outerRate;
+
+                angle = Math.toRadians(angle);
+                double targetLength = radius * angle;
+                int ticsAddition = targetTics(targetLength);
+                this.targetTics = currentTics + ticsAddition;
             } else {
                 driveTrain.tankDrive(outerRate, innerRate);
                 left = innerRate;
                 right = outerRate;
+
+                angle = Math.toRadians(angle);
+                double targetLength = (radius + AXLE_WIDTH) * angle;
+                int ticsAddition = targetTics(targetLength);
+                this.targetTics = currentTics + ticsAddition;
             }
 
             
@@ -62,7 +78,7 @@ public class CurvatureDrive implements MCRCommand {
         if (isFinished()) {
             return;
         }
-        if (UtilityMethods.between(driveTrain.getAngle(), endAngle, endAngle + 10)) {
+        if (UtilityMethods.between(driveTrain.getEncoderTics(), targetTics - 2048, targetTics + 2048)) {
             driveTrain.stop();
             isFinished = true;
         } else {
