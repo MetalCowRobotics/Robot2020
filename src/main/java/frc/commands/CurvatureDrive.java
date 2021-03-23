@@ -2,7 +2,10 @@ package frc.commands;
 
 import frc.robot.RobotMap;
 import frc.systems.DriveTrain;
+
 import java.lang.Math;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib14.UtilityMethods;
 import frc.lib14.MCRCommand;
 import java.lang.Math;
@@ -18,7 +21,7 @@ public class CurvatureDrive implements MCRCommand {
     boolean isFinished = false;
     double outerSpeed = 0.0;
     final int AXLE_WIDTH = 30; //get actual width from robot 
-    final double MAX_SPEED = 0.9;
+    final double MAX_SPEED = 0.8;
     double left, right = 0;
     int targetTics;
     int currentTics;
@@ -36,14 +39,14 @@ public class CurvatureDrive implements MCRCommand {
         }
         
         // driveTrain.resetGyro();
-        
+
     } 
 
     public void run() {
         if (firstTime) {
             driveTrain.calibrateGyro();
             this.startAngle = driveTrain.getAngle();
-            this.endAngle = startAngle + angle * this.direction;
+            this.endAngle = this.startAngle + angle * this.direction;
 
             double ratio = radius / (radius + AXLE_WIDTH);
             double outerRate = UtilityMethods.absMax(MAX_SPEED, outerSpeed);
@@ -59,31 +62,27 @@ public class CurvatureDrive implements MCRCommand {
                 this.targetTics = currentTics + ticsAddition;
             } else {
                 driveTrain.tankDrive(outerRate, innerRate);
-                left = innerRate;
-                right = outerRate;
-
-                angle = Math.toRadians(angle);
-                double targetLength = (radius + AXLE_WIDTH) * angle;
-                int ticsAddition = targetTics(targetLength);
-                this.targetTics = currentTics + ticsAddition;
+                left = outerRate;
+                right = innerRate;
             }
-
             
-
+            System.out.println("startAngle:"+this.startAngle+"   targetAngle:"+this.endAngle );
 
             firstTime = false;
         }
-
-
+        System.out.println("currentAngle:"+driveTrain.getAngle()+"   onTarget:"+UtilityMethods.between(driveTrain.getAngle(), endAngle - 10, endAngle + 10) );
+        SmartDashboard.putNumber("curvatureDrivebetween", endAngle - driveTrain.getAngle());
         if (isFinished()) {
             return;
         }
-        if (UtilityMethods.between(driveTrain.getEncoderTics(), targetTics - 2048, targetTics + 2048)) {
+        if (UtilityMethods.between(driveTrain.getAngle(), endAngle - 10, endAngle + 10)) {
             driveTrain.stop();
             isFinished = true;
+            System.out.println("Curvature Drive is finished");
         } else {
             driveTrain.tankDrive(left, right);
         }
+
     }
 
     @Override
