@@ -20,7 +20,7 @@ public class CurvatureDrive implements MCRCommand {
     boolean firstTime = true;
     boolean isFinished = false;
     double outerSpeed = 0.0;
-    final int AXLE_WIDTH = 30; //get actual width from robot 
+    final int AXLE_WIDTH = 27; //get actual width from robot 
     final double MAX_SPEED = 0.8;
     double left, right = 0;
     DriveTrain drive = DriveTrain.getInstance();
@@ -63,17 +63,19 @@ public class CurvatureDrive implements MCRCommand {
                 left = outerRate;
                 right = innerRate;
             }
+            System.out.println("motor speed left:"+left+" right:"+right);
             
             System.out.println("startAngle:"+this.startAngle+"   targetAngle:"+this.endAngle );
 
             firstTime = false;
         }
-        System.out.println("currentAngle:"+driveTrain.getAngle()+"   onTarget:"+UtilityMethods.between(driveTrain.getAngle(), endAngle - 10, endAngle + 10) );
+        // System.out.println("currentAngle:"+driveTrain.getAngle()+"   onTarget:"+UtilityMethods.between(driveTrain.getAngle(), endAngle - 10, endAngle + 10) );
         SmartDashboard.putNumber("curvatureDrivebetween", endAngle - driveTrain.getAngle());
         if (isFinished()) {
+            driveTrain.stop();
             return;
         }
-        if (UtilityMethods.between(driveTrain.getAngle(), endAngle - 10, endAngle + 10)) {
+        if (UtilityMethods.between(driveTrain.getAngle(), endAngle - 5, endAngle + 5)) {
             driveTrain.stop();
             isFinished = true;
             System.out.println("Curvature Drive is finished");
