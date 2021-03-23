@@ -23,8 +23,6 @@ public class CurvatureDrive implements MCRCommand {
     final int AXLE_WIDTH = 30; //get actual width from robot 
     final double MAX_SPEED = 0.8;
     double left, right = 0;
-    int targetTics;
-    int currentTics;
     DriveTrain drive = DriveTrain.getInstance();
 // Direction: 1 is right and -1 is left
     public CurvatureDrive(String direction, double angle, double radius, double maximumSpeed) {
