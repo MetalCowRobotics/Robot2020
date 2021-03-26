@@ -23,6 +23,7 @@ import frc.systems.MasterControls;
 import frc.systems.Shooter;
 import frc.systems.Vision;
 import frc.autonomous.BarrelRacing;
+import frc.autonomous.BouncePath;
 
 /**
  * The VM is configured to automatically run this class. If you change the name
@@ -66,7 +67,7 @@ public class Robot extends TimedRobot {
     // } else {
     //   mission = new NoAuto();
     // }
-    mission = new BarrelRacing();
+    mission = new BouncePath();
   }
 
   @Override
