@@ -45,13 +45,13 @@ public class DriveTrain {
 	protected DriveTrain() {
 		// set to coast
 		rightFrontMotor.configFactoryDefault();
-		rightFrontMotor.setNeutralMode(NeutralMode.Brake);
+		rightFrontMotor.setNeutralMode(NeutralMode.Coast);
 		rightBackMotor.configFactoryDefault();
-		rightBackMotor.setNeutralMode(NeutralMode.Brake);
+		rightBackMotor.setNeutralMode(NeutralMode.Coast);
 		leftFrontMotor.configFactoryDefault();
-		leftFrontMotor.setNeutralMode(NeutralMode.Brake);
+		leftFrontMotor.setNeutralMode(NeutralMode.Coast);
 		leftBackMotor.configFactoryDefault();
-		leftBackMotor.setNeutralMode(NeutralMode.Brake);
+		leftBackMotor.setNeutralMode(NeutralMode.Coast);
 		leftFrontMotor.setSensorPhase(true);
 
 		leftFrontMotor.setSelectedSensorPosition(0);

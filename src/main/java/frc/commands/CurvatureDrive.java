@@ -74,7 +74,7 @@ public class CurvatureDrive implements MCRCommand {
             driveTrain.stop();
             return;
         }
-        if (UtilityMethods.between(driveTrain.getAngle(), endAngle - 5, endAngle + 5)) {
+        if (UtilityMethods.between(driveTrain.getAngle(), endAngle - 3, endAngle + 3)) {
             driveTrain.stop();
             isFinished = true;
             System.out.println("Curvature Drive is finished");
