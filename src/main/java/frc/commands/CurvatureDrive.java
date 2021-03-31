@@ -29,7 +29,6 @@ public class CurvatureDrive implements MCRCommand {
         this.outerSpeed = maximumSpeed;
         this.angle = angle;
         this.radius = radius - (AXLE_WIDTH / 2);
-        this.currentTics = drive.getEncoderTics();
         if (direction.toUpperCase() == "LEFT") {
             this.direction = -1;
         } else if (direction.toUpperCase() == "RIGHT") {
@@ -42,7 +41,7 @@ public class CurvatureDrive implements MCRCommand {
 
     public void run() {
         if (firstTime) {
-            driveTrain.calibrateGyro();
+           // driveTrain.calibrateGyro();
             this.startAngle = driveTrain.getAngle();
             this.endAngle = this.startAngle + angle * this.direction;
 
@@ -57,7 +56,7 @@ public class CurvatureDrive implements MCRCommand {
                 angle = Math.toRadians(angle);
                 double targetLength = radius * angle;
                 int ticsAddition = targetTics(targetLength);
-                this.targetTics = currentTics + ticsAddition;
+                
             } else {
                 driveTrain.tankDrive(outerRate, innerRate);
                 left = outerRate;
@@ -75,7 +74,7 @@ public class CurvatureDrive implements MCRCommand {
             driveTrain.stop();
             return;
         }
-        if (UtilityMethods.between(driveTrain.getAngle(), endAngle - 5, endAngle + 5)) {
+        if (UtilityMethods.between(driveTrain.getAngle(), endAngle - 3, endAngle + 3)) {
             driveTrain.stop();
             isFinished = true;
             System.out.println("Curvature Drive is finished");

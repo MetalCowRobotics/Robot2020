@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.autonomous.NoAuto;
 import frc.autonomous.ShootAndGather;
 import frc.autonomous.ShootAndGo;
+import frc.autonomous.SlalomPath;
 import frc.commands.TurnTurret;
 import frc.lib14.MCRCommand;
 import frc.systems.Climber;
@@ -23,6 +24,7 @@ import frc.systems.MasterControls;
 import frc.systems.Shooter;
 import frc.systems.Vision;
 import frc.autonomous.BarrelRacing;
+import frc.autonomous.BouncePath;
 
 /**
  * The VM is configured to automatically run this class. If you change the name
@@ -66,7 +68,7 @@ public class Robot extends TimedRobot {
     // } else {
     //   mission = new NoAuto();
     // }
-    mission = new BarrelRacing();
+    mission = new SlalomPath();
   }
 
   @Override
