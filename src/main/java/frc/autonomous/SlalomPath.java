@@ -21,9 +21,9 @@ public class SlalomPath implements MCRCommand{
     MCRCommand mission;
 
     public SlalomPath() {
-        MCRCommand step1 = new SequentialCommands( new DriveInches(1, 4), new CurvatureDrive("LEFT", 60, 42, .9), new CurvatureDrive("RIGHT", 60, 48, .9), new DriveInches(1, 68));
-        MCRCommand step2 = new SequentialCommands(new CurvatureDrive("RIGHT", 60, 36, .9), new DriveInches(1,12), new CurvatureDrive("LEFT", 320, 36, .9), new CurvatureDrive("RIGHT", 55, 36, .9));
-        MCRCommand step3 = new SequentialCommands(new DriveInches(1, (6*12)), new CurvatureDrive("RIGHT", 60, 42, .9), new CurvatureDrive("LEFT", 60, 48, .9));
+        MCRCommand step1 = new SequentialCommands( new DriveInches(1, 4), new CurvatureDrive("LEFT", 60, 42, .9), new CurvatureDrive("RIGHT", 60, 48, .9), new DriveInches(1, 85));
+        MCRCommand step2 = new SequentialCommands(new CurvatureDrive("RIGHT", 80, 28, .9), new CurvatureDrive("LEFT", 160, 40, .9),new DriveInches(1,12), new CurvatureDrive("LEFT", 155, 40, .9), new CurvatureDrive("RIGHT", 60, 36, .9));
+        MCRCommand step3 = new SequentialCommands(new DriveInches(1, (6*12)), new CurvatureDrive("RIGHT", 60, 42, .9), new DriveInches(1, 12), new CurvatureDrive("LEFT", 50, 48, .9));
          mission = new SequentialCommands(step1, step2, step3);
     }
 
