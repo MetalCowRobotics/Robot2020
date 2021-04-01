@@ -10,8 +10,8 @@ import frc.lib14.UtilityMethods;
 import frc.lib14.MCRCommand;
 import java.lang.Math;
 
-public class CurvatureDrive implements MCRCommand {
-    int direction = 1;
+public class EncoderCurveDrive implements MCRCommand {
+/*    int direction = 1;
     double angle = 0;
     double radius = 0;
     double startTics;
@@ -92,5 +92,13 @@ public class CurvatureDrive implements MCRCommand {
     private int targetTics(double target_inches) {
         return (int) ((target_inches / RobotMap.DriveWithEncoder.INCHES_PER_ROTATION)
                 * RobotMap.DriveWithEncoder.TICS_PER_ROTATION);
+    }*/
+    @Override
+    public void run() {
+        return;
+    }
+    @Override
+    public boolean isFinished() {
+        return true;
     }
 } 
