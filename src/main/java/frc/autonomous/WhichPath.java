@@ -9,9 +9,11 @@ package frc.autonomous;
 
 import frc.commands.DriveInches;
 import frc.commands.IntakeDeployRun;
+import frc.commands.TurnDegrees;
 import frc.lib14.MCRCommand;
 import frc.lib14.SequentialCommands;
 import frc.systems.Intake;
+import frc.lib14.TimedCommandSet;
 
 /**
  * Add your docs here.
@@ -19,20 +21,20 @@ import frc.systems.Intake;
 public class WhichPath implements MCRCommand {
     boolean firstTime = true;
     Intake intake = Intake.getInstance();
-    double redDistance = 115;
+    double redDistance = 100;
     boolean runBlueMision = true;
-    MCRCommand previousMission = new SequentialCommands(new IntakeDeployRun());
+    MCRCommand preMission = new SequentialCommands(new IntakeDeployRun());
     MCRCommand mission1 = new SequentialCommands(new DriveInches(1, redDistance));
-    MCRCommand redMission = new SequentialCommands(/* red turn and remaining mision */);
-    MCRCommand blueMission = new SequentialCommands(/* subtract red from blue and remaining mission */);
+    MCRCommand redMission = new SequentialCommands(turn(-90, 1.5), new DriveInches(1, 82), turn(70, 1.25), new DriveInches(1, 175)););
+    MCRCommand blueMission = new SequentialCommands(new DriveInches(1, 52), turn(-105, 2), new DriveInches(1, 63), turn((100), 2), new DriveInches(1, 103));
     MCRCommand finalMission = blueMission;
 
     public void run() {
         if (firstTime) {
             firstTime = false;
         }
-        if (!previousMission.isFinished()) {
-            previousMission.run();
+        if (!preMission.isFinished()) {
+            preMission.run();
         } else {
             if (!mission1.isFinished()) {
                 mission1.run();
@@ -44,13 +46,13 @@ public class WhichPath implements MCRCommand {
                 if (!finalMission.isFinished()){
                     finalMission.run();
                 }
-                if (runBlueMision) {
-                    if (!blueMission.isFinished())
-                        blueMission.run();
-                } else {
-                    if (!redMission.isFinished())
-                        redMission.run();
-                }
+                // if (runBlueMision) {
+                //     if (!blueMission.isFinished())
+                //         blueMission.run();
+                // } else {
+                //     if (!redMission.isFinished())
+                //         redMission.run();
+                // }
             }
         }
     }
@@ -59,6 +61,10 @@ public class WhichPath implements MCRCommand {
     public boolean isFinished() {
         return finalMission.isFinished();
         // return (redMission.isFinished() | blueMission.isFinished());
+    }
+
+    private MCRCommand turn(double degrees, double timeout) {
+        return new TimedCommandSet(new TurnDegrees(degrees), timeout);
     }
 
 }

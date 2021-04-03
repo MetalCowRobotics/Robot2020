@@ -93,6 +93,7 @@ public class Robot extends TimedRobot {
     applyOperatorInputs();
     driveTrain.drive();
     runSystemsStateMachine();
+    SmartDashboard.putNumber("current", intake.current());
 
     //testing
     SmartDashboard.putNumber("distance", vision.getTargetDistance());
@@ -147,6 +148,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testPeriodic() {
-    
+
   }
 }
