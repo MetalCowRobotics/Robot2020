@@ -1,5 +1,6 @@
 package frc.systems;
 
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.VictorSP;
 
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
@@ -20,6 +21,7 @@ public class Intake {
     private boolean stowing = false;
     private boolean deploying = false;
     private boolean intakeIsRunning = false;
+    PowerDistributionPanel pdp = new PowerDistributionPanel(0);
 
     // Singleton instance
     private static final Intake instance = new Intake();
@@ -71,7 +73,9 @@ public class Intake {
         deploying = true;
         stowing = false;
     }
-
+    public double current(){
+        return pdp.getCurrent(6);
+    }
     // raise the intake mechanism
     public void retractIntake() {
         raiseLowerIntake.set(RETRACT_SPEED);
