@@ -15,6 +15,7 @@ import frc.autonomous.NoAuto;
 import frc.autonomous.ShootAndGather;
 import frc.autonomous.ShootAndGo;
 import frc.autonomous.SlalomPath;
+import frc.autonomous.WhichPath;
 import frc.commands.TurnTurret;
 import frc.lib14.MCRCommand;
 import frc.systems.Climber;
@@ -71,7 +72,7 @@ public class Robot extends TimedRobot {
     // } else {
     //   mission = new NoAuto();
     // }
-    mission = new GalacticSearch();
+    mission = new WhichPath();
   }
 
   @Override

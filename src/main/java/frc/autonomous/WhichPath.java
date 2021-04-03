@@ -25,7 +25,7 @@ public class WhichPath implements MCRCommand {
     boolean runBlueMision = true;
     MCRCommand preMission = new SequentialCommands(new IntakeDeployRun());
     MCRCommand mission1 = new SequentialCommands(new DriveInches(1, redDistance));
-    MCRCommand redMission = new SequentialCommands(turn(-90, 1.5), new DriveInches(1, 82), turn(70, 1.25), new DriveInches(1, 175)););
+    MCRCommand redMission = new SequentialCommands(turn(-90, 1.5), new DriveInches(1, 82), turn(70, 1.25), new DriveInches(1, 175));
     MCRCommand blueMission = new SequentialCommands(new DriveInches(1, 52), turn(-105, 2), new DriveInches(1, 63), turn((100), 2), new DriveInches(1, 103));
     MCRCommand finalMission = blueMission;
 
