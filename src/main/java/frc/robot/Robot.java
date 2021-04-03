@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.autonomous.NoAuto;
@@ -25,6 +26,7 @@ import frc.systems.Shooter;
 import frc.systems.Vision;
 import frc.autonomous.BarrelRacing;
 import frc.autonomous.BouncePath;
+import frc.autonomous.GalacticSearch;
 
 /**
  * The VM is configured to automatically run this class. If you change the name
@@ -42,6 +44,7 @@ public class Robot extends TimedRobot {
   MasterControls controls = MasterControls.getInstance();
   RobotDashboard dashboard = RobotDashboard.getInstance();
   Vision vision = Vision.getInstance();
+  PowerDistributionPanel pdb = new PowerDistributionPanel(0);
 
   // class variables
   MCRCommand mission;
@@ -68,13 +71,15 @@ public class Robot extends TimedRobot {
     // } else {
     //   mission = new NoAuto();
     // }
-    mission = new SlalomPath();
+    mission = new GalacticSearch();
   }
 
   @Override
   public void autonomousPeriodic() {
     mission.run();
     runSystemsStateMachine();
+    SmartDashboard.putNumber("pdb", pdb.getCurrent(0));
+
   }
 
   @Override
@@ -142,5 +147,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testPeriodic() {
+    
   }
 }

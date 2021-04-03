@@ -19,8 +19,8 @@ public class DriveInches implements MCRCommand {
     public static final int TICS_PER_ROTATION = RobotMap.Drivetrain.TICS_PER_ROTATION;
     public static final double INCHES_PER_ROTATION = RobotMap.Drivetrain.INCHES_PER_ROTATION;
     public static final double SLOW_DOWN_TICS = (12 / INCHES_PER_ROTATION) * TICS_PER_ROTATION;
-    public static final double TOP_SPEED = 1;//.75
-    public static final double BOTTOM_SPEED = .8;
+    public static final double TOP_SPEED = .9;//.75
+    public static final double BOTTOM_SPEED = .6;
     private double kP = .4;
     private double kI = 0;
     private double kD = .1;
