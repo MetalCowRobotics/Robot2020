@@ -136,7 +136,7 @@ public class MasterControls {
 	}
 
 	public double hoodAdjustment() {
-		return operator.getLY();
+		return UtilityMethods.deadZoneCalculation(operator.getLY(), 0.15);
 	}
 
 	public double turretAdjustment() {
