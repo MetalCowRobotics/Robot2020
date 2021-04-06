@@ -72,7 +72,8 @@ public class Robot extends TimedRobot {
     // } else {
     //   mission = new NoAuto();
     // }
-    mission = new WhichPath();
+    mission = new BarrelRacing();
+    // mission = new WhichPath();
   }
 
   @Override
