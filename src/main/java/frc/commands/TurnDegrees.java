@@ -3,6 +3,7 @@ package frc.commands;
 import frc.lib14.MCRCommand;
 import frc.lib14.PIDController;
 import frc.lib14.UtilityMethods;
+import frc.robot.Robot;
 import frc.robot.RobotDashboard;
 import frc.robot.RobotMap;
 import frc.systems.DriveTrain;
@@ -76,19 +77,35 @@ public class TurnDegrees implements MCRCommand {
 			// limitCorrection(correction, RobotMap.TurnDegrees.SLOW_ADJUSTMENT));
 			// // logger.info("Turn Degrees Slow");
 			// } else {
+
+
+		//removed for PID testing
 			if (numMatches > 5) {
 				driveTrain.stop();
 				currentState = DONE;
 			} else {
-				if (UtilityMethods.between(currentAngle, setPoint - RobotMap.TurnDegrees.SLOW_VARIANCE,
-						setPoint + RobotMap.TurnDegrees.SLOW_VARIANCE)) {
-					driveTrain.arcadeDrive(RobotMap.TurnDegrees.TOP_SPEED,
-							limitCorrection(correction, RobotMap.TurnDegrees.SLOW_ADJUSTMENT));
-				} else {
-					driveTrain.arcadeDrive(RobotMap.TurnDegrees.TOP_SPEED,
-							limitCorrection(correction, RobotMap.TurnDegrees.MAX_ADJUSTMENT));
-				}
+			// 	if (UtilityMethods.between(currentAngle, setPoint - RobotMap.TurnDegrees.SLOW_VARIANCE,
+			// 			setPoint + RobotMap.TurnDegrees.SLOW_VARIANCE)) {
+			// 		driveTrain.arcadeDrive(RobotMap.TurnDegrees.TOP_SPEED,
+			// 				limitCorrection(correction, RobotMap.TurnDegrees.SLOW_ADJUSTMENT));
+			// 	} else {
+			// 		driveTrain.arcadeDrive(RobotMap.TurnDegrees.TOP_SPEED,
+			// 				limitCorrection(correction, RobotMap.TurnDegrees.MAX_ADJUSTMENT));
+			// 	}
+			// }
+
+			double error = setPoint - currentAngle;
+			double speed = error / 50;
+			if (speed > RobotMap.TurnDegrees.MAX_ADJUSTMENT) {
+				speed = RobotMap.TurnDegrees.MAX_ADJUSTMENT;
 			}
+			// } else if (speed < 0.2){
+			// 	speed = 0.2;
+			// }
+			driveTrain.arcadeDrive(0 , speed);
+			}
+
+
 			System.out.println("correction:" + correction);
 			// logger.info("Turn Degrees Fast");
 			// }

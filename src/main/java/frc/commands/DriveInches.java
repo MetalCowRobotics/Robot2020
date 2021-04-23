@@ -45,11 +45,11 @@ public class DriveInches implements MCRCommand {
             System.out.println("DriveInches driving");
             driveTrain.arcadeDrive(calculateSpeed() * dir, getCorrection() * dir);
         } else {
-            System.out.println("DriveInches stopping");
+            // System.out.println("DriveInches stopping");
             end();
         }
-        System.out.println("gyro:" + driveTrain.getAngle() + "  | correction:" + getCorrection());
-        System.out.println("target:" + absTargetTics + "  |  ticsTravelled:" + absTicsTravelled() + "  |  tics:" + driveTrain.getEncoderTics() + "  |  startTics:" + startTics);
+        // System.out.println("gyro:" + driveTrain.getAngle() + "  | correction:" + getCorrection());
+        // System.out.println("target:" + absTargetTics + "  |  ticsTravelled:" + absTicsTravelled() + "  |  tics:" + driveTrain.getEncoderTics() + "  |  startTics:" + startTics);
     }
 
     private double inchesToTics(double inches) {

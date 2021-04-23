@@ -47,18 +47,18 @@ public class Turret {
         // double yaw = vision.getYawDegrees() + dashboard.yawCorrectionShort();
         double yawCorrection;
         if (vision.distance > 20) {
-            yawCorrection = vision.getYawDegrees() + dashboard.yawCorrectionLong();
+            yawCorrection = dashboard.yawCorrectionLong();
         } else {
-            yawCorrection = vision.getYawDegrees() + dashboard.yawCorrectionShort();
+            yawCorrection = dashboard.yawCorrectionShort();
         }
         double yaw = vision.getYawDegrees() + yawCorrection + adjustment;
         if (targeting) {
-            if (UtilityMethods.between(yaw, -3, 3)) {
+            if (UtilityMethods.between(yaw, -3,3 )) {
                 turret.stopMotor();
                 onTarget = true;
             } else {
                 onTarget = false;
-                if(Math.abs(yaw) > 5) {
+                if(Math.abs(yaw) > 12) {
                     normalAdjustment(yaw);
                 } else {
                     slowAdjustment(yaw);
@@ -80,9 +80,9 @@ public class Turret {
 
     private void slowAdjustment(double yaw) {
         if (yaw > 0) {
-            setTurretPower(.1);
+            setTurretPower(.12);//.1
         } else if (yaw < 0) {
-            setTurretPower(-.1);
+            setTurretPower(-.12);//-.1
         } else {
             stopTurret();
         }
@@ -111,12 +111,11 @@ public class Turret {
         // SmartDashboard.putNumber("power", power);
         if (!targeting) {
             setTurretPower(power);
-        } else {
-            if (Math.abs(power) > 0) {
-                adjustment += UtilityMethods.copySign(power, .25);
-            }
+        } else if (power != 0) {
+            adjustment += UtilityMethods.copySign(power, .25);
         }
-        SmartDashboard.putNumber("turretAdjustment", adjustment);
+
+        SmartDashboard.putNumber("turret adjustment", adjustment);
     }
 
     public void setTurretPower(double power) {

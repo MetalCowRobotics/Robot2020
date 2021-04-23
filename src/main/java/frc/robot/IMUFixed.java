@@ -46,7 +46,7 @@ public class IMUFixed extends GyroBase implements Gyro, Sendable {
   private static final int X_GYRO_OUT     =   0x06;  //X-axis gyroscope output, upper word
   private static final int Y_GYRO_LOW     =   0x08;  //Y-axis gyroscope output, lower word
   private static final int Y_GYRO_OUT     =   0x0A;  //Y-axis gyroscope output, upper word
-  private static final int Z_GYRO_LOW     = 	 0x0C;  //Z-axis gyroscope output, lower word
+  private static final int Z_GYRO_LOW     = 	0x0C;  //Z-axis gyroscope output, lower word
   private static final int Z_GYRO_OUT     =   0x0E;  //Z-axis gyroscope output, upper word
   private static final int X_ACCL_LOW     =   0x10;  //X-axis accelerometer output, lower word
   private static final int X_ACCL_OUT     =   0x12;  //X-axis accelerometer output, upper word

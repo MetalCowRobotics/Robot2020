@@ -15,7 +15,7 @@ public class RobotDashboard {
 	private SendableChooser<AutoPosition> startingPosition = new SendableChooser<>();
 
 	public enum AutoMission {
-		AUTOMODE_NONE, AUTOMODE_SHOOT_N_GO, AUTOMODE_SHOOT_N_GATHER
+		AUTOMODE_NONE, AUTOMODE_SHOOT_N_GO, AUTOMODE_SHOOT_N_GATHER, AUTOMODE_PATHPLOTTER_TEST
 	}
 
 	public enum AutoPosition {
@@ -42,11 +42,13 @@ public class RobotDashboard {
 		autonomousAction.setDefaultOption("shoot and go", AutoMission.AUTOMODE_SHOOT_N_GO);
 		autonomousAction.addOption("shoot and gather", AutoMission.AUTOMODE_SHOOT_N_GATHER);
 		autonomousAction.addOption("no autonomous", AutoMission.AUTOMODE_NONE);
+		autonomousAction.addOption("path plotter test", AutoMission.AUTOMODE_PATHPLOTTER_TEST); //TEST
 		startingPosition.setDefaultOption("center position", AutoPosition.AUTOMODE_CENTER);
 		startingPosition.addOption("left position", AutoPosition.AUTOMODE_LEFT_OF_TARGET);
 		startingPosition.addOption("right position", AutoPosition.AUTOMODE_RIGHT_OF_TARGET);
 		SmartDashboard.putData("missions", autonomousAction);
 		SmartDashboard.putData("starting Position", startingPosition);
+		SmartDashboard.putNumber("PP Scale Factor", 0);
 	}
 
 	public AutoMission getAutoMission() {

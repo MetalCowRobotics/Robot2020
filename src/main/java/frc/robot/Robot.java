@@ -11,6 +11,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.autonomous.NoAuto;
+import frc.autonomous.PathPlotterTest;
 import frc.autonomous.ShootAndGather;
 import frc.autonomous.ShootAndGo;
 import frc.commands.TurnTurret;
@@ -62,6 +63,8 @@ public class Robot extends TimedRobot {
       mission = new ShootAndGo();
     } else if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GATHER == dashboard.getAutoMission()) {
       mission = new ShootAndGather(dashboard.getStartingPosition());
+    } else if (RobotDashboard.AutoMission.AUTOMODE_PATHPLOTTER_TEST == dashboard.getAutoMission()){ //TEST
+      mission = new PathPlotterTest();
     } else {
       mission = new NoAuto();
     }
@@ -115,6 +118,7 @@ public class Robot extends TimedRobot {
         shooter.beginTargetting();
     } else {
       shooter.stopShooter();
+      // System.out.println("stopping shooter");
     }
     // shoot ball
     if (controls.shootNow()) {

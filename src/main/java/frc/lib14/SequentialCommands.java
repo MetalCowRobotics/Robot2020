@@ -10,6 +10,10 @@ public class SequentialCommands implements MCRCommand {
 			sequentialCommands.add(command);
 		}
 	}
+
+	public SequentialCommands(ArrayList<MCRCommand> commands) {
+		sequentialCommands = commands;
+	}
 	
 	@Override
 	public void run() {

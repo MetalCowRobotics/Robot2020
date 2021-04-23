@@ -11,7 +11,6 @@ import frc.lib14.MCRCommand;
 import frc.lib14.PIDController;
 import frc.lib14.UtilityMethods;
 import frc.robot.RobotDashboard;
-import frc.robot.RobotMap;
 import frc.systems.DriveTrain;
 
 public class NewTurn implements MCRCommand {
@@ -25,10 +24,10 @@ public class NewTurn implements MCRCommand {
     private boolean done = false;
     // constants
     private static final double TOP_SPEED = 0;
-    private static final double VARIANCE = 2; // .25
+    private static final double VARIANCE = 5; //2 // .25
     private static final double MAX_ADJUSTMENT = .6;
     private static final double SLOW_VARIANCE = 15; // 10
-    private static final double SLOW_ADJUSTMENT = .6;
+    private static final double SLOW_ADJUSTMENT = .3;
     public static final double kP = 0.04; 
     public static final double kI = .008; 
     public static final double kD = .08;
@@ -57,19 +56,20 @@ public class NewTurn implements MCRCommand {
         double correction = driveController.calculateAdjustment(currentAngle);
         System.out.println("correction before limits" + correction);
         if (UtilityMethods.between(currentAngle, setPoint - SLOW_VARIANCE, setPoint + SLOW_VARIANCE)) {
-            driveTrain.arcadeDrive(TOP_SPEED, limitCorrection(correction, SLOW_ADJUSTMENT));
+            driveTrain.arcadeDrive(SLOW_ADJUSTMENT, limitCorrection(correction, SLOW_ADJUSTMENT));
         } else {
-            driveTrain.arcadeDrive(TOP_SPEED, limitCorrection(correction, MAX_ADJUSTMENT));
+            driveTrain.arcadeDrive(MAX_ADJUSTMENT, limitCorrection(correction, MAX_ADJUSTMENT));
         }
     }
 
     private void checkStatus(double currentAngle) {
+        System.out.println(numMatches);
         if (Math.abs(setPoint - currentAngle) < VARIANCE) {
             numMatches++;
-        } else {
+        } else if (numMatches > 0) {
             numMatches--; // =0
         }
-        if (numMatches > 10) {
+        if (numMatches > 5) {//10
             driveTrain.stop();
             done = true;
         }
