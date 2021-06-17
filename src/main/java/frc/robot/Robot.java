@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.autonomous.NoAuto;
 import frc.autonomous.ShootAndGather;
 import frc.autonomous.ShootAndGo;
-import frc.commands.TurnTurret;
 import frc.lib14.MCRCommand;
 import frc.systems.Climber;
 import frc.systems.ColorWheel;
@@ -80,6 +79,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+    System.out.println("hood"+controls.hoodAdjustment());
     controls.changeMode();
     applyOperatorInputs();
     driveTrain.drive();
