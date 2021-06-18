@@ -12,7 +12,7 @@ public class SpinUpDrum implements MCRCommand {
     public void run() {
         if (firstTime) {
             firstTime = false;
-            shooter.runDrum(2700);
+            shooter.runDrum(2200);
             done = true;
         }
     }

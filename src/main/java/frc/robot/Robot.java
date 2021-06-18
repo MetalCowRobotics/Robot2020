@@ -91,6 +91,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+    System.out.println("hood"+controls.hoodAdjustment());
     controls.changeMode();
     applyOperatorInputs();
     driveTrain.drive();

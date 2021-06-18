@@ -2,8 +2,6 @@ package frc.robot;
 
 import java.util.logging.Level;
 
-import edu.wpi.first.wpilibj.MotorSafety;
-
 public class RobotMap {
 
 	public final class DriverController {

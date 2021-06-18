@@ -52,6 +52,7 @@ public class Hood {
         } else {
             //TODO check upper and lower bounds
             hood.set(UtilityMethods.copySign(error, .4));
+            System.out.println("tracking to target");
         }
 
         SmartDashboard.putNumber("HoodEncoder", encoder.getTics());
