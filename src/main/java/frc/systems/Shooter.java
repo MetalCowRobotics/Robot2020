@@ -79,8 +79,8 @@ public class Shooter {
             readyToShoot = true;
             if(dashboard.isAutoTargeting()) {
                 turret.startTargeting();
-                //setSpeed();
-                //hood.setPosition(vision.getTargetDistance());
+                setSpeed();
+                // hood.setPosition(vision.getTargetDistance());
             } else {
                 //setTargetSpeed(3050);
             }
@@ -93,7 +93,7 @@ public class Shooter {
             readyToShoot = true;
             magazine.loadBallInShootingPosition();
             setTargetSpeed(determineSpeedFromDistance(feetFromDistance));
-            hood.setPosition(feetFromDistance);
+            // hood.setPosition(feetFromDistance);
             if(dashboard.isAutoTargeting()) {
                 turret.startTargeting();
             }
@@ -101,7 +101,7 @@ public class Shooter {
 
     public void beginTargetting() {
         turret.startTargeting();
-        //hood.setPosition(vision.getTargetDistance()); //disabled for accuracy challenge
+        // hood.setPosition(vision.getTargetDistance());
     }
 
     public void runDrum(double speed) {
@@ -205,11 +205,11 @@ public class Shooter {
 
     private void setSpeed() {
         if (vision.getTargetDistance() > 20) {
-            setTargetSpeed(3000);
+            setTargetSpeed(2000);//3000
         } else if (vision.getTargetDistance() > 5) {
-            setTargetSpeed(2500);
+            setTargetSpeed(2000);// 2700
         } else {
-            setTargetSpeed(1750);
+            setTargetSpeed(2000);// 1750
         }
     }
 
@@ -217,11 +217,11 @@ public class Shooter {
         // double adjustment = (3050 - 2700) / (22 - 5);
         // return Math.min((distance - 5) * adjustment, 3500);
         if (distance > 20) {
-            return 3000;
+            return 2000;//3000
         } else if (distance > 5) {
-            return 2500;
+            return 2000;//2700
         } else {
-            return 1750;
+            return 2000;//1750
         }
     }
 

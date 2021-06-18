@@ -53,6 +53,7 @@ public class Hood {
         } else {
             //TODO why setting speed to 0.4?
             hood.set(UtilityMethods.copySign(error, .4));
+            System.out.println("tracking to target");
         }
 
         SmartDashboard.putNumber("HoodEncoder", encoder.getTics());
