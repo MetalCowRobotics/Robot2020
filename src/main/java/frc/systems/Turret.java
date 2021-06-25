@@ -23,8 +23,9 @@ public class Turret {
     private double targetTics = 0;
     private boolean firstTime = true;
     private boolean firstTargeting = false;
+    private double yawOverride = 0;
 
-    //singleton
+    // singleton
     private static final Turret instance = new Turret();
 
     private Turret() {
@@ -45,17 +46,25 @@ public class Turret {
             leftBound += offset;
             rightBound -= offset;
         }
-        // double yawCorrection = UtilityMethods.map(vision.getTargetDistance(), 6, 30, dashboard.yawCorrectionShort(), dashboard.yawCorrectionLong());
+
+        // if targeting
+        // calculate yawCorrection
+        // vision + dashboard + override
+        // if on target set to 0
+        // else
+        // override
+
+        // double yawCorrection = UtilityMethods.map(vision.getTargetDistance(), 6, 30,
+        // dashboard.yawCorrectionShort(), dashboard.yawCorrectionLong());
         // double yaw = vision.getYawDegrees() + dashboard.yawCorrectionShort();
-        double yawCorrection;
         // if (vision.distance > 20) {
-        //     yawCorrection = vision.getYawDegrees() + dashboard.yawCorrectionLong();
+        // yawCorrection = vision.getYawDegrees() + dashboard.yawCorrectionLong();
         // } else {
-            yawCorrection = vision.getYawDegrees() + dashboard.yawCorrectionShort();
+        double yawCorrection = vision.getYawDegrees() + dashboard.yawCorrectionShort();
         // }
-        double yaw = vision.getYawDegrees() + yawCorrection;//+ adjustment;
-        
-        //PID
+        double yaw = vision.getYawDegrees() + yawCorrection + yawOverride;
+
+        // PID
         double currentTics = getTurretPosition();
         double target = targetTics + adjustment;
         double error = (target - currentTics) / 30;
@@ -66,7 +75,7 @@ public class Turret {
         } else if (!targeting) {
             turret.set(-error);
         }
-        
+
         if (targeting) {
             if (firstTargeting) {
                 adjustment = 0;
@@ -79,7 +88,7 @@ public class Turret {
             } else {
                 onTarget = false;
                 // rotateTurret(yaw);
-                if(Math.abs(yaw) > 5) {
+                if (Math.abs(yaw) > 5) {
                     normalAdjustment(yaw);
                 } else {
                     slowAdjustment(yaw);
@@ -119,32 +128,36 @@ public class Turret {
     public void startTargeting() {
         targeting = true;
         adjustment = 0;
+        yawOverride = 0;
     }
 
     public void stopTargeting() {
         targeting = false;
+        // adjustment = 0;
     }
 
-    //TODO does this work?
+    // TODO does this work?
     // 4096tics = 360 degrees 11.25tics = 1 degree
-    //360 * 11.25 = 4050  Not sure about this line ^
+    // 360 * 11.25 = 4050 Not sure about this line ^
 
     private void rotateTurret(double degrees) { // for vision
         setTargetTics((int) (encoder.getTics() + (degrees * 1.4)));
     }
 
     public void turnTurret(double x) { // for human control
-        if (x > .1) {
-                adjustment -= 1;
+        if (targeting) {
+            yawOverride += x/2;
+        } else if (x > .1) {
+            adjustment -= 1;
         } else if (x < -.1) {
-                adjustment += 1;
+            adjustment += 1;
         }
         // if (!targeting) {
-        //     setTurretPower(power);
+        // setTurretPower(power);
         // } else {
-        //     if (Math.abs(power) > 0) {
-        //         adjustment += UtilityMethods.copySign(power, 1);
-        //     }
+        // if (Math.abs(power) > 0) {
+        // adjustment += UtilityMethods.copySign(power, 1);
+        // }
         // }
         SmartDashboard.putNumber("turretAdjustment", adjustment);
     }
@@ -168,7 +181,7 @@ public class Turret {
     }
 
     private void setTargetTics(int tics) {
-        //TODO check this logic
+        // TODO check this logic
         if (tics < 0) {
             targetTics = Math.min(tics, leftBound);
         } else {
