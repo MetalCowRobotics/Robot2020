@@ -87,6 +87,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     vision.visionInit();
+    driveTrain.initForTeleOp();
   }
 
   @Override
@@ -144,6 +145,7 @@ public class Robot extends TimedRobot {
     intake.run();
     shooter.run();
     climber.run();
+    System.out.println("running");
   }
 
   @Override

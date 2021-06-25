@@ -168,4 +168,11 @@ public class DriveTrain {
 		return getLeftEncoderTics();
 	}
 
+	public void initForTeleOp() {
+		rightFrontMotor.setNeutralMode(NeutralMode.Coast);
+		rightBackMotor.setNeutralMode(NeutralMode.Coast);
+		leftFrontMotor.setNeutralMode(NeutralMode.Coast);
+		leftBackMotor.setNeutralMode(NeutralMode.Coast);
+	}
+
 }
