@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.autonomous.NoAuto;
+import frc.autonomous.ShootAndGather;
+import frc.autonomous.ShootAndGo;
 import frc.lib14.MCRCommand;
 import frc.systems.Climber;
 import frc.systems.ColorWheel;
@@ -57,14 +59,14 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     vision.visionInit();
-    // if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GO == dashboard.getAutoMission()) {
-    //   mission = new ShootAndGo();
-    // } else if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GATHER == dashboard.getAutoMission()) {
-    //   mission = new ShootAndGather(dashboard.getStartingPosition());
-    // } else {
-    //   mission = new NoAuto();
-    // }
-    mission = new NoAuto();
+    if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GO == dashboard.getAutoMission()) {
+      mission = new ShootAndGo();
+    } else if (RobotDashboard.AutoMission.AUTOMODE_SHOOT_N_GATHER == dashboard.getAutoMission()) {
+      mission = new ShootAndGather(dashboard.getStartingPosition());
+    } else {
+      mission = new NoAuto();
+    }
+    //mission = new NoAuto();
     // mission = new WhichPath();
   }
 

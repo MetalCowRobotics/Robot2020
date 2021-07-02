@@ -60,21 +60,31 @@ public class Turret {
         // if (vision.distance > 20) {
         // yawCorrection = vision.getYawDegrees() + dashboard.yawCorrectionLong();
         // } else {
-        double yawCorrection = vision.getYawDegrees() + dashboard.yawCorrectionShort();
+        double yawCorrection;
+        if (targeting) {
+            yawCorrection = 0;//dashboard.yawCorrectionShort();
+        } else {
+            yawCorrection = 0;
+        }
         // }
-        double yaw = vision.getYawDegrees() + yawCorrection + yawOverride;
-
+        double yaw;
+        if (targeting) {
+            yaw = vision.getYawDegrees()*10;
+        } else {
+            yaw = 0;
+        }
         // PID
         double currentTics = getTurretPosition();
-        double target = targetTics + adjustment;
+        double target = targetTics + adjustment - yaw;// - yawCorrection;
         double error = (target - currentTics) / 30;
         error = UtilityMethods.absMin(error, MAX_TURRET_SPEED);
         error = UtilityMethods.absMax(error, MIN_TURRET_SPEED);
         if (Math.abs(target - currentTics) < 4) {
             turret.stopMotor();
         } else if (!targeting) {
-            turret.set(-error);
         }
+        turret.set(-error);
+
 
         if (targeting) {
             if (firstTargeting) {
@@ -82,17 +92,18 @@ public class Turret {
             }
             targetTics = getTurretPosition();
 
-            if (UtilityMethods.between(yaw, -1, 1)) {
+
+            if (UtilityMethods.between(yawCorrection, -5, 5)) {
                 turret.stopMotor();
                 onTarget = true;
             } else {
                 onTarget = false;
-                // rotateTurret(yaw);
-                if (Math.abs(yaw) > 5) {
-                    normalAdjustment(yaw);
-                } else {
-                    slowAdjustment(yaw);
-                }
+                rotateTurret(yaw);
+                // if (Math.abs(yaw) > 5) {
+                // normalAdjustment(yaw);
+                // } else {
+                // slowAdjustment(yaw);
+                // }
             }
             firstTargeting = false;
         } else {
@@ -146,11 +157,11 @@ public class Turret {
 
     public void turnTurret(double x) { // for human control
         if (targeting) {
-            yawOverride += x/2;
+            yawOverride += x / 2;
         } else if (x > .1) {
-            adjustment -= 1;
+            adjustment -= 10;
         } else if (x < -.1) {
-            adjustment += 1;
+            adjustment += 10;
         }
         // if (!targeting) {
         // setTurretPower(power);
