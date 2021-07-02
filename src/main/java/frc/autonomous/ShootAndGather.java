@@ -6,28 +6,37 @@ import frc.commands.IntakeDeployRun;
 import frc.commands.ShootBall;
 import frc.commands.SpinUpDrum;
 import frc.commands.TurnTurret;
+import frc.commands.CurvatureDrive;
+import frc.commands.TurnDegrees;
+import frc.commands.DriveStraightInches;
 import frc.lib14.CommandPause;
 import frc.lib14.MCRCommand;
 import frc.lib14.ParallelCommands;
 import frc.lib14.SequentialCommands;
 import frc.lib14.TimedCommandSet;
+
 import frc.robot.RobotDashboard.AutoPosition;
 
 public class ShootAndGather implements MCRCommand {
     MCRCommand mission;
 
     public ShootAndGather(AutoPosition position) {
-            ShootBall shoot = new ShootBall(12);
-            MCRCommand startUp = new ParallelCommands(new SpinUpDrum(), new TurnTurret(-226));
-            MCRCommand secondShoot = new SequentialCommands(new CommandPause(1.5), new TimedCommandSet(new ShootBall(24), 11));
-            MCRCommand collect = new ParallelCommands(new IntakeDeployRun(), new AutoTarget(true), new DriveInches(1, 144), secondShoot);
-            // MCRCommand collect = new ParallelCommands(new IntakeDeployRun(), new AutoTarget(true), new DriveInches( 1, 144));
-            mission = new SequentialCommands(
-               startUp,
-               new TimedCommandSet(shoot, 3.5),
-               collect
-               //new TimedCommandSet(new ShootBall(288), 5)
-            );
+        if (position == AutoPosition.AUTOMODE_RIGHT_OF_TARGET) {
+            MCRCommand shoot = new ShootBall(10); //need to test and find best distance value
+            MCRCommand driveToGatherPosition = new SequentialCommands(new TurnDegrees(13.438), new DriveStraightInches(141.658), new TurnDegrees(20.296));
+            MCRCommand gather = new SequentialCommands(new CurvatureDrive("Right", 90.5, 67.6, 0.7), new TurnDegrees(11.74), new DriveStraightInches(40));
+            mission = new SequentialCommands(shoot, driveToGatherPosition, gather);
+        } else if (position == AutoPosition.AUTOMODE_CENTER) {
+            MCRCommand shoot = new ShootBall(10); //need to test and find best distance value
+            MCRCommand driveToGatherPosition = new SequentialCommands(new DriveStraightInches(131.91), new TurnDegrees(22.5));
+            MCRCommand gather = new SequentialCommands(new DriveStraightInches(20), new TurnDegrees(-11.74), new CurvatureDrive("left", 90.5, 67.6, 0.8));
+            mission = new SequentialCommands(shoot, driveToGatherPosition, gather);
+        } else if (position == AutoPosition.AUTOMODE_LEFT_OF_TARGET) {
+            MCRCommand shoot = new ShootBall(10); //need to test and find best distance value
+            MCRCommand driveAndGather = new SequentialCommands(new DriveStraightInches(106.9), new TurnDegrees(20.556), new DriveStraightInches(85.24));
+            // MCRCommand gather = new SequentialCommands(new CurvatureDrive("Right", 90.5, 67.6, 0.7), new TurnDegrees(11.74), new DriveStraightInches(40));
+            mission = new SequentialCommands(shoot, driveAndGather);
+        }
     }
 
     // public ShootAndGather(String position) {
