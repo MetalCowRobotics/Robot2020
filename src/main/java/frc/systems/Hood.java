@@ -16,7 +16,7 @@ public class Hood {
     private static AnalogPotentiometer pot = new AnalogPotentiometer(0, 10000, -2200);
     private static FC_JE_0149Encoder encoder = new FC_JE_0149Encoder(3, 2);
     private static RobotDashboard dashboard = RobotDashboard.getInstance();
-
+    private static Vision vision = Vision.getInstance();
     private static final double REVS_PER_INCH = 12.7;//11.8;
     private static final double TICS_PER_REV = 44.4;
     // private static final double VOLTS_PER_INCH = 211.5;
@@ -44,7 +44,7 @@ public class Hood {
     public void run() {
         double currentTics = getCurrentTics();
         dashboard.pushHoodPositionText((int) currentTics); 
-        double target = targetTics + adjustment + dashboard.hoodCorrection();
+        double target = calcTargetTics();
         double error = (target - currentTics) / 100;
         error = UtilityMethods.absMin(error, .5);
         if (Math.abs(target - currentTics) < 4) {
@@ -59,6 +59,15 @@ public class Hood {
         SmartDashboard.putNumber("HoodEncoderPlusOffset", encoder.getTics() + startingPosition);
         SmartDashboard.putNumber("PotTics", pot.get());
         SmartDashboard.putNumber("HoodTarget", targetTics);
+    }
+
+    private double calcTargetTics() {
+        double x = vision.getTargetDistance();
+        double fx = -0.00503484 * Math.pow(x, 5) + 0.594025 * Math.pow(x, 4) - 27.129 * Math.pow(x, 3) + 595.602 * Math.pow(x, 2) - 6238.12 * x + 25526.7;
+        double dx = (fx - 581.742) / 327.904;
+        double sx = 1 / (1 + Math.pow(Math.E, -dx));
+        double targetTics = sx * fx + dashboard.hoodCorrection();
+        return UtilityMethods.absMax(targetTics, 1000);
     }
 
     private double inchesToTics(double inches) {

@@ -169,9 +169,18 @@ public class Shooter {
     }
 
     public void setTargetSpeed(double newTarget) {
-        targetSpeed = newTarget + dashboard.speedCorrection();
+        targetSpeed = calcTargetSpeed();
         pidController.setSetPoint(targetSpeed);
         dashboard.pushShooterTargetVelocity(targetSpeed);
+    }
+
+    private double calcTargetSpeed() {
+        double x = vision.getTargetDistance();
+        double fx = 0.030244 * Math.pow(x, 4) - 2.61893 * Math.pow(x, 3) + 80.0589 * Math.pow(x, 2) - 975.346 * x + 6202.86;
+        double dx = (fx - 2098.589) / 801.41100;
+        double sx = 1 / (1 + Math.pow(Math.E, -dx));
+        double targetSpeed = sx * fx + dashboard.speedCorrection();
+        return UtilityMethods.absMax(targetSpeed, 3000);
     }
 
     // testing
