@@ -30,6 +30,7 @@ public class Shooter {
     private double targetSpeed = 3000;// RPM's
     private boolean readyToShoot = false;
     private boolean prepDrum = false;
+    private int lastPreset = 0;
 
     private int requestedDistance = 1;
 
@@ -79,7 +80,11 @@ public class Shooter {
             readyToShoot = true;
             if(dashboard.isAutoTargeting()) {
                 turret.startTargeting();
-                setSpeed();
+                if (lastPreset > 0) {
+                    adjustToRequestedDistance(lastPreset);
+                } else {
+                    setTargetSpeed(determineSpeedFromDistance(vision.distance));
+                } 
                 // hood.setPosition(vision.getTargetDistance());
             } else {
                 //setTargetSpeed(3050);
@@ -217,7 +222,7 @@ public class Shooter {
         // double adjustment = (3050 - 2700) / (22 - 5);
         // return Math.min((distance - 5) * adjustment, 3500);
         if (distance > 20) {
-            return 2000;//3000
+            return 2650;//3000
         } else if (distance > 5) {
             return 2000;//2700
         } else {
@@ -226,6 +231,7 @@ public class Shooter {
     }
 
     public void adjustToRequestedDistance( int requestedDistance) {
+        lastPreset = requestedDistance;
         switch (requestedDistance) {
             case 1:
                 // 3/6 new
