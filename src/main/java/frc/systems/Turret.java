@@ -81,7 +81,9 @@ public class Turret {
         } else {
             turret.set(adjustment);
         }
-        SmartDashboard.putNumber("turretAdjustment", adjustment);
+        // SmartDashboard.putNumber("turretAdjustment", adjustment);
+        SmartDashboard.putNumber("turretAdjustment: ", adjustment);
+        SmartDashboard.putNumber("turret encoder", encoder.getTics());
         // // Pid
         // double yawCorrection = vision.getYawDegrees() * -1.4;
         // double currentTics = getTurretPosition();
@@ -221,7 +223,7 @@ public class Turret {
         // adjustment += UtilityMethods.copySign(power, 1);
         // }
         // }
-        SmartDashboard.putNumber("turretAdjustment: ", adjustment);
+        
     }
 
     public void setTurretPower(double power) {

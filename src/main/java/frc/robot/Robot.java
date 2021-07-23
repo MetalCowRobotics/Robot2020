@@ -67,7 +67,7 @@ public class Robot extends TimedRobot {
     } else {
       mission = new NoAuto();
     }
-    mission = new TurnTurret(94);
+    // mission = new TurnTurret(-155);
     //mission = new NoAuto();
     // mission = new WhichPath();
   }
