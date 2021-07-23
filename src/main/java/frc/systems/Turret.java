@@ -210,7 +210,7 @@ public class Turret {
         if (x > .1) {
             adjustment -= 1;
         } else if (x < -.1) {
-            adjustment += 1;
+            adjustment += 10;
         }
         //System.out.println("adjustment:  " + adjustment);
     } else {
