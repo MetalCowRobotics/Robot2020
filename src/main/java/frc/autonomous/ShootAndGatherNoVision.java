@@ -25,7 +25,8 @@ public class ShootAndGatherNoVision implements MCRCommand {
             mission = new SequentialCommands(
                startUp,
                new TimedCommandSet(shoot, 3.5),
-               collect
+               collect,
+               new IntakeStop();
                //new TimedCommandSet(new ShootBall(288), 5)
             );
     }
