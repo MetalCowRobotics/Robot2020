@@ -81,6 +81,7 @@ public class Turret {
         } else {
             turret.set(adjustment);
         }
+        SmartDashboard.putNumber("turretAdjustment", adjustment);
         // // Pid
         // double yawCorrection = vision.getYawDegrees() * -1.4;
         // double currentTics = getTurretPosition();
