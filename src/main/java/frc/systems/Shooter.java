@@ -77,7 +77,9 @@ public class Shooter {
             readyToShoot = true;
             if(dashboard.isAutoTargeting()) {
                 turret.startTargeting();
-                setSpeed();
+                if (UtilityMethods.between(vision.getYawDegrees(), -3, 3)) {
+                    setSpeed();
+                }
                 // hood.setPosition(vision.getTargetDistance());
             } else {
                 setTargetSpeed(3050);
@@ -169,9 +171,8 @@ public class Shooter {
     }
 
     public void setTargetSpeed(double newTarget) {
-        targetSpeed = calcTargetSpeed();
-        pidController.setSetPoint(targetSpeed);
-        dashboard.pushShooterTargetVelocity(targetSpeed);
+        pidController.setSetPoint(newTarget);
+        dashboard.pushShooterTargetVelocity(newTarget);
     }
 
     private double calcTargetSpeed() {
@@ -211,13 +212,14 @@ public class Shooter {
     }
 
     private void setSpeed() {
-        if (vision.getTargetDistance() > 20) {
-            setTargetSpeed(2000);//3000
-        } else if (vision.getTargetDistance() > 5) {
-            setTargetSpeed(2000);// 2700
-        } else {
-            setTargetSpeed(2000);// 1750
-        }
+        // if (vision.getTargetDistance() > 20) {
+        //     setTargetSpeed(2000);//3000
+        // } else if (vision.getTargetDistance() > 5) {
+        //     setTargetSpeed(2000);// 2700
+        // } else {
+        //     setTargetSpeed(2000);// 1750
+        // }
+        setTargetSpeed(calcTargetSpeed());
     }
 
     private double determineSpeedFromDistance(double distance) {

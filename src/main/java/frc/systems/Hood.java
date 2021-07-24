@@ -47,16 +47,21 @@ public class Hood {
         double target = calcTargetTics();
         double error = (target - currentTics) / 100;
         error = UtilityMethods.absMin(error, .5);
-        if (Math.abs(target - currentTics) < 4) {
-            hood.stopMotor();
-        } else {
-            //TODO check upper and lower bounds
-            hood.set(UtilityMethods.copySign(error, .4));
-            System.out.println("tracking to target");
+        
+        if (UtilityMethods.between(vision.getYawDegrees(), -3, 3)) {
+            if (Math.abs(target - currentTics) < 4) {
+                hood.stopMotor();
+                SmartDashboard.putNumber("hood moving", 1);
+            } else {
+                //TODO check upper and lower bounds
+                hood.set(UtilityMethods.copySign(error, .4));
+                System.out.println("tracking to target");
+                SmartDashboard.putNumber("hood moving", 0);
+            }
         }
-
+        SmartDashboard.putNumber("hood moving", 0);
         SmartDashboard.putNumber("HoodEncoder", encoder.getTics());
-        SmartDashboard.putNumber("HoodEncoderPlusOffset", encoder.getTics() + startingPosition);
+        // SmartDashboard.putNumber("HoodEncoderPlusOffset", encoder.getTics() + startingPosition);
         SmartDashboard.putNumber("PotTics", pot.get());
         SmartDashboard.putNumber("HoodTarget", targetTics);
     }
