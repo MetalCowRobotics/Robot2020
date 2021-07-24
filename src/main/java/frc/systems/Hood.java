@@ -113,9 +113,13 @@ public class Hood {
         resetAdjustment();
     }
 
-    public void setRequiredPosition(double dist) {
-        adjustment = 0;
-        targetTics = inchesToTics(dist);
+    // public void setRequiredPosition(double dist) {
+    //     adjustment = 0;
+    //     targetTics = inchesToTics(dist);
+    // }
+
+    public void setRequiredPositionFromTics(double dist) {
+        targetTics = dist;
     }
 
     public void setFarShot() {

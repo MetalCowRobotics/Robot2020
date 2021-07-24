@@ -210,11 +210,11 @@ public class Shooter {
 
     private void setSpeed() {
         if (vision.getTargetDistance() > 20) {
-            setTargetSpeed(2000);//3000
+            setTargetSpeed(2900);//3000
         } else if (vision.getTargetDistance() > 5) {
-            setTargetSpeed(2000);// 2700
+            setTargetSpeed(2700);// 2700
         } else {
-            setTargetSpeed(2000);// 1750
+            setTargetSpeed(1750);// 1750
         }
     }
 
@@ -235,26 +235,26 @@ public class Shooter {
         switch (requestedDistance) {
             case 1:
                 // 3/6 new
-                hood.setRequiredPosition(2.14);
-                setTargetSpeed(1850);
+                hood.setRequiredPositionFromTics(580);
+                setTargetSpeed(2000);
                 break;
             
             case 2:
                 // 5/6 new
-                hood.setRequiredPosition(2.9);
-                setTargetSpeed(2250);                
+                hood.setRequiredPositionFromTics(860);
+                setTargetSpeed(2650);                
                 break;
 
             case 3:
                 // 2/3 all
-                hood.setRequiredPosition(3.13);
-                setTargetSpeed(2650);               
+                hood.setRequiredPositionFromTics(825);
+                setTargetSpeed(2850);               
                 break;
 
             case 4:
                 // 3/6 all
-                hood.setRequiredPosition(3.17);
-                setTargetSpeed(2700);           
+                hood.setRequiredPositionFromTics(525);
+                setTargetSpeed(2900);           
                 break;
         }
     }

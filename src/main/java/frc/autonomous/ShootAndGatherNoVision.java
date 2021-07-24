@@ -3,6 +3,7 @@ package frc.autonomous;
 import frc.commands.AutoTarget;
 import frc.commands.DriveInches;
 import frc.commands.IntakeDeployRun;
+import frc.commands.IntakeStop;
 import frc.commands.ShootBall;
 import frc.commands.SpinUpDrum;
 import frc.commands.TurnTurret;
@@ -26,7 +27,7 @@ public class ShootAndGatherNoVision implements MCRCommand {
                startUp,
                new TimedCommandSet(shoot, 3.5),
                collect,
-               new IntakeStop();
+               new IntakeStop()
                //new TimedCommandSet(new ShootBall(288), 5)
             );
     }
