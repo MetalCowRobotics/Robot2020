@@ -41,11 +41,11 @@ public class Intake {
 
     public void run() {
         if (deploying && intakeDeployed()) {
-            raiseLowerIntake.stopMotor();
+            raiseLowerIntake.stopMotor(); startIntake();
             deploying = false;
         }
         if (stowing && intakeStowed()) {
-            raiseLowerIntake.stopMotor();
+            raiseLowerIntake.stopMotor(); stopIntake();
             stowing = false;
         }
     }

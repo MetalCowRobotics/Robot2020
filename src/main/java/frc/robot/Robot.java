@@ -66,7 +66,7 @@ public class Robot extends TimedRobot {
       mission = new ShootAndGather(dashboard.getStartingPosition());
     } else {
       mission = new NoAuto();
-    }
+    } //mission = new ShootAndGather(dashboard.getStartingPosition());
     // mission = new TurnTurret(-155);
     //mission = new NoAuto();
     // mission = new WhichPath();
@@ -83,7 +83,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     vision.visionInit();
-    driveTrain.initForTeleOp();
+    driveTrain.initForTeleOp(); shooter.stopShooter();
   }
 
   @Override

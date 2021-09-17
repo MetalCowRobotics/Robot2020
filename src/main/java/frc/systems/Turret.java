@@ -58,26 +58,26 @@ public class Turret {
 
 
         if (targeting) {
-                   // Pid
-        double yawCorrection = vision.getYawDegrees() * -1.4;
-        // if (prior_offset == 999) {
-        //     prior_offset = yawCorrection;
-        // } else if (Math.abs(yawCorrection - prior_offset) > 6) {
-        //     yawCorrection = prior_offset;
-        // } else {
-        //     prior_offset = yawCorrection;
-        // }
-        double target = targetTics + adjustment + offset + yawCorrection;
-        target = -(adjustment + offset + yawCorrection);
-        double error = -(target - currentTics) / 30;
-        //System.out.println("============target:  " + target);
-        error = UtilityMethods.absMax(UtilityMethods.absMin(error, MAX_TURRET_SPEED), MIN_TURRET_SPEED);
-        error = UtilityMethods.absMax(UtilityMethods.absMin(target/40, MAX_TURRET_SPEED), MIN_TURRET_SPEED);
-        if (Math.abs(target) < 4) {
-            turret.stopMotor();
-        } else {
-            turret.set(error);
-        }           
+                    // Pid
+            double yawCorrection = vision.getYawDegrees() * -1.4;
+            // if (prior_offset == 999) {
+            //     prior_offset = yawCorrection;
+            // } else if (Math.abs(yawCorrection - prior_offset) > 6) {
+            //     yawCorrection = prior_offset;
+            // } else {
+            //     prior_offset = yawCorrection;
+            // }
+            double target = targetTics + adjustment + offset + yawCorrection;
+            target = -(adjustment + offset + yawCorrection);
+            double error = -(target - currentTics) / 30;
+            //System.out.println("============target:  " + target);
+            error = UtilityMethods.absMax(UtilityMethods.absMin(error, MAX_TURRET_SPEED), MIN_TURRET_SPEED);
+            error = UtilityMethods.absMax(UtilityMethods.absMin(target/40, MAX_TURRET_SPEED), MIN_TURRET_SPEED); SmartDashboard.putNumber("error", error);
+            if (Math.abs(target) < 4) {
+                turret.stopMotor();
+            } else {
+                turret.set(error);
+            }           
         } else {
             turret.set(adjustment);
         }
@@ -90,7 +90,6 @@ public class Turret {
         // double target = targetTics + adjustment + offset + yawCorrection;
         // double error = -(target - currentTics) / 30;
         // error = UtilityMethods.absMax(UtilityMethods.absMin(error, MAX_TURRET_SPEED), MIN_TURRET_SPEED);
-        
         // if (Math.abs(target - currentTics) < 8) {
         //     turret.stopMotor();
         // } else {
@@ -210,7 +209,7 @@ public class Turret {
         if (x > .1) {
             adjustment -= 1;
         } else if (x < -.1) {
-            adjustment += 10;
+            adjustment += 1;
         }
         //System.out.println("adjustment:  " + adjustment);
     } else {

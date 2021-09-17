@@ -66,7 +66,8 @@ public class Shooter {
         turret.run();
         magazine.run();
         funnel.run(magazine.isThereABallBottomToLoad());
-        dashboard.pushShooterVelocity(neo1.getEncoder().getVelocity());
+        dashboard.pushShooterVelocity(neo1.getEncoder().getVelocity());         SmartDashboard.putNumber("shooter temp: ", (neo1.getMotorTemperature()*1.8+32));
+
     }
 
     public boolean atSpeed() {
@@ -236,7 +237,7 @@ public class Shooter {
             case 1:
                 // 3/6 new
                 hood.setRequiredPositionFromTics(580);
-                setTargetSpeed(2000);
+                setTargetSpeed(1600);
                 break;
             
             case 2:
