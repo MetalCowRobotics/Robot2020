@@ -6,6 +6,7 @@ import frc.commands.IntakeDeployRun;
 import frc.commands.ShootBall;
 import frc.commands.SpinUpDrum;
 import frc.commands.TurnTurret;
+import frc.commands.MoveHood;
 import frc.lib14.CommandPause;
 import frc.lib14.MCRCommand;
 import frc.lib14.ParallelCommands;
@@ -19,7 +20,7 @@ public class ShootAndGather implements MCRCommand {
     public ShootAndGather(AutoPosition position) {
             ShootBall shoot = new ShootBall(12);
             MCRCommand startUp = new ParallelCommands(new SpinUpDrum(), new TurnTurret(-226));
-            MCRCommand secondShoot = new SequentialCommands(new CommandPause(1.5), new TimedCommandSet(new ShootBall(24), 11));
+            MCRCommand secondShoot = new SequentialCommands(new AutoTarget(false), new MoveHood(800), new CommandPause(1.5), new TimedCommandSet(new ShootBall(24), 11));
             MCRCommand collect = new ParallelCommands(new IntakeDeployRun(), new AutoTarget(true), new DriveInches(1, 144), secondShoot);
             // MCRCommand collect = new ParallelCommands(new IntakeDeployRun(), new AutoTarget(true), new DriveInches( 1, 144));
             mission = new SequentialCommands(

@@ -12,7 +12,7 @@ import frc.robot.RobotDashboard;
 import frc.robot.RobotMap;
 
 public class Hood {
-    private static MCR_SRX hood = new MCR_SRX(RobotMap.Hood.HOOD_MOTOR);
+    public MCR_SRX hood = new MCR_SRX(RobotMap.Hood.HOOD_MOTOR);
     private static AnalogPotentiometer pot = new AnalogPotentiometer(0, 10000, -2200);
     private static FC_JE_0149Encoder encoder = new FC_JE_0149Encoder(3, 2);
     private static RobotDashboard dashboard = RobotDashboard.getInstance();
@@ -65,7 +65,7 @@ public class Hood {
 
     private double inchesToTics(double inches) {
         //return (inches - 1) * REVS_PER_INCH * TICS_PER_REV;
-        return (inches) * REVS_PER_INCH * TICS_PER_REV;
+        return inches * REVS_PER_INCH * TICS_PER_REV;
 
     }
 
@@ -130,9 +130,9 @@ public class Hood {
         targetTics = inchesToTics(1);
     }
 
-    private int getCurrentTics() {
+    public int getCurrentTics() {
         //return (int) ((pot.get() + 200 / 3) * REVS_PER_INCH * TICS_PER_REV);
-        return (int) (encoder.getTics() + startingPosition);
+        return (int) encoder.getTics();
     }
 
     private void resetAdjustment() {

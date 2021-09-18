@@ -66,7 +66,7 @@ public class Robot extends TimedRobot {
     } else {
       mission = new NoAuto();
     }
-    //mission = new NoAuto();
+    mission = new ShootAndGather(dashboard.getStartingPosition());
     // mission = new WhichPath();
   }
 

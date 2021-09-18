@@ -159,9 +159,9 @@ public class Turret {
         if (targeting) {
             yawOverride += x / 2;
         } else if (x > .1) {
-            adjustment -= 10;
+            adjustment -= 1;
         } else if (x < -.1) {
-            adjustment += 10;
+            adjustment += 1;
         }
         // if (!targeting) {
         // setTurretPower(power);
