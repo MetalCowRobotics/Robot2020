@@ -12,7 +12,7 @@ import frc.robot.RobotDashboard;
 import frc.robot.RobotMap;
 
 public class Hood {
-    public static MCR_SRX hood = new MCR_SRX(RobotMap.Hood.HOOD_MOTOR);
+    public MCR_SRX hood = new MCR_SRX(RobotMap.Hood.HOOD_MOTOR);
     private static AnalogPotentiometer pot = new AnalogPotentiometer(0, 10000, -2200);
     private static FC_JE_0149Encoder encoder = new FC_JE_0149Encoder(3, 2);
     private static RobotDashboard dashboard = RobotDashboard.getInstance();
@@ -119,6 +119,7 @@ public class Hood {
     // }
 
     public void setRequiredPositionFromTics(double dist) {
+        resetAdjustment();
         targetTics = dist;
     }
 

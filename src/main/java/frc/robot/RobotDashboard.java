@@ -184,7 +184,7 @@ public class RobotDashboard {
 	}
 
 	public boolean pushAutoTargeting(boolean autoOn) {
-		return SmartDashboard.getBoolean("AutoTarget", autoOn);
+		return SmartDashboard.putBoolean("AutoTarget", autoOn);
 	}
 
 	public boolean isAutoTargeting() {
