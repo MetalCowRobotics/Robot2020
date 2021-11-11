@@ -104,6 +104,9 @@ public class TurnDegrees implements MCRCommand {
 	protected double limitCorrection(double correction, double maxAdjustment) {
 		if (Math.abs(correction) > Math.abs(maxAdjustment))
 			return UtilityMethods.copySign(correction, maxAdjustment);
+			if (correction < .12){
+				return .12;
+			}
 		return correction;
 	}
 

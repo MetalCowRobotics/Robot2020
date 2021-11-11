@@ -37,8 +37,8 @@ public class RobotMap {
 		public static final int TICS_PER_ROTATION = 4096; 
 		public static final double INCHES_PER_ROTATION = Math.PI * RobotMap.Drivetrain.WHEEL_DIAMETER;
 		public static final double SLOW_DOWN_DISTANCE = (12 / INCHES_PER_ROTATION) * TICS_PER_ROTATION;
-		public static final double REVERSE_TOP_SPEED = -0.6;
-		public static final double REVERSE_BOTTOM_SPEED = -0.4;
+		public static final double REVERSE_TOP_SPEED = -0.8;
+		public static final double REVERSE_BOTTOM_SPEED = -0.7;//4
 	}
 
 	public final class TurnDegrees {
@@ -48,9 +48,9 @@ public class RobotMap {
 		public static final double Iz = 5;
 		public static final double TOP_SPEED = 0;
 		public static final double VARIANCE = 1; //.25
-		public static final double MAX_ADJUSTMENT = .6;
+		public static final double MAX_ADJUSTMENT = .7;//.6
 		public static final double SLOW_VARIANCE = 15; //10
-		public static final double SLOW_ADJUSTMENT = .4;
+		public static final double SLOW_ADJUSTMENT = .5;//.4
 	}
 	
 
